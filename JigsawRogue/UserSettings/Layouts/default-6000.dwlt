@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 363.19995
     height: 812.8
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -326,7 +326,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Piece Scriptables
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -336,16 +336,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Piece Scriptables
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\willi\Documents\repos\JigsawRogue\JigsawRogue
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: d4a20000
-    m_LastClickedID: 41684
-    m_ExpandedIDs: 0000000052a200008ca20000
+    m_SelectedIDs: 60a20000
+    m_LastClickedID: 41568
+    m_ExpandedIDs: 000000008ca0000060a20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000
+    m_ExpandedIDs: 000000008ca00000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.17158069, y: 0.6455451, z: -0.15204227, w: -0.72850245}
     speed: 2
-    m_Value: {x: -0.17158061, y: 0.6455448, z: -0.1520422, w: -0.7285021}
+    m_Value: {x: -0.1715807, y: 0.6455451, z: -0.15204228, w: -0.7285025}
   m_Size:
     m_Target: 18.765205
     speed: 2
