@@ -26,17 +26,23 @@ public class DeckManager : MonoBehaviour
         
     }
 
+    // ! Warning: Change these to piece objects once completed !
 
     public void DrawPiece()
     {
-
+        int deckIndex = Random.Range(0,deck.Count);
+        hand.Add(deck[deckIndex]);
     }
-    public void DiscardPiece()
+    public void DiscardPiece(PieceScriptable piece)
     {
-
+        discard.Add(piece);
+        hand.Remove(piece);
     }
-    public void ShuffleDeck()
+
+    //Need more context first...
+    public void GetPiece()
     {
-
+        
     }
+  
 }
