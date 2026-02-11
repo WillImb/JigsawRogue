@@ -17,14 +17,15 @@ public class BoardManager : MonoBehaviour
         occupied = new Piece[slots.Length];
     }
 
-    public void TryPlacePiece(Piece piece)
+    public bool TryPlacePiece(Piece piece)
     {
         int slotIndex = GetClosestSlot(piece.transform.position);
-        if (slotIndex == -1) return;
+        if (slotIndex == -1) return false;
 
-        if (occupied[slotIndex] != null) return;
+        if (occupied[slotIndex] != null) return false;
 
         PlacePiece(piece, slotIndex);
+        return true;
     }
 
     void PlacePiece(Piece piece, int index)
@@ -51,4 +52,17 @@ public class BoardManager : MonoBehaviour
 
         return bestIndex;
     }
+    
+    public void RemovePiece(Piece piece)
+    {
+        for (int i = 0; i < occupied.Length; i++)
+        {
+            if (occupied[i] == piece)
+            {
+                occupied[i] = null;
+                return;
+            }
+        }
+    }
+
 }
