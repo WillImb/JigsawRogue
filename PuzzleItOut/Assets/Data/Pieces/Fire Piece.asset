@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272e180541c90204c86e98bfe9d42056, type: 3}
   m_Name: Fire Piece
   m_EditorClassIdentifier: 
-  pieceName: 
-  baseDamage: 0
+  pieceName: Fire
+  baseDamange: 10
   cardType: 0
-  sides: 
+  north: 1
+  east: 2
+  south: 0
+  west: 0
