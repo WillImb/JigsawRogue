@@ -132,7 +132,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""27c5f898-bc57-4ee1-8800-db469aca5fe3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1086,7 +1086,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Point"",
                     ""type"": ""Value"",
                     ""id"": ""15d7484b-a2f2-4456-a040-355aa1e69634"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -1095,6 +1095,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Click"",
                     ""type"": ""Button"",
                     ""id"": ""2da58ee5-972f-45be-bc99-2e55b4e704e4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateClockwise"",
+                    ""type"": ""Button"",
+                    ""id"": ""677f2b44-3f52-4bdf-b380-e27b3b95ae3d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCounterClockwise"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb1e7e0f-a8c6-4741-b88f-b4b54c7a5b95"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1121,6 +1139,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a052aa31-388c-44f5-85a5-d7f90d14cd5b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RotateClockwise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64577060-2a92-4218-a062-9d2307d3a222"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RotateCounterClockwise"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1217,6 +1257,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Point = m_Gameplay.FindAction("Point", throwIfNotFound: true);
         m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
+        m_Gameplay_RotateClockwise = m_Gameplay.FindAction("RotateClockwise", throwIfNotFound: true);
+        m_Gameplay_RotateCounterClockwise = m_Gameplay.FindAction("RotateCounterClockwise", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1680,6 +1722,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Point;
     private readonly InputAction m_Gameplay_Click;
+    private readonly InputAction m_Gameplay_RotateClockwise;
+    private readonly InputAction m_Gameplay_RotateCounterClockwise;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -1699,6 +1743,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Click".
         /// </summary>
         public InputAction @Click => m_Wrapper.m_Gameplay_Click;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/RotateClockwise".
+        /// </summary>
+        public InputAction @RotateClockwise => m_Wrapper.m_Gameplay_RotateClockwise;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/RotateCounterClockwise".
+        /// </summary>
+        public InputAction @RotateCounterClockwise => m_Wrapper.m_Gameplay_RotateCounterClockwise;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1731,6 +1783,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @RotateClockwise.started += instance.OnRotateClockwise;
+            @RotateClockwise.performed += instance.OnRotateClockwise;
+            @RotateClockwise.canceled += instance.OnRotateClockwise;
+            @RotateCounterClockwise.started += instance.OnRotateCounterClockwise;
+            @RotateCounterClockwise.performed += instance.OnRotateCounterClockwise;
+            @RotateCounterClockwise.canceled += instance.OnRotateCounterClockwise;
         }
 
         /// <summary>
@@ -1748,6 +1806,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @RotateClockwise.started -= instance.OnRotateClockwise;
+            @RotateClockwise.performed -= instance.OnRotateClockwise;
+            @RotateClockwise.canceled -= instance.OnRotateClockwise;
+            @RotateCounterClockwise.started -= instance.OnRotateCounterClockwise;
+            @RotateCounterClockwise.performed -= instance.OnRotateCounterClockwise;
+            @RotateCounterClockwise.canceled -= instance.OnRotateCounterClockwise;
         }
 
         /// <summary>
@@ -2016,5 +2080,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateClockwise" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateClockwise(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateCounterClockwise" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateCounterClockwise(InputAction.CallbackContext context);
     }
 }
