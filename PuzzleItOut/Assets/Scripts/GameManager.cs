@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -29,5 +30,22 @@ public class GameManager : MonoBehaviour
         {
             paused = !paused;
         }
+    }
+
+
+    public int FindCombo(List<List<PieceScriptable>> spellBook, List<PieceScriptable> currentCombo)
+    {
+        //go through each possible combo -- later probably change this too a list of combo scriptables or such
+        for(int i = 0; i < spellBook.Count; i++)
+        {
+            //Easy way, if we standardize the way the combos are orders -> ex. when combo is submitted order it fire, water, earth, wind
+            if (spellBook[i] == currentCombo)
+            {
+                return i;
+            }
+        }
+
+        //just return -1 if none found
+        return -1;
     }
 }
