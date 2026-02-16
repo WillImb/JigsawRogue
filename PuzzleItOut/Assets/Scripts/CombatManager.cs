@@ -28,16 +28,16 @@ public class CombatManager : MonoBehaviour
         
     }
 
-    public void DealDmg(float damage)
+    public void DealDamage(float damage)
     {
         return;
     }
 
-    public void TakeDmg(float damage)
+    public void TakeDamage(float damage)
     {
         return;
     }
-    private float CalculateDmg()
+    private float CalculateDamage()
     {
         float damage = 0;
         return damage;
