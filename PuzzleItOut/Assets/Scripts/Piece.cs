@@ -46,6 +46,8 @@ public class Piece : MonoBehaviour
 
         InputManager.Instance.Gameplay.Click.started -= StartDrag;
         InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
+        InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
     void Update()
@@ -57,6 +59,16 @@ public class Piece : MonoBehaviour
         worldPos.z = 0f;
 
         transform.position = worldPos + offset;
+    }
+
+    public sideType[] GetAllSides()
+    {
+        return sides;
+    }
+
+    public sideType GetSide(Direction direction)
+    {
+        return sides[(int)direction];
     }
 
     public void RotatePieceClockwise()
