@@ -16,6 +16,7 @@ public class Piece : MonoBehaviour
     [SerializeField]
     private PieceScriptable pieceData;
     private sideType[] sides;
+    private int pieceLevel;
 
     void Awake()
     {
