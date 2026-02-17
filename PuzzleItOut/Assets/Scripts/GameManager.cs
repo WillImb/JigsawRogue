@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public bool paused = false;
     public int turn; //0 for player 1 for enemy;
 
-    public GameObject currentEnemy; // change to type enemy when rish adds script
+    public Enemy currentEnemy; // change to type enemy when rish adds script
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 

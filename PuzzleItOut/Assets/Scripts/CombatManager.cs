@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour
 {
@@ -30,11 +31,22 @@ public class CombatManager : MonoBehaviour
 
     public void DealDamage(float damage)
     {
+        if (GameManager.instance.currentEnemy.health <= 0)
+        {
+            //the win scene index
+            SceneManager.LoadScene(3);
+        }
         return;
     }
 
     public void TakeDamage(float damage)
     {
+
+        if(GameManager.instance.playerHealth <= 0)
+        {
+            //the lose scene index
+            SceneManager.LoadScene(2);
+        }
         return;
     }
     private float CalculateDamage()
