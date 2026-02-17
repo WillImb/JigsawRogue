@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    public static BoardManager Instance;
+    public static BoardManager instance;
 
     [SerializeField] private Transform[] slots;
     private Piece[] occupied;
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
         else
             Destroy(gameObject);
 
