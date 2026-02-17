@@ -8,14 +8,13 @@ public class GameManager : MonoBehaviour
     public float playerHealth;
     public float money;
 
-    public bool paused = false;
     public int turn; //0 for player 1 for enemy;
 
     public GameObject currentEnemy; // change to type enemy when rish adds script
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    private void Awake()
+    void Awake()
     {
         if(instance == null)
         {
@@ -23,13 +22,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        StartGame();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            paused = !paused;
-        }
+
+    }
+
+    void StartGame()
+    {
+        DeckManager.instance.DrawPiece();
+        DeckManager.instance.DrawPiece();
+        DeckManager.instance.DrawPiece();
+        DeckManager.instance.DrawPiece();
+        DeckManager.instance.DrawPiece();
+        DeckManager.instance.DrawPiece();
     }
 
 

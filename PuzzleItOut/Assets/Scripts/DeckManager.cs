@@ -24,11 +24,7 @@ public class DeckManager : MonoBehaviour
 
     void Start()
     {
-        //Temp
-        for (int i = 0; i < handSlots.Length; i++)
-        {
-            occupied[i] = handSlots[i].GetComponentInChildren<Piece>();
-        }
+
     }
 
     void Update()
