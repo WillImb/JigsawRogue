@@ -5,7 +5,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    //List<ComboScriptable> ComboList;
+    List<ComboScriptable>  spellBook;
 
     private void Awake()
     {
@@ -43,8 +43,19 @@ public class CombatManager : MonoBehaviour
         return damage;
     }
 
-    public void FindCombo(Piece[] pieces)
+    public int FindCombo(List<PieceScriptable> currentCombo)
     {
+        //go through each possible combo
+        for (int i = 0; i < spellBook.Count; i++)
+        {
+            //Easy way, if we standardize the way the combos are orders -> ex. when combo is submitted order it fire, water, earth, wind
+            if (spellBook[i].comboList == currentCombo)
+            {
+                return i;
+            }
+        }
 
+        //just return -1 if none found
+        return -1;
     }
 }
