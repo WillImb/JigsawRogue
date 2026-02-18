@@ -10,6 +10,10 @@ public class PieceScriptable : ScriptableObject
     public sideType east;
     public sideType south;
     public sideType west;
+
+    public float healingValue;
+    public float combatValue;
+    public float goldValue;
 }
 
 public enum cardType
@@ -25,4 +29,12 @@ public enum sideType
     Flat,
     In,
     Out
+}
+
+public enum Direction
+{
+    North = 0,
+    East = 1,
+    South = 2,
+    West = 3
 }

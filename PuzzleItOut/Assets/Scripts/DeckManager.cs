@@ -27,16 +27,25 @@ public class DeckManager : MonoBehaviour
     }
 
 
+    //moves piece from deck to hand
     public void DrawPiece()
     {
-
+        int randomIndex = Random.Range(0, deck.Count);
+        hand.Add(deck[randomIndex]);
+        deck.RemoveAt(randomIndex);
     }
-    public void DiscardPiece()
-    {
 
+    //discards a specified piece form hand to discard
+    public void DiscardPiece(int index)
+    {        
+        discard.Add(deck[index]);
+        hand.RemoveAt(index);
     }
+
+    //moves all pieces from discard to deck
     public void ShuffleDeck()
     {
-
+        deck.AddRange(discard);
+        discard.Clear();
     }
 }

@@ -46,7 +46,7 @@
                     "name": "Crouch",
                     "type": "Button",
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -1000,7 +1000,7 @@
                     "name": "Point",
                     "type": "Value",
                     "id": "15d7484b-a2f2-4456-a040-355aa1e69634",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1009,6 +1009,24 @@
                     "name": "Click",
                     "type": "Button",
                     "id": "2da58ee5-972f-45be-bc99-2e55b4e704e4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateClockwise",
+                    "type": "Button",
+                    "id": "677f2b44-3f52-4bdf-b380-e27b3b95ae3d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateCounterClockwise",
+                    "type": "Button",
+                    "id": "eb1e7e0f-a8c6-4741-b88f-b4b54c7a5b95",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1035,6 +1053,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a052aa31-388c-44f5-85a5-d7f90d14cd5b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RotateClockwise",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64577060-2a92-4218-a062-9d2307d3a222",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RotateCounterClockwise",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
