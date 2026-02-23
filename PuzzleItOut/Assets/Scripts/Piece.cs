@@ -8,11 +8,6 @@ public class Piece : MonoBehaviour
     private bool dragging;
     private bool isPlaced;
 
-    //This is all temporary to get snapping back to hand working, will change once we
-    //add a handmanager or something of that sort
-    private Transform originalSlot;
-    private Vector3 originalPosition;
-
     [SerializeField]
     private PieceScriptable pieceData;
     private sideType[] sides;
@@ -26,8 +21,6 @@ public class Piece : MonoBehaviour
     void Start()
     {
 
-        originalSlot = transform.parent;
-        originalPosition = transform.localPosition;
         InputManager.Instance.Gameplay.Click.started += StartDrag;
         InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
@@ -107,7 +100,7 @@ public class Piece : MonoBehaviour
         if (isPlaced == true)
         {
             isPlaced = false;
-            BoardManager.Instance.RemovePiece(this);
+            BoardManager.instance.RemovePiece(this);
         }
     }
 
@@ -116,12 +109,13 @@ public class Piece : MonoBehaviour
         if (!dragging) return;
 
         dragging = false;
-        if (BoardManager.Instance.TryPlacePiece(this))
+        if (BoardManager.instance.TryPlacePiece(this))
         {
             isPlaced = true;
+            DeckManager.instance.RemoveFromHand(this);
             return;
         }
-        SnapToDefault();
+        DeckManager.instance.ReturnToHand(this);
     }
     void HandleRotateClockwise(InputAction.CallbackContext ctx)
     {
@@ -139,12 +133,5 @@ public class Piece : MonoBehaviour
     {
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
-    }
-
-    //Temp Code Again for Hand
-    public void SnapToDefault()
-    {
-        transform.SetParent(originalSlot);
-        transform.localPosition = originalPosition;
     }
 }
