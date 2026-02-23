@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
     public float money;
+
+    public Button attackButton;
 
     public enum TurnState
     {
@@ -49,8 +52,15 @@ public class GameManager : MonoBehaviour
         DeckManager.instance.DrawPiece();
     }
 
-    void DoTurn()
+    public void DoTurn()
     {
+        //called when attack button is clicked
+        attackButton.interactable = false;
+        CombatManager.Instance.CalculateDamage();
+        CombatManager.Instance.CalculateGold();
+        CombatManager.Instance.CalculateHealth();
+
+        EndTurn();
 
     }
     void EndTurn()
@@ -70,19 +80,24 @@ public class GameManager : MonoBehaviour
 
         if(turnState == TurnState.playerTurn)
         {
-            //Discard pieces
+            
+            DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiece();
             turnState = TurnState.enemyTurn;
+            DoEnemyTurn();
+
         }
         else if (turnState == TurnState.enemyTurn)
         {
             turnState = TurnState.playerTurn;
+            attackButton.interactable = true;
         }
         
     }
     void DoEnemyTurn()
     {
-
+        currentEnemy.DealDamage();
+        EndTurn();
     }
    
 }

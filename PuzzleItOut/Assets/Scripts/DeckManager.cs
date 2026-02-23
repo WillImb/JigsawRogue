@@ -66,6 +66,19 @@ public class DeckManager : MonoBehaviour
         Destroy(piece);
     }
 
+    //Discards all pieces on board
+    public void DiscardBoard()
+    {
+        BoardManager bm = BoardManager.instance;
+
+        for (int i = 0; i < bm.occupied.Length; i++) {
+
+            discard.Add(bm.occupied[i].gameObject);
+            bm.occupied[i] = null;
+        }
+
+    }
+
     //moves all pieces from discard to deck
     public void DiscardToDeck()
     {

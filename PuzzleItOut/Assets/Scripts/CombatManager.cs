@@ -33,7 +33,7 @@ public class CombatManager : MonoBehaviour
         return;
     }
 
-    private float CalculateDamage()
+    public float CalculateDamage()
     {
         float damage = 0;
         return damage;
