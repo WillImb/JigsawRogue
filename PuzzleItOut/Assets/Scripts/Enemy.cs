@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public float health;
+    public float damage;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,5 +15,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // currently no system in place to detect if enemy is dead
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
     }
 }
