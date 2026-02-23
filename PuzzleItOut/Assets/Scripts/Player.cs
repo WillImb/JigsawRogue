@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player
 {
-    Player instance;
+    public static Player instance;
     float gold;
     float health;
     // no combo type yet

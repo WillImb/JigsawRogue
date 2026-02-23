@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public float playerHealth;
     public float money;
 
-    public int turn; //0 for player 1 for enemy;
+    public enum TurnState
+    {
+        playerTurn,
+        enemyTurn
+    }
+
+    TurnState turnState;
 
     public Enemy currentEnemy; // change to type enemy when rish adds script
 
@@ -43,6 +49,40 @@ public class GameManager : MonoBehaviour
         DeckManager.instance.DrawPiece();
     }
 
+    void DoTurn()
+    {
 
+    }
+    void EndTurn()
+    {
+        if (currentEnemy.health <= 0)
+        {
+            //win
+            SceneManager.LoadScene(3);
+            return;
+        }
+        else if (Player.instance.GetHealth() <= 0)
+        {
+            //lose
+            SceneManager.LoadScene(2);
+            return;
+        }
+
+        if(turnState == TurnState.playerTurn)
+        {
+            //Discard pieces
+            DeckManager.instance.DrawPiece();
+            turnState = TurnState.enemyTurn;
+        }
+        else if (turnState == TurnState.enemyTurn)
+        {
+            turnState = TurnState.playerTurn;
+        }
+        
+    }
+    void DoEnemyTurn()
+    {
+
+    }
    
 }
