@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CombatManager : MonoBehaviour
 {
@@ -31,24 +30,9 @@ public class CombatManager : MonoBehaviour
 
     public void DealDamage(float damage)
     {
-        if (GameManager.instance.currentEnemy.health <= 0)
-        {
-            //the win scene index
-            SceneManager.LoadScene(3);
-        }
         return;
     }
 
-    public void TakeDamage(float damage)
-    {
-
-        if(GameManager.instance.playerHealth <= 0)
-        {
-            //the lose scene index
-            SceneManager.LoadScene(2);
-        }
-        return;
-    }
     private float CalculateDamage()
     {
         float damage = 0;
@@ -69,5 +53,15 @@ public class CombatManager : MonoBehaviour
 
         //just return -1 if none found
         return -1;
+    }
+
+    public int CalculateGold()
+    {
+        return 0;
+    }
+
+    public float CalculateHealth()
+    {
+        return 0.0f;
     }
 }
