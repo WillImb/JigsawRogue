@@ -33,10 +33,6 @@ public class CombatManager : MonoBehaviour
         return;
     }
 
-    public void TakeDamage(float damage)
-    {
-        return;
-    }
     private float CalculateDamage()
     {
         float damage = 0;
@@ -57,5 +53,15 @@ public class CombatManager : MonoBehaviour
 
         //just return -1 if none found
         return -1;
+    }
+
+    public int CalculateGold()
+    {
+        return 0;
+    }
+
+    public float CalculateHealth()
+    {
+        return 0.0f;
     }
 }

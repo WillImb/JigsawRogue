@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
+        DeckManager.instance.ShuffleDeck();
         DeckManager.instance.DrawPiece();
         DeckManager.instance.DrawPiece();
         DeckManager.instance.DrawPiece();
