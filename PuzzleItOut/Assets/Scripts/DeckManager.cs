@@ -47,12 +47,15 @@ public class DeckManager : MonoBehaviour
     //draws piece from top of the deck to hand 
     public void DrawPiece()
     {
-        GameObject prefab = deck[deck.Count-1];
-        GameObject spawnedPiece = Instantiate(prefab);
-        hand.Add(spawnedPiece);
-        deck.RemoveAt(deck.Count-1);
+        if (deck.Count != 0)
+        {
+            GameObject prefab = deck[deck.Count - 1];
+            GameObject spawnedPiece = Instantiate(prefab);
+            hand.Add(spawnedPiece);
+            deck.RemoveAt(deck.Count - 1);
 
-        ReturnToHand(spawnedPiece.GetComponent<Piece>());
+            ReturnToHand(spawnedPiece.GetComponent<Piece>());
+        }
     }
 
     //discards a specified piece form hand to discard
@@ -72,9 +75,11 @@ public class DeckManager : MonoBehaviour
         BoardManager bm = BoardManager.instance;
 
         for (int i = 0; i < bm.occupied.Length; i++) {
-
-            discard.Add(bm.occupied[i].gameObject);
-            bm.occupied[i] = null;
+            if (bm.occupied[i] != null)
+            {
+                discard.Add(bm.occupied[i].gameObject);
+                bm.occupied[i] = null;
+            }
         }
 
     }

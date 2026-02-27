@@ -35,7 +35,7 @@ public class CombatManager : MonoBehaviour
 
     public float CalculateDamage()
     {
-        float damage = 0;
+        float damage = 2;
         return damage;
     }
 

@@ -11,13 +11,14 @@ public class GameManager : MonoBehaviour
 
     public Button attackButton;
 
+
     public enum TurnState
     {
         playerTurn,
         enemyTurn
     }
 
-    TurnState turnState;
+    TurnState turnState = TurnState.playerTurn;
 
     public Enemy currentEnemy; // change to type enemy when rish adds script
 
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         //called when attack button is clicked
         attackButton.interactable = false;
-        CombatManager.Instance.CalculateDamage();
+        currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage());
         CombatManager.Instance.CalculateGold();
         CombatManager.Instance.CalculateHealth();
 
