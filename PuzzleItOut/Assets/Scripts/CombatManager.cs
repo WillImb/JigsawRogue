@@ -5,7 +5,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    List<ComboScriptable>  spellBook;
+    public List<ComboScriptable>  spellBook;
 
     private void Awake()
     {
@@ -33,11 +33,7 @@ public class CombatManager : MonoBehaviour
         return;
     }
 
-    private float CalculateDamage()
-    {
-        float damage = 0;
-        return damage;
-    }
+    
 
     public int FindCombo(List<PieceScriptable> currentCombo)
     {
@@ -54,14 +50,17 @@ public class CombatManager : MonoBehaviour
         //just return -1 if none found
         return -1;
     }
-
-    public int CalculateGold()
+    public float CalculateDamage(ComboScriptable combo)
     {
-        return 0;
+        return combo.Damage();
+    }
+    public float CalculateGold(ComboScriptable combo)
+    {
+        return combo.Gold();
     }
 
-    public float CalculateHealth()
+    public float CalculateHealth(ComboScriptable combo)
     {
-        return 0.0f;
+        return combo.Health();
     }
 }

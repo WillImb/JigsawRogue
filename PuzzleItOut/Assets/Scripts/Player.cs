@@ -1,14 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Player
+public class Player:MonoBehaviour
 {
-    Player instance;
+    public static Player instance;
     float gold;
+    public float maxHealth;
     float health;
+
+    public Slider playerHealthSlider;
+
     // no combo type yet
     // List<Combo> AllCombos
     // List<Combo? CombosUnlocked
+
+    public void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
+    public void Start()
+    {
+        health = maxHealth;
+        playerHealthSlider.value = health / maxHealth;
+
+    }
 
     public float GetGold()
     {
@@ -30,5 +50,7 @@ public class Player
     public void TakeDamage(float damage)
     {
         health -= damage;
+        playerHealthSlider.value = health / maxHealth;
     }
+    
 }

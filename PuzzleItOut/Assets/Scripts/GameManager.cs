@@ -1,16 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public float playerHealth;
     public float money;
 
-    public int turn; //0 for player 1 for enemy;
+    public Button attackButton;
 
-    public GameObject currentEnemy; // change to type enemy when rish adds script
+
+    public enum TurnState
+    {
+        playerTurn,
+        enemyTurn
+    }
+
+    TurnState turnState = TurnState.playerTurn;
+
+    public Enemy currentEnemy; // change to type enemy when rish adds script
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -44,6 +54,61 @@ public class GameManager : MonoBehaviour
         DeckManager.instance.DrawPiece();
     }
 
+    public void DoTurn()
+    {
+        //called when attack button is clicked
+        attackButton.interactable = false;
 
+        
+        ComboScriptable combo = CombatManager.Instance.spellBook[0];
+        currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
+
+        CombatManager.Instance.CalculateGold(combo);
+        CombatManager.Instance.CalculateHealth(combo);
+
+        EndTurn();
+
+    }
+    void EndTurn()
+    {
+        if (currentEnemy.health <= 0)
+        {
+            //win
+            SceneManager.LoadScene(3);
+            return;
+        }
+        else if (Player.instance.GetHealth() <= 0)
+        {
+            //lose
+            SceneManager.LoadScene(2);
+            return;
+        }
+
+
+        //The end of the Players turn
+        if(turnState == TurnState.playerTurn)
+        {
+            
+            DeckManager.instance.DiscardBoard();
+            DeckManager.instance.DrawPiece();
+
+            //switdh to enemy's turn
+            turnState = TurnState.enemyTurn;
+            Invoke("DoEnemyTurn",1);
+
+        }
+        else if (turnState == TurnState.enemyTurn)
+        {
+            //switch to enemy's turn
+            turnState = TurnState.playerTurn;
+            attackButton.interactable = true;
+        }
+        
+    }
+    void DoEnemyTurn()
+    {
+        currentEnemy.DealDamage();
+        EndTurn();
+    }
    
 }
