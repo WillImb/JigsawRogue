@@ -72,16 +72,6 @@ public class DeckManager : MonoBehaviour
         discard.Clear();
     }
 
-    // discards entire hand to discard - al
-    public void DiscardToDiscard()
-    {
-        for (int i = 0; i < hand.Count; i++)
-        {
-            DiscardPiece(i);
-        }
-
-    }
-
     //returns a piece to hand
     public void ReturnToHand(Piece piece)
     {
