@@ -41,6 +41,9 @@ public class CombatManager : MonoBehaviour
 
     public int FindCombo(List<PieceScriptable> currentCombo)
     {
+        // organizing combo
+        //currentCombo.Sort();
+
         //go through each possible combo
         for (int i = 0; i < spellBook.Count; i++)
         {
@@ -54,6 +57,11 @@ public class CombatManager : MonoBehaviour
         //just return -1 if none found
         return -1;
     }
+
+    //public Piece[] OraganizePieces()
+    //{
+        
+    //}
 
     public int CalculateGold()
     {
