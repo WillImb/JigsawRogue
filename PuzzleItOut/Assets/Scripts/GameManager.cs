@@ -57,9 +57,12 @@ public class GameManager : MonoBehaviour
     {
         //called when attack button is clicked
         attackButton.interactable = false;
-        currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage());
-        CombatManager.Instance.CalculateGold();
-        CombatManager.Instance.CalculateHealth();
+
+        ComboScriptable combo;
+        currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
+
+        CombatManager.Instance.CalculateGold(combo);
+        CombatManager.Instance.CalculateHealth(combo);
 
         EndTurn();
 
@@ -79,17 +82,22 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
+        //The end of the Players turn
         if(turnState == TurnState.playerTurn)
         {
             
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiece();
+
+            //switdh to enemy's turn
             turnState = TurnState.enemyTurn;
             DoEnemyTurn();
 
         }
         else if (turnState == TurnState.enemyTurn)
         {
+            //switch to enemy's turn
             turnState = TurnState.playerTurn;
             attackButton.interactable = true;
         }
