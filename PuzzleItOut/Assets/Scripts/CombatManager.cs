@@ -5,7 +5,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    List<ComboScriptable>  spellBook;
+    public List<ComboScriptable>  spellBook;
 
     private void Awake()
     {

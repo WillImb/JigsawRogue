@@ -58,7 +58,8 @@ public class GameManager : MonoBehaviour
         //called when attack button is clicked
         attackButton.interactable = false;
 
-        ComboScriptable combo;
+        
+        ComboScriptable combo = CombatManager.Instance.spellBook[0];
         currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
 
         CombatManager.Instance.CalculateGold(combo);
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
             //switdh to enemy's turn
             turnState = TurnState.enemyTurn;
-            DoEnemyTurn();
+            Invoke("DoEnemyTurn",1);
 
         }
         else if (turnState == TurnState.enemyTurn)
