@@ -32,7 +32,6 @@ public class DeckManager : MonoBehaviour
         
     }
 
-
     //shuffles deck using Fisher-Yates algo
     public void ShuffleDeck()
     {
@@ -71,6 +70,16 @@ public class DeckManager : MonoBehaviour
     {
         deck.AddRange(discard);
         discard.Clear();
+    }
+
+    // discards entire hand to discard - al
+    public void DiscardToDiscard()
+    {
+        for (int i = 0; i < hand.Count; i++)
+        {
+            DiscardPiece(i);
+        }
+
     }
 
     //returns a piece to hand
