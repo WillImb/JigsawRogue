@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         //called when attack button is clicked
         attackButton.interactable = false;
 
-        
+        //Currently not working because spell book is empty
         ComboScriptable combo = CombatManager.Instance.spellBook[0];
         currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
 
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         if (currentEnemy.health <= 0)
         {
             //win
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(4);
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
