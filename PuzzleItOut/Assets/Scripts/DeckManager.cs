@@ -32,7 +32,6 @@ public class DeckManager : MonoBehaviour
         
     }
 
-
     //shuffles deck using Fisher-Yates algo
     public void ShuffleDeck()
     {
@@ -47,12 +46,15 @@ public class DeckManager : MonoBehaviour
     //draws piece from top of the deck to hand 
     public void DrawPiece()
     {
-        GameObject prefab = deck[deck.Count-1];
-        GameObject spawnedPiece = Instantiate(prefab);
-        hand.Add(spawnedPiece);
-        deck.RemoveAt(deck.Count-1);
+        if (deck.Count != 0)
+        {
+            GameObject prefab = deck[deck.Count - 1];
+            GameObject spawnedPiece = Instantiate(prefab);
+            hand.Add(spawnedPiece);
+            deck.RemoveAt(deck.Count - 1);
 
-        ReturnToHand(spawnedPiece.GetComponent<Piece>());
+            ReturnToHand(spawnedPiece.GetComponent<Piece>());
+        }
     }
 
     //discards a specified piece form hand to discard
@@ -64,6 +66,21 @@ public class DeckManager : MonoBehaviour
         
         RemoveFromHand(piece.GetComponent<Piece>());
         Destroy(piece);
+    }
+
+    //Discards all pieces on board
+    public void DiscardBoard()
+    {
+        BoardManager bm = BoardManager.instance;
+
+        for (int i = 0; i < bm.occupied.Length; i++) {
+            if (bm.occupied[i] != null)
+            {
+                discard.Add(bm.occupied[i].gameObject);
+                bm.occupied[i] = null;
+            }
+        }
+
     }
 
     //moves all pieces from discard to deck
