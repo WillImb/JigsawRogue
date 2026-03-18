@@ -60,11 +60,21 @@ public class GameManager : MonoBehaviour
         attackButton.interactable = false;
 
         //Currently not working because spell book is empty
+        //This Will be changed to finding the matching spell in spell book once it has been implemented;
         ComboScriptable combo = CombatManager.Instance.spellBook[0];
-        currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
+       
+        if(combo != null)
+        {
+            currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
+            CombatManager.Instance.CalculateGold(combo);
+            CombatManager.Instance.CalculateHealth(combo);
+        }
+        else
+        {
+            currentEnemy.TakeDamage(0);
 
-        CombatManager.Instance.CalculateGold(combo);
-        CombatManager.Instance.CalculateHealth(combo);
+        }
+        
 
         EndTurn();
 
