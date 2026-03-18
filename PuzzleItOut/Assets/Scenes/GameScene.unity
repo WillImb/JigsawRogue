@@ -3587,8 +3587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509a9c6e817cf3448ba72043d94f07e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellBook:
-  - {fileID: 11400000, guid: 7e5a4eeebcf1555489e1d853521f1e93, type: 2}
 --- !u!4 &1571727484
 Transform:
   m_ObjectHideFlags: 0
@@ -4768,6 +4766,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004459446}
   m_CullTransparentMesh: 1
+--- !u!1 &2039856959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2039856961}
+  - component: {fileID: 2039856960}
+  m_Layer: 0
+  m_Name: Spellbook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2039856960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039856959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936e58312199f433e934d1471c3aee1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combosUnlocked:
+  - {fileID: 11400000, guid: 7e5a4eeebcf1555489e1d853521f1e93, type: 2}
+--- !u!4 &2039856961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039856959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5304302, y: -1.062506, z: 0.05286078}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2067914912
 GameObject:
   m_ObjectHideFlags: 0
@@ -5159,3 +5203,4 @@ SceneRoots:
   - {fileID: 404237835}
   - {fileID: 1817444263}
   - {fileID: 918126234}
+  - {fileID: 2039856961}
