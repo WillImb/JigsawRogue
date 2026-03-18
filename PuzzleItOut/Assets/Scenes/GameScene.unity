@@ -4418,8 +4418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b047ac878d9bb4def97558d8e4334cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  maxHealth: 10
+  health: 100
+  maxHealth: 100
   damage: 1
   enemyHealthSlider: {fileID: 1633196034}
 --- !u!1 &1897602187

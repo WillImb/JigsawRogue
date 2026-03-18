@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
 
         //Currently not working because spell book is empty
         //This Will be changed to finding the matching spell in spell book once it has been implemented;
-        ComboScriptable combo = CombatManager.Instance.spellBook[0];
+        ComboScriptable combo = Spellbook.instance.combosUnlocked[0];
        
         if(combo != null)
         {
