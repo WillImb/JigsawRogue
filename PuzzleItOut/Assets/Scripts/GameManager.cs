@@ -100,8 +100,7 @@ public class GameManager : MonoBehaviour
         {
             
             DeckManager.instance.DiscardBoard();
-            DeckManager.instance.DrawPiece();
-
+            DeckManager.instance.DrawPiecesTillMax();
             //switdh to enemy's turn
             turnState = TurnState.enemyTurn;
             Invoke("DoEnemyTurn",1);
