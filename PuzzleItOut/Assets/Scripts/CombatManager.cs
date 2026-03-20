@@ -39,7 +39,8 @@ public class CombatManager : MonoBehaviour
     {
         // organizing combo
         // Sorts combo by the enum order in the PieceScriptable. fire, water, air, earth
-        currentCombo.Sort(PieceScriptable.cardType)
+        
+        currentCombo.Sort(CompareByCardType);
         //go through each possible combo
         for (int i = 0; i < spellBook.Count; i++)
         {
@@ -53,7 +54,9 @@ public class CombatManager : MonoBehaviour
         //just return -1 if none found
         return -1;
     }
-
+    public static int CompareByCardType(PieceScriptable piece1, PieceScriptable piece2) {
+        return piece1.cardType.CompareTo(piece2.cardType);
+    }
     public float CalculateDamage(ComboScriptable combo)
     {
         return combo.Damage();
