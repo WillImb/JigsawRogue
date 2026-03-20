@@ -5,8 +5,6 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    public List<ComboScriptable>  spellBook;
-
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -42,10 +40,10 @@ public class CombatManager : MonoBehaviour
         
         currentCombo.Sort(CompareByCardType);
         //go through each possible combo
-        for (int i = 0; i < spellBook.Count; i++)
+        for (int i = 0; i < Spellbook.instance.combosUnlocked.Count; i++)
         {
             //Easy way, if we standardize the way the combos are orders -> ex. when combo is submitted order it fire, water, earth, wind
-            if (spellBook[i].comboList == currentCombo)
+            if (Spellbook.instance.combosUnlocked[i].comboList == currentCombo)
             {
                 return i;
             }
