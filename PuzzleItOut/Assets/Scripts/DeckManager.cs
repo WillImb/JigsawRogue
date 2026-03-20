@@ -57,8 +57,19 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    public void DrawPiecesTillMax()
+    {
+        for (int i = 0; i < occupied.Length; i++)
+        {
+            if (occupied[i] == null && deck.Count > 0)
+            {
+                DrawPiece();
+            }
+        }
+    }
+
     //discards a specified piece form hand to discard
-    public void DiscardPiece(int index)
+    public void DiscardPieceFromHand(int index)
     {
         GameObject piece = hand[index];
         discard.Add(piece);
@@ -68,19 +79,30 @@ public class DeckManager : MonoBehaviour
         Destroy(piece);
     }
 
+    //removes a piece to hand
+    public void RemoveFromHand(Piece piece)
+    {
+        int index = System.Array.IndexOf(occupied, piece);
+        if (index == -1) return;
+        occupied[index] = null;
+    }
+
     //Discards all pieces on board
-    public void DiscardBoard()
+    public List<Piece> DiscardBoard()
     {
         BoardManager bm = BoardManager.instance;
-
+        List<Piece> piecesPlayed = new List<Piece>();
         for (int i = 0; i < bm.occupied.Length; i++) {
             if (bm.occupied[i] != null)
             {
+                piecesPlayed.Add(bm.occupied[i]);
                 discard.Add(bm.occupied[i].gameObject);
+                GameObject piece = bm.slots[i].GetChild(0).gameObject;
+                Destroy(piece);
                 bm.occupied[i] = null;
             }
         }
-
+        return piecesPlayed;
     }
 
     //moves all pieces from discard to deck
@@ -103,11 +125,4 @@ public class DeckManager : MonoBehaviour
         piece.LockToSlot(handSlots[index]);
     }
 
-    //removes a piece to hand
-    public void RemoveFromHand(Piece piece)
-    {
-        int index = System.Array.IndexOf(occupied, piece);
-        if (index == -1) return;
-        occupied[index] = null;
-    }
 }

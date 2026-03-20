@@ -4,7 +4,7 @@ public class BoardManager : MonoBehaviour
 {
     public static BoardManager instance;
 
-    [SerializeField] private Transform[] slots;
+    [SerializeField] public Transform[] slots;
     public Piece[] occupied;
 
     void Awake()
