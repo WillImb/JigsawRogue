@@ -131,5 +131,7 @@ public class Piece : MonoBehaviour
     {
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
+
+       
     }
 }

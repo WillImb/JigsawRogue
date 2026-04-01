@@ -286,6 +286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberVfx: {fileID: 1334504915525532181, guid: 8dbc6c27be34dac4b90e82dfb2f8e189, type: 3}
+  particles:
+  - {fileID: 9093983602769707787, guid: fee1fd3573d27c64c8b7beb539979bb6, type: 3}
+  - {fileID: 4001018311535625124, guid: 6024d73b84d5b8447bee2d69113a2852, type: 3}
   numberSpawnPos: {fileID: 1072770063}
 --- !u!4 &17965174
 Transform:

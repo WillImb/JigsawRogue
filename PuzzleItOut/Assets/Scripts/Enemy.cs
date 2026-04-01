@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
 
         //NumberVFX
         VFXManager.instance.SpawnNumber(damage);
-
+        VFXManager.instance.SpawnParticle(Vector2.up, 0);
         animator.SetTrigger("hurt");
 
     }
