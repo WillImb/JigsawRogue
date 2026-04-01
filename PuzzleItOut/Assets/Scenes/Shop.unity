@@ -267,15 +267,10 @@ MonoBehaviour:
   - {fileID: 2064044606}
   - {fileID: 791528920}
   piecePool:
-  - {fileID: 11400000, guid: 5c556c097244f4d7dbcdeb8de864bce9, type: 2}
-  - {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
-  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
-  newPiecePool:
+  - {fileID: 2236090437044305892, guid: b4c2834f6d1db451cb302433e6a8b73d, type: 3}
+  - {fileID: 2236090437044305892, guid: 8d368a58ae2deb94c827142ee3fab753, type: 3}
   - {fileID: 2236090437044305892, guid: 57e8e236bf1fa42ddb3aacc2901e637a, type: 3}
   - {fileID: 2236090437044305892, guid: eff66cd34e354894280c59c02554eced, type: 3}
-  - {fileID: 2236090437044305892, guid: 8d368a58ae2deb94c827142ee3fab753, type: 3}
-  - {fileID: 2236090437044305892, guid: b4c2834f6d1db451cb302433e6a8b73d, type: 3}
   comboPool:
   - {fileID: 11400000, guid: cf3ff42af4eb6d64ba14c64b7ebe07d1, type: 2}
   - {fileID: 11400000, guid: 7e5a4eeebcf1555489e1d853521f1e93, type: 2}
@@ -839,6 +834,7 @@ RectTransform:
   - {fileID: 1101999364}
   - {fileID: 2087600044}
   - {fileID: 1185149283}
+  - {fileID: 1653943882}
   m_Father: {fileID: 1931420046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1556,7 +1552,7 @@ GameObject:
   - component: {fileID: 1653943884}
   - component: {fileID: 1653943883}
   m_Layer: 5
-  m_Name: Pause Button
+  m_Name: CombatButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1571,15 +1567,15 @@ RectTransform:
   m_GameObject: {fileID: 1653943881}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.08033712, y: 0.08033712, z: 0.08033712}
+  m_LocalScale: {x: 0.080337115, y: 0.080337115, z: 0.080337115}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1980955138}
-  m_Father: {fileID: 1931420046}
+  m_Father: {fileID: 1221212833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 330, y: -412}
+  m_AnchoredPosition: {x: 688, y: -386}
   m_SizeDelta: {x: 2500, y: 4200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1653943883
@@ -2113,7 +2109,6 @@ RectTransform:
   - {fileID: 1221212833}
   - {fileID: 752917130}
   - {fileID: 3125189293009467101}
-  - {fileID: 1653943882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2268,7 +2263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015259, y: -0.000038147}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1980955139
@@ -2291,7 +2286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: To Battle!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2335,7 +2330,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 0
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -2357,7 +2352,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -15009.874, y: 12821.878, z: -15187.511, w: 11368.42}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2412,7 +2407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 710, y: -8}
+  m_AnchoredPosition: {x: -591, y: -8}
   m_SizeDelta: {x: 1250, y: 9000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2087600045

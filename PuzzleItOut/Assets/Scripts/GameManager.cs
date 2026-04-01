@@ -46,12 +46,13 @@ public class GameManager : MonoBehaviour
     void StartGame()
     {
         DeckManager.instance.ShuffleDeck();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
+
+        for (int i = DeckManager.instance.hand.Count; i < 6; i++)
+        {
+            DeckManager.instance.DrawPiece();
+
+        }
+
     }
 
     public void DoTurn()

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FireBL_Piece
   m_EditorClassIdentifier: 
   pieceName: FireBL
+  id: 0
   baseDamange: 10
   cardType: 0
   north: 2
@@ -20,5 +21,6 @@ MonoBehaviour:
   south: 0
   west: 0
   healingValue: 0
-  combatValue: 0
+  combatValue: 5
   goldValue: 0
+  probabilityValue: 0
