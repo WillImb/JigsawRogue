@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Gust
   requiredTypes: 0200000002000000
-  activeIngredients: 03000000
+  activeIngredients: 
   multiplier: 2

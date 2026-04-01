@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Rockslide
   requiredTypes: 0300000003000000
-  activeIngredients: 02000000
+  activeIngredients: 
   multiplier: 2
