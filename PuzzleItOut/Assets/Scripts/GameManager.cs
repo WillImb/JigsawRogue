@@ -84,7 +84,8 @@ public class GameManager : MonoBehaviour
         if (currentEnemy.health <= 0)
         {
             //win
-            SceneManager.LoadScene(4);
+            //SceneManager.LoadScene(4);
+            TransitionManager.instance.ActivateTransition("ShopTransition");
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
