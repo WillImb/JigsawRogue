@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Splash
   m_EditorClassIdentifier: 
   comboName: Splash
-  comboList:
-  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
-  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
+  requiredTypes: 0100000001000000
+  activeIngredients: 
+  multiplier: 2

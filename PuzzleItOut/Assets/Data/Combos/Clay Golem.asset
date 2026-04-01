@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Clay Golem
   m_EditorClassIdentifier: 
   comboName: Clay Golem
-  comboList:
-  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
-  - {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}
+  requiredTypes: 0100000003000000
+  activeIngredients: 
+  multiplier: 2
