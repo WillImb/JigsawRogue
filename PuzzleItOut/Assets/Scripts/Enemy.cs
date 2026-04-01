@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public float damage;
 
+    public Animator animator;
+
     public Slider enemyHealthSlider;
 
 
@@ -29,6 +31,8 @@ public class Enemy : MonoBehaviour
     {
         health -= damage;
         enemyHealthSlider.value = health / maxHealth;
+
+        animator.SetTrigger("hurt");
 
     }
 

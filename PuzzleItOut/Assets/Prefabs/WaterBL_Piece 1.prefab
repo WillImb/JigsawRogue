@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8504475840934969197}
   - component: {fileID: 3686381454695325410}
   m_Layer: 0
-  m_Name: FireBL_Piece
+  m_Name: WaterBL_Piece 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323c30ec8af74480089be70cb8694f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
+  pieceData: {fileID: 11400000, guid: 5c556c097244f4d7dbcdeb8de864bce9, type: 2}
 --- !u!61 &3686381454695325410
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -5746563060617652104, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
+  m_Sprite: {fileID: -4059613562212539432, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

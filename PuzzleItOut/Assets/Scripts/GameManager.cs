@@ -56,35 +56,33 @@ public class GameManager : MonoBehaviour
 
     public void DoTurn()
     {
-        //called when attack button is clicked
         attackButton.interactable = false;
 
-        //Currently not working because spell book is empty
-        //This Will be changed to finding the matching spell in spell book once it has been implemented;
-        ComboScriptable combo = Spellbook.instance.combosUnlocked[0];
-       
-        if(combo != null)
+        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
+
+        int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
+        ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
+
+        if (combo != null)
         {
-            currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
-            CombatManager.Instance.CalculateGold(combo);
-            CombatManager.Instance.CalculateHealth(combo);
+            currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
+            CombatManager.Instance.CalculateGold(combo, currentPieces);
+            CombatManager.Instance.CalculateHealth(combo, currentPieces);
         }
         else
         {
             currentEnemy.TakeDamage(0);
-
         }
-        
 
         EndTurn();
-
     }
     void EndTurn()
     {
         if (currentEnemy.health <= 0)
         {
             //win
-            SceneManager.LoadScene(4);
+            //SceneManager.LoadScene(4);
+            TransitionManager.instance.ActivateTransition("ShopTransition");
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
