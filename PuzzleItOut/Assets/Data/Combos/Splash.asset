@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Splash
   requiredTypes: 0100000001000000
-  activeIngredients: 
+  activeIngredients: 00000000
   multiplier: 2
