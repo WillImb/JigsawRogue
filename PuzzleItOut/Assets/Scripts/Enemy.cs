@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
         health -= damage;
         enemyHealthSlider.value = health / maxHealth;
 
+        //NumberVFX
+        VFXManager.instance.SpawnNumber(damage);
+
         animator.SetTrigger("hurt");
 
     }
