@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeckManager : MonoBehaviour
 {
@@ -15,21 +16,29 @@ public class DeckManager : MonoBehaviour
     void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
 
         occupied = new Piece[handSlots.Length];
     }
 
-    void Start()
+    void OnEnable()
     {
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Update()
+    void OnDisable()
     {
-        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // nothing done in on scene loaded atm
     }
 
     //shuffles deck using Fisher-Yates algo
@@ -125,4 +134,16 @@ public class DeckManager : MonoBehaviour
         piece.LockToSlot(handSlots[index]);
     }
 
+    // adds a piece to the deck
+    public void AddPiece(GameObject piecePrefab)
+    {
+        if (piecePrefab == null)
+        {
+            Debug.LogWarning("Can't add null piece to deck");
+            return;
+        }
+
+        deck.Add(piecePrefab);
+        Debug.Log($"Added {piecePrefab.name} to deck. Deck now has {deck.Count} pieces.");
+    }
 }

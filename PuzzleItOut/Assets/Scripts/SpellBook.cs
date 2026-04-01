@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,7 +31,6 @@ public class Spellbook : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // nothing done in on scene loaded atm
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // nothing done in on scene loaded atm
@@ -53,5 +53,10 @@ public class Spellbook : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void AddToSpellbook(GameObject clickedObject)
+    {
+        
     }
 }
