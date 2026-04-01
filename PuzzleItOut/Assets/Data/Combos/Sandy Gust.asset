@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
-  m_Name: Fireball
+  m_Name: Sandy Gust
   m_EditorClassIdentifier: 
-  comboName: Fireball
-  requiredTypes: 0000000000000000
-  activeIngredients: 00000000
-  multiplier: 2
+  comboName: Sandy Gust
+  comboList:
+  - {fileID: 11400000, guid: 5c556c097244f4d7dbcdeb8de864bce9, type: 2}
+  - {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}

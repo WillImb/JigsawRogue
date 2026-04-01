@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
-  m_Name: Fireball
+  m_Name: Splash
   m_EditorClassIdentifier: 
-  comboName: Fireball
-  requiredTypes: 0000000000000000
-  activeIngredients: 00000000
-  multiplier: 2
+  comboName: Splash
+  comboList:
+  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
+  - {fileID: 11400000, guid: 77f002d2ffad3474ba8e6731f26f28fc, type: 2}
