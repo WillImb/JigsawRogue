@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: AirBL_Piece
   m_EditorClassIdentifier: 
   pieceName: AirBL
+  id: 0
   baseDamange: 10
   cardType: 2
   north: 2
   east: 1
   south: 0
   west: 0
+  healingValue: 1
+  combatValue: 1
+  goldValue: 1
+  probabilityValue: 0

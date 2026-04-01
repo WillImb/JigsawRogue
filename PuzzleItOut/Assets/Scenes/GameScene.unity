@@ -5688,6 +5688,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   combosUnlocked:
   - {fileID: 11400000, guid: 7e5a4eeebcf1555489e1d853521f1e93, type: 2}
+  - {fileID: 11400000, guid: fcbcf7c59515f024c8133d3fb4d43f29, type: 2}
+  - {fileID: 11400000, guid: c8df5e9fb43495a46997d1db112314fb, type: 2}
+  - {fileID: 11400000, guid: b3f44300c21b8f14a97aed95e88abe01, type: 2}
 --- !u!4 &2039856961
 Transform:
   m_ObjectHideFlags: 0

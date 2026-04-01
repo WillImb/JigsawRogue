@@ -16,6 +16,27 @@ public class Piece : MonoBehaviour
         cam = Camera.main;
     }
 
+    // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes
+    void OnEnable()
+    {
+        cam = Camera.main;
+
+        InputManager.Instance.Gameplay.Click.started += StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+        InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
+        InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
+    }
+
+    void OnDisable()
+    {
+        if (InputManager.Instance == null) return;
+
+        InputManager.Instance.Gameplay.Click.started -= StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
+        InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
+    }
+
     void Start()
     {
 
