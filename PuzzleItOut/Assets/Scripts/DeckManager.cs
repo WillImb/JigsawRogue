@@ -38,7 +38,14 @@ public class DeckManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // nothing done in on scene loaded atm
+        if (scene.name == "Shop")
+        {
+            SetPiecesVisible(false);
+        }
+        else if (scene.name == "GameScene")
+        {
+            SetPiecesVisible(true);
+        }
     }
 
     //shuffles deck using Fisher-Yates algo
@@ -145,5 +152,20 @@ public class DeckManager : MonoBehaviour
 
         deck.Add(piecePrefab);
         Debug.Log($"Added {piecePrefab.name} to deck. Deck now has {deck.Count} pieces.");
+    }
+
+    void SetPiecesVisible(bool visible)
+    {
+        foreach (GameObject piece in hand)
+        {
+            if (piece != null)
+                piece.SetActive(visible);
+        }
+
+        foreach (GameObject piece in discard)
+        {
+            if (piece != null)
+                piece.SetActive(visible);
+        }
     }
 }

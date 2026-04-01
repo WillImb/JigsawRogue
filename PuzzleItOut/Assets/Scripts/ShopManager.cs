@@ -2,6 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/*
+ * Class: ShopManager
+ * Date: 4.1.25
+ * Notes: 
+ *  - Does not take into account gold
+ *  - For some reason pieces in the deck get put in the hand?
+ *  - 
+ */
 public class ShopManager : MonoBehaviour
 {
     // shop UI game objects
@@ -10,8 +18,7 @@ public class ShopManager : MonoBehaviour
     public List<GameObject> combos;
 
     // pieces/Combos that can appear in the shop
-    public List<PieceScriptable> piecePool;
-    public List<GameObject> newPiecePool;
+    public List<GameObject> piecePool;
     public List<ComboScriptable> comboPool;
 
     // reference to the players spellbook (singleton)
@@ -42,25 +49,24 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            if (newPiecePool.Count == 0)
+            if (piecePool.Count == 0)
             {
-                Debug.LogWarning("No piece prefabs assigned!");
+                Debug.LogWarning("No piece prefabs assigned");
                 continue;
             }
 
             // pick a random prefab
-            GameObject prefab = newPiecePool[Random.Range(0, newPiecePool.Count)];
+            GameObject prefab = piecePool[Random.Range(0, piecePool.Count)];
 
-            // assign it to ShopData (assuming you have a GameObject reference instead of PieceScriptable)
+            // assign it to ShopData
             data.piecePrefab = prefab;
 
             // update button text if prefab has a PieceScriptable or name component
             TMP_Text text = pieces[i].GetComponentInChildren<TMP_Text>();
             if (text != null)
             {
-                // Example: prefab has a Piece component with pieceName
                 Piece pieceComponent = prefab.GetComponent<Piece>();
-                text.text = prefab.name; // fallback
+                text.text = prefab.name;
             }
         }
 
@@ -115,8 +121,7 @@ public class ShopManager : MonoBehaviour
         if (data != null && data.piecePrefab != null)
         {
             // add the piece to the players deck (commented out for now)
-            GameObject pieceInstance = Instantiate(data.piecePrefab);
-            DeckManager.instance.AddPiece(pieceInstance);
+            // DeckManager.instance.AddPiece(data.piecePrefab);
 
             // hide button when piece is bought
             obj.SetActive(false);
