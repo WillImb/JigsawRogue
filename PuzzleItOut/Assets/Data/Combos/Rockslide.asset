@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
-  m_Name: Fireball
+  m_Name: Rockslide
   m_EditorClassIdentifier: 
-  comboName: Fireball
+  comboName: Rockslide
   comboList:
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
+  - {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}
+  - {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}
