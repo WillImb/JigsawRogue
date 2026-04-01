@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
@@ -114,6 +115,17 @@ public class BoardManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public List<PieceScriptable> GetBoardPieces()
+    {
+        List<PieceScriptable> pieces = new List<PieceScriptable>();
+        foreach (Piece piece in occupied)
+        {
+            if (piece != null)
+                pieces.Add(piece.pieceData);
+        }
+        return pieces;
     }
 
 }

@@ -7,9 +7,7 @@ public class Piece : MonoBehaviour
     private Vector3 offset;
     private bool dragging;
     private bool isPlaced;
-
-    [SerializeField]
-    private PieceScriptable pieceData;
+    public PieceScriptable pieceData;
     private sideType[] sides;
     private int pieceLevel;
 
