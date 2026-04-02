@@ -32,8 +32,9 @@ public class VFXManager : MonoBehaviour
     public void SpawnNumber(float amount)
     {
         
-        TextMeshProUGUI text = Instantiate(numberVfx, numberSpawnPos.position, Quaternion.identity).GetComponent<TextMeshProUGUI>();
-        //text.text = amount.ToString();
+        TextMeshProUGUI text = Instantiate(numberVfx, numberSpawnPos.position, Quaternion.identity).GetComponentInChildren<TextMeshProUGUI>();
+        text.text = amount.ToString();
+        
     }
 
     public void SpawnParticle(Vector3 pos, int index)
