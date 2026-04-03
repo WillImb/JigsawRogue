@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public Button attackButton;
 
+    public int round;
+
 
     public enum TurnState
     {
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
+        round = 1;
+
         DeckManager.instance.ShuffleDeck();
 
         for (int i = DeckManager.instance.hand.Count; i < 6; i++)
@@ -81,9 +85,20 @@ public class GameManager : MonoBehaviour
     {
         if (currentEnemy.health <= 0)
         {
-            //win
-            //SceneManager.LoadScene(4);
-            TransitionManager.instance.ActivateTransition("ShopTransition");
+            round++;
+
+            Debug.Log("Round: " + round);
+
+            // after 2 rounds show demo screen
+            if (round > 2) 
+            {
+                SceneManager.LoadScene(5);
+            }
+            else
+            {
+                TransitionManager.instance.ActivateTransition("ShopTransition");
+            }
+
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
