@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Enemy child 'Image' not found!");
+            Debug.LogWarning("Image child not found!");
         }
 
         health = maxHealth;
