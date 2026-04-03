@@ -278,6 +278,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b3f44300c21b8f14a97aed95e88abe01, type: 2}
   - {fileID: 11400000, guid: c39f86813442e48448922f4d72cc32fc, type: 2}
   - {fileID: 11400000, guid: fcbcf7c59515f024c8133d3fb4d43f29, type: 2}
+  sprites:
+  - {fileID: 6054390169506052116, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
+  - {fileID: 8245155242043270731, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
+  - {fileID: -5746563060617652104, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
+  - {fileID: -4059613562212539432, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
   spellBook: {fileID: 0}
 --- !u!1 &475826944
 GameObject:

@@ -42,5 +42,7 @@ public class Enemy : MonoBehaviour
     public void DealDamage()
     {
         Player.instance.TakeDamage(damage);
+        VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
+
     }
 }
