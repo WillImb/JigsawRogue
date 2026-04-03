@@ -29,10 +29,10 @@ public class VFXManager : MonoBehaviour
     }
 
 
-    public void SpawnNumber(float amount)
+    public void SpawnNumber(Vector3 pos,float amount)
     {
         
-        TextMeshProUGUI text = Instantiate(numberVfx, numberSpawnPos.position, Quaternion.identity).GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI text = Instantiate(numberVfx, pos, Quaternion.identity).GetComponentInChildren<TextMeshProUGUI>();
         text.text = amount.ToString();
         
     }

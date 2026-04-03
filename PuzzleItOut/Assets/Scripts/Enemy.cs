@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         enemyHealthSlider.value = health / maxHealth;
 
         //NumberVFX
-        VFXManager.instance.SpawnNumber(damage);
+        VFXManager.instance.SpawnNumber(VFXManager.instance.numberSpawnPos.position,damage);
         VFXManager.instance.SpawnParticle(Vector2.up, 0);
         animator.SetTrigger("hurt");
 
@@ -43,6 +43,8 @@ public class Enemy : MonoBehaviour
     {
         Player.instance.TakeDamage(damage);
         VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
+        VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
+
 
     }
 }
