@@ -23,7 +23,7 @@ public class ShopManager : MonoBehaviour
     public List<ComboScriptable> comboPool;
     public List<Sprite> sprites;
 
-  
+
 
     // reference to the players spellbook (singleton)
     public GameObject spellBook;
@@ -61,42 +61,46 @@ public class ShopManager : MonoBehaviour
 
             // pick a random prefab
             int index = Random.Range(0, piecePool.Count);
-             GameObject prefab = piecePool[index];
+            GameObject prefab = piecePool[index];
             Sprite sprite = sprites[index];
-            
+
             // assign it to ShopData
             data.piecePrefab = prefab;
 
             // update button text if prefab has a PieceScriptable or name component
             //TMP_Text text = pieces[i].GetComponentInChildren<TMP_Text>();
-           // if (text != null)
+            //if (text != null)
             //{
-                Piece pieceComponent = prefab.GetComponent<Piece>();
-                //text.text = pieceComponent.pieceData.pieceName;
-                pieces[i].GetComponent<Image>().sprite = sprite;
-                
-                
+            Piece pieceComponent = prefab.GetComponent<Piece>();
+            //text.text = pieceComponent.pieceData.pieceName;
+            pieces[i].GetComponent<Image>().sprite = sprite;
             //}
         }
 
         // assign random combos to combo buttons, ignore already unlocked combos
+        // temp list of combos that arent unlocked yet (should replace later maybe)
+        List<ComboScriptable> lockedCombos = new List<ComboScriptable>();
+        foreach (var combo in comboPool)
+        {
+            if (!Spellbook.instance.combosUnlocked.Contains(combo))
+            {
+                lockedCombos.Add(combo);
+            }
+        }
+
+        // list to track which combos are already assigned in this shop
+        List<ComboScriptable> assignedCombos = new List<ComboScriptable>();
+
         for (int i = 0; i < combos.Count; i++)
         {
             ShopData data = combos[i].GetComponent<ShopData>();
             if (data == null) continue;
 
-            // temp list of combos that arent unlocked yet (should replace later maybe)
-            List<ComboScriptable> lockedCombos = new List<ComboScriptable>();
-            foreach (var combo in comboPool)
-            {
-                if (!Spellbook.instance.combosUnlocked.Contains(combo))
-                {
-                    lockedCombos.Add(combo);
-                }
-            }
+            // filter out combos already assigned to other buttons
+            List<ComboScriptable> availableCombos = lockedCombos.FindAll(c => !assignedCombos.Contains(c));
 
-            // if player unlocked all combos, display sold out
-            if (lockedCombos.Count == 0)
+            // if player unlocked all combos or no new combo is available, display sold out
+            if (availableCombos.Count == 0)
             {
                 TMP_Text text = combos[i].GetComponentInChildren<TMP_Text>();
                 if (text != null) text.text = "SOLD OUT";
@@ -107,8 +111,11 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            // get a random combo from the locked combos list (needs to be modified to scale with level)
-            data.combo = lockedCombos[Random.Range(0, lockedCombos.Count)];
+            // get a random combo from the available combos list
+            data.combo = availableCombos[Random.Range(0, availableCombos.Count)];
+
+            // mark this combo as assigned so it won't appear again in this shop
+            assignedCombos.Add(data.combo);
 
             // update button text to match spell name
             TMP_Text comboText = combos[i].GetComponentInChildren<TMP_Text>();
@@ -130,7 +137,7 @@ public class ShopManager : MonoBehaviour
         if (data != null && data.piecePrefab != null)
         {
             // add the piece to the players deck (commented out for now)
-            // DeckManager.instance.AddPiece(data.piecePrefab);
+            DeckManager.instance.AddPiece(data.piecePrefab);
 
             // hide button when piece is bought
             obj.SetActive(false);

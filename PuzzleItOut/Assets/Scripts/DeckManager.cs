@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,8 +6,8 @@ public class DeckManager : MonoBehaviour
 {
     public static DeckManager instance;
     public List<GameObject> deck;
-    public List<GameObject> hand;
-    public List<GameObject> discard;
+    public List<Piece> hand;
+    public List<Piece> discard;
     [SerializeField]
     private Transform[] handSlots;
     private Piece[] occupied;
@@ -24,6 +23,8 @@ public class DeckManager : MonoBehaviour
             Destroy(gameObject);
 
         occupied = new Piece[handSlots.Length];
+        discard = new List<Piece>();
+        hand = new List<Piece>();
     }
 
     void OnEnable()
@@ -38,7 +39,15 @@ public class DeckManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Shop")
+        if (scene.name == "EndOfDemoScene")
+        {
+            if (instance != null)
+            {
+                Destroy(instance.gameObject);
+                instance = null;
+            }
+        }
+        else if (scene.name == "Shop")
         {
             SetPiecesVisible(false);
         }
@@ -66,10 +75,12 @@ public class DeckManager : MonoBehaviour
         {
             GameObject prefab = deck[deck.Count - 1];
             GameObject spawnedPiece = Instantiate(prefab);
-            hand.Add(spawnedPiece);
+            Piece piece = spawnedPiece.GetComponent<Piece>();
+
+            hand.Add(piece);
             deck.RemoveAt(deck.Count - 1);
 
-            ReturnToHand(spawnedPiece.GetComponent<Piece>());
+            ReturnToHand(piece);
         }
     }
 
@@ -77,9 +88,19 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < occupied.Length; i++)
         {
-            if (occupied[i] == null && deck.Count > 0)
+            if (occupied[i] == null)
             {
-                DrawPiece();
+                if (deck.Count > 0)
+                {
+                    DrawPiece();
+                }
+                else if (discard.Count > 0)
+                {
+                    Piece piece = discard[discard.Count - 1];
+                    discard.RemoveAt(discard.Count - 1);
+                    piece.gameObject.SetActive(true);
+                    ReturnToHand(piece);
+                }
             }
         }
     }
@@ -87,12 +108,32 @@ public class DeckManager : MonoBehaviour
     //discards a specified piece form hand to discard
     public void DiscardPieceFromHand(int index)
     {
-        GameObject piece = hand[index];
-        discard.Add(piece);
+        Piece piece = hand[index];
         hand.RemoveAt(index);
-        
-        RemoveFromHand(piece.GetComponent<Piece>());
-        Destroy(piece);
+
+        RemoveFromHand(piece);
+        piece.gameObject.SetActive(false);
+        discard.Add(piece);
+    }
+
+    //Discards all pieces on board
+    public List<Piece> DiscardBoard()
+    {
+        BoardManager bm = BoardManager.instance;
+        List<Piece> piecesPlayed = new List<Piece>();
+        for (int i = 0; i < bm.occupied.Length; i++)
+        {
+            if (bm.occupied[i] != null)
+            {
+                Piece piece = bm.occupied[i];
+                piecesPlayed.Add(piece);
+
+                discard.Add(piece);
+                bm.occupied[i] = null;
+                piece.gameObject.SetActive(false);
+            }
+        }
+        return piecesPlayed;
     }
 
     //removes a piece to hand
@@ -101,31 +142,6 @@ public class DeckManager : MonoBehaviour
         int index = System.Array.IndexOf(occupied, piece);
         if (index == -1) return;
         occupied[index] = null;
-    }
-
-    //Discards all pieces on board
-    public List<Piece> DiscardBoard()
-    {
-        BoardManager bm = BoardManager.instance;
-        List<Piece> piecesPlayed = new List<Piece>();
-        for (int i = 0; i < bm.occupied.Length; i++) {
-            if (bm.occupied[i] != null)
-            {
-                piecesPlayed.Add(bm.occupied[i]);
-                discard.Add(bm.occupied[i].gameObject);
-                GameObject piece = bm.slots[i].GetChild(0).gameObject;
-                Destroy(piece);
-                bm.occupied[i] = null;
-            }
-        }
-        return piecesPlayed;
-    }
-
-    //moves all pieces from discard to deck
-    public void DiscardToDeck()
-    {
-        deck.AddRange(discard);
-        discard.Clear();
     }
 
     //returns a piece to hand
@@ -156,16 +172,16 @@ public class DeckManager : MonoBehaviour
 
     void SetPiecesVisible(bool visible)
     {
-        foreach (GameObject piece in hand)
+        foreach (Piece piece in hand)
         {
             if (piece != null)
-                piece.SetActive(visible);
+                piece.gameObject.SetActive(visible);
         }
 
-        foreach (GameObject piece in discard)
+        foreach (Piece piece in discard)
         {
             if (piece != null)
-                piece.SetActive(visible);
+                piece.gameObject.SetActive(visible);
         }
     }
 }

@@ -53,7 +53,15 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "GameScene")
+        if (scene.name == "EndOfDemoScene")
+        {
+            if (instance != null)
+            {
+                Destroy(instance.gameObject);
+                instance = null;
+            }
+        }
+        else if (scene.name == "GameScene")
         {
             GameObject buttonObj = GameObject.Find("Attack Button");
             if (buttonObj != null)

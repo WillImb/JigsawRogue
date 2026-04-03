@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerHealthSlider
   - SpellBook
+  - AttackButton
+  - Enemy
   layers:
   - Default
   - TransparentFX
