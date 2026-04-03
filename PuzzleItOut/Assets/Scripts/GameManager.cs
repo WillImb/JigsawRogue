@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("Attack Button not found!");
             }
 
-            GameObject enemyObj = GameObject.Find("Enemy Sprite");
+            GameObject enemyObj = GameObject.Find("Enemy");
             if (enemyObj != null)
             {
                 currentEnemy = GameObject.FindWithTag("Enemy")?.GetComponent<Enemy>();

@@ -763,6 +763,11 @@ MonoBehaviour:
   attackButton: {fileID: 52798292}
   round: 0
   currentEnemy: {fileID: 1880436507}
+  enemySprites:
+  - {fileID: -6982264125181658266, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
+  - {fileID: -7936488368728208126, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
+  - {fileID: -4538303638959612144, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
+  - {fileID: 3585599110255843164, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
 --- !u!4 &65853208
 Transform:
   m_ObjectHideFlags: 0
