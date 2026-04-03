@@ -8,11 +8,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public float money;
-
     public Button attackButton;
-
     public int round;
 
+    public Enemy currentEnemy; // change to type enemy when rish adds script
 
     public enum TurnState
     {
@@ -22,15 +21,16 @@ public class GameManager : MonoBehaviour
 
     TurnState turnState = TurnState.playerTurn;
 
-    public Enemy currentEnemy; // change to type enemy when rish adds script
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -39,10 +39,48 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnEnable()
     {
+        // Always unsubscribe before subscribing to prevent double-registration
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+        {
+            GameObject buttonObj = GameObject.Find("Attack Button");
+            if (buttonObj != null)
+            {
+                attackButton = GameObject.FindWithTag("AttackButton")?.GetComponent<Button>();
+                if (attackButton != null)
+                {
+                    // reassign the listener for do turn
+                    attackButton.onClick.RemoveAllListeners();
+                    attackButton.onClick.AddListener(DoTurn);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Attack Button not found!");
+            }
+
+            GameObject enemyObj = GameObject.Find("Enemy");
+            if (enemyObj != null)
+            {
+                currentEnemy = GameObject.FindWithTag("Enemy")?.GetComponent<Enemy>();
+            }
+            else
+            {
+                Debug.LogWarning("Enemy not found!");
+            }
+        }
     }
 
     void StartGame()
@@ -54,13 +92,17 @@ public class GameManager : MonoBehaviour
         for (int i = DeckManager.instance.hand.Count; i < 6; i++)
         {
             DeckManager.instance.DrawPiece();
-
         }
-
     }
 
     public void DoTurn()
     {
+        // prevents this code from from running if we're already in the middle of a scene transition
+        if (!attackButton.interactable || currentEnemy.health <= 0)
+        {
+            return;
+        }
+
         attackButton.interactable = false;
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
@@ -81,16 +123,18 @@ public class GameManager : MonoBehaviour
 
         EndTurn();
     }
+
     void EndTurn()
     {
+        Debug.Log("EndTurn Called by: " + turnState);
+
         if (currentEnemy.health <= 0)
         {
             round++;
-
             Debug.Log("Round: " + round);
 
-            // after 2 rounds show demo screen
-            if (round > 2) 
+            // after 2 rounds show demo screen (game starts on round 1)
+            if (round > 2)
             {
                 SceneManager.LoadScene(5);
             }
@@ -108,17 +152,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-
         //The end of the Players turn
-        if(turnState == TurnState.playerTurn)
+        if (turnState == TurnState.playerTurn)
         {
-            
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
             //switdh to enemy's turn
             turnState = TurnState.enemyTurn;
-            Invoke("DoEnemyTurn",1);
-
+            Invoke("DoEnemyTurn", 1);
         }
         else if (turnState == TurnState.enemyTurn)
         {
@@ -126,12 +167,11 @@ public class GameManager : MonoBehaviour
             turnState = TurnState.playerTurn;
             attackButton.interactable = true;
         }
-        
     }
+
     void DoEnemyTurn()
     {
         currentEnemy.DealDamage();
         EndTurn();
     }
-   
 }
