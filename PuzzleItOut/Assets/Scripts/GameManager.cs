@@ -164,14 +164,15 @@ public class GameManager : MonoBehaviour
         else if (turnState == TurnState.enemyTurn)
         {
             //switch to enemy's turn
-            turnState = TurnState.playerTurn;
             attackButton.interactable = true;
+            turnState = TurnState.playerTurn;
         }
     }
 
     void DoEnemyTurn()
     {
-        currentEnemy.DealDamage();
-        EndTurn();
+        VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
+        currentEnemy.Invoke("DealDamage",.35f);
+        Invoke("EndTurn",1);
     }
 }

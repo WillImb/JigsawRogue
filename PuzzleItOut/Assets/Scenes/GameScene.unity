@@ -291,7 +291,7 @@ MonoBehaviour:
   - {fileID: 4001018311535625124, guid: 6024d73b84d5b8447bee2d69113a2852, type: 3}
   - {fileID: 2452852964976488020, guid: 8fad7716e9e883b4a982eb79a41d4e17, type: 3}
   - {fileID: 9093983602769707787, guid: 693f930b623fe744ca616a797f031ca6, type: 3}
-  - {fileID: 9093983602769707787, guid: fee1fd3573d27c64c8b7beb539979bb6, type: 3}
+  - {fileID: 2452852964976488020, guid: 4cfa32c3594082146a87c41ba111f97d, type: 3}
   numberSpawnPos: {fileID: 17965174}
 --- !u!4 &17965174
 Transform:
@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 17965172}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.99, y: 2.01, z: 0}
+  m_LocalPosition: {x: 0.96, y: 1.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
