@@ -147,7 +147,7 @@ RectTransform:
   m_GameObject: {fileID: 252365933}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -5236.2}
-  m_LocalScale: {x: 0.5375832, y: 0.5375832, z: 0.5375832}
+  m_LocalScale: {x: 0.6440246, y: 0.6440246, z: 0.6440246}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 408869327}
@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 285, y: -215}
+  m_AnchoredPosition: {x: 3, y: -289}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &252365935
@@ -587,7 +587,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7936488368728208126, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
+  m_Sprite: {fileID: -6982264125181658266, guid: 99c2a82cbc39af04198778986cdf002f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.22745098}
   m_FlipX: 0
   m_FlipY: 0
@@ -743,14 +743,14 @@ RectTransform:
   m_GameObject: {fileID: 1811429893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7283, y: 1.7283, z: 1.7283}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1314888393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 290, y: -160}
+  m_AnchoredPosition: {x: 11, y: 228}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1811429895
@@ -773,7 +773,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You lose
+  m_text: 'End of Demo
+
+
+    Thanks for playing'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 /*
  * Class: ShopManager
@@ -20,6 +21,9 @@ public class ShopManager : MonoBehaviour
     // pieces/Combos that can appear in the shop
     public List<GameObject> piecePool;
     public List<ComboScriptable> comboPool;
+    public List<Sprite> sprites;
+
+  
 
     // reference to the players spellbook (singleton)
     public GameObject spellBook;
@@ -56,18 +60,23 @@ public class ShopManager : MonoBehaviour
             }
 
             // pick a random prefab
-            GameObject prefab = piecePool[Random.Range(0, piecePool.Count)];
-
+            int index = Random.Range(0, piecePool.Count);
+             GameObject prefab = piecePool[index];
+            Sprite sprite = sprites[index];
+            
             // assign it to ShopData
             data.piecePrefab = prefab;
 
             // update button text if prefab has a PieceScriptable or name component
-            TMP_Text text = pieces[i].GetComponentInChildren<TMP_Text>();
-            if (text != null)
-            {
+            //TMP_Text text = pieces[i].GetComponentInChildren<TMP_Text>();
+           // if (text != null)
+            //{
                 Piece pieceComponent = prefab.GetComponent<Piece>();
-                text.text = prefab.name;
-            }
+                //text.text = pieceComponent.pieceData.pieceName;
+                pieces[i].GetComponent<Image>().sprite = sprite;
+                
+                
+            //}
         }
 
         // assign random combos to combo buttons, ignore already unlocked combos
