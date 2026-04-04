@@ -34,7 +34,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+
         StartGame();
+        DeckManager.instance.gameObject.SetActive(true);
+
     }
 
     // Update is called once per frame
@@ -47,11 +50,7 @@ public class GameManager : MonoBehaviour
     {
         DeckManager.instance.ShuffleDeck();
 
-        for (int i = DeckManager.instance.hand.Count; i < 6; i++)
-        {
-            DeckManager.instance.DrawPiece();
-
-        }
+        DeckManager.instance.DrawPiecesTillMax();
 
     }
 
@@ -83,7 +82,20 @@ public class GameManager : MonoBehaviour
         {
             //win
             //SceneManager.LoadScene(4);
-            TransitionManager.instance.ActivateTransition("ShopTransition");
+            if (Spellbook.instance.lvl == 1)
+            {
+
+                Spellbook.instance.lvl += 1;
+                TransitionManager.instance.ActivateTransition("ShopTransition");
+               
+
+            }
+            else
+            {
+                Spellbook.instance.lvl = 1;
+                DeckManager.instance.gameObject.SetActive(false);                
+                SceneManager.LoadScene(5);
+            }
             return;
         }
         else if (Player.instance.GetHealth() <= 0)

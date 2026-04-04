@@ -11,12 +11,25 @@ public class Enemy : MonoBehaviour
 
     public Slider enemyHealthSlider;
 
+    public Sprite[] sprites;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         health = maxHealth;
         enemyHealthSlider.value = health / maxHealth;
+               
+        if (Spellbook.instance.lvl == 1)
+        {
+            GetComponentInChildren<Image>().sprite = sprites[0];
+
+        }
+        else
+        {
+            GetComponentInChildren<Image>().sprite = sprites[1];
+           
+        }
 
     }
 
