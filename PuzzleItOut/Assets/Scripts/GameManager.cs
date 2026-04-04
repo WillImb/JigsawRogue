@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                // even though enemy is assigned this warning appears?
                 Debug.LogWarning("Enemy not found!");
             }
         }

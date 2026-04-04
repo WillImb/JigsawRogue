@@ -23,8 +23,6 @@ public class ShopManager : MonoBehaviour
     public List<ComboScriptable> comboPool;
     public List<Sprite> sprites;
 
-
-
     // reference to the players spellbook (singleton)
     public GameObject spellBook;
 

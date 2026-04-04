@@ -54,6 +54,8 @@ public class DeckManager : MonoBehaviour
         else if (scene.name == "GameScene")
         {
             SetPiecesVisible(true);
+
+            ResetHandState();
         }
     }
 
@@ -183,5 +185,26 @@ public class DeckManager : MonoBehaviour
             if (piece != null)
                 piece.gameObject.SetActive(visible);
         }
+    }
+
+    void ResetHandState()
+    {
+        // Clear occupied slots
+        for (int i = 0; i < occupied.Length; i++)
+        {
+            occupied[i] = null;
+        }
+
+        // Re-slot existing hand pieces
+        foreach (Piece piece in hand)
+        {
+            if (piece != null)
+            {
+                ReturnToHand(piece);
+            }
+        }
+
+        // Now actually fill empty slots
+        DrawPiecesTillMax();
     }
 }
