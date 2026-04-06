@@ -8,10 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public float money;
-    public Button attackButton;
-    public int round;
 
-    public Enemy currentEnemy; // change to type enemy when rish adds script
+    public Button attackButton;
+
 
     public enum TurnState
     {
@@ -21,97 +20,42 @@ public class GameManager : MonoBehaviour
 
     TurnState turnState = TurnState.playerTurn;
 
+    public Enemy currentEnemy; // change to type enemy when rish adds script
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Awake()
     {
-        if (instance == null)
+        if(instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 
     void Start()
     {
+
         StartGame();
+        DeckManager.instance.gameObject.SetActive(true);
+
     }
 
-    void OnEnable()
+    // Update is called once per frame
+    void Update()
     {
-        // Always unsubscribe before subscribing to prevent double-registration
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "EndOfDemoScene")
-        {
-            if (instance != null)
-            {
-                Destroy(instance.gameObject);
-                instance = null;
-            }
-        }
-        else if (scene.name == "GameScene")
-        {
-            GameObject buttonObj = GameObject.Find("Attack Button");
-            if (buttonObj != null)
-            {
-                attackButton = GameObject.FindWithTag("AttackButton")?.GetComponent<Button>();
-                if (attackButton != null)
-                {
-                    // reassign the listener for do turn
-                    attackButton.onClick.RemoveAllListeners();
-                    attackButton.onClick.AddListener(DoTurn);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Attack Button not found!");
-            }
-
-            GameObject enemyObj = GameObject.Find("Enemy");
-            if (enemyObj != null)
-            {
-                currentEnemy = GameObject.FindWithTag("Enemy")?.GetComponent<Enemy>();
-            }
-            else
-            {
-                // even though enemy is assigned this warning appears?
-                Debug.LogWarning("Enemy not found!");
-            }
-        }
     }
 
     void StartGame()
     {
-        round = 1;
-
         DeckManager.instance.ShuffleDeck();
 
-        for (int i = DeckManager.instance.hand.Count; i < 6; i++)
-        {
-            DeckManager.instance.DrawPiece();
-        }
+        DeckManager.instance.DrawPiecesTillMax();
+
     }
 
     public void DoTurn()
     {
-        // prevents this code from from running if we're already in the middle of a scene transition
-        if (!attackButton.interactable || currentEnemy.health <= 0)
-        {
-            return;
-        }
-
         attackButton.interactable = false;
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
@@ -132,26 +76,26 @@ public class GameManager : MonoBehaviour
 
         EndTurn();
     }
-
     void EndTurn()
     {
-        Debug.Log("EndTurn Called by: " + turnState);
-
         if (currentEnemy.health <= 0)
         {
-            round++;
-            Debug.Log("Round: " + round);
-
-            // after 2 rounds show demo screen (game starts on round 1)
-            if (round > 2)
+            //win
+            //SceneManager.LoadScene(4);
+            if (Spellbook.instance.lvl == 1)
             {
-                SceneManager.LoadScene(5);
+
+                Spellbook.instance.lvl += 1;
+                TransitionManager.instance.ActivateTransition("ShopTransition");
+               
+
             }
             else
             {
-                TransitionManager.instance.ActivateTransition("ShopTransition");
+                Spellbook.instance.lvl = 1;
+                DeckManager.instance.gameObject.SetActive(false);                
+                SceneManager.LoadScene(5);
             }
-
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
@@ -161,14 +105,17 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
         //The end of the Players turn
-        if (turnState == TurnState.playerTurn)
+        if(turnState == TurnState.playerTurn)
         {
+            
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
             //switdh to enemy's turn
             turnState = TurnState.enemyTurn;
-            Invoke("DoEnemyTurn", 1);
+            Invoke("DoEnemyTurn",1);
+
         }
         else if (turnState == TurnState.enemyTurn)
         {
@@ -176,12 +123,13 @@ public class GameManager : MonoBehaviour
             attackButton.interactable = true;
             turnState = TurnState.playerTurn;
         }
+        
     }
-
     void DoEnemyTurn()
     {
         VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
         currentEnemy.Invoke("DealDamage",.35f);
         Invoke("EndTurn",1);
     }
+   
 }

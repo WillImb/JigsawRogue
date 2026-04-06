@@ -109,6 +109,7 @@ public class BoardManager : MonoBehaviour
 
     public void RemovePiece(Piece piece)
     {
+        
         for (int i = 0; i < occupied.Length; i++)
         {
             if (occupied[i] == piece)

@@ -11,56 +11,45 @@ public class Enemy : MonoBehaviour
 
     public Slider enemyHealthSlider;
 
-    [Header("Enemy Sprites")]
-    public Sprite[] enemySprites; 
-    private static int lastEnemyIndex = -1; 
+    public Sprite[] sprites;
 
-    private Image enemyImage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // get enemy image child
-        Transform imageChild = transform.Find("Image");
-        if (imageChild != null)
+        health = maxHealth;
+        enemyHealthSlider.value = health / maxHealth;
+               
+        if (Spellbook.instance.lvl == 1)
         {
-            enemyImage = imageChild.GetComponent<Image>();
-            if (enemySprites != null && enemySprites.Length > 0 && enemyImage != null)
-            {
-                enemyImage.sprite = GetRandomEnemySprite();
-            }
+            GetComponentInChildren<Image>().sprite = sprites[0];
+
         }
         else
         {
-            Debug.LogWarning("Image child not found!");
+            GetComponentInChildren<Image>().sprite = sprites[1];
+           
         }
 
-        health = maxHealth;
-        enemyHealthSlider.value = health / maxHealth;
     }
 
-    Sprite GetRandomEnemySprite()
+    // Update is called once per frame
+    void Update()
     {
-        int index;
-        do
-        {
-            index = Random.Range(0, enemySprites.Length);
-        } while (index == lastEnemyIndex && enemySprites.Length > 1);
-
-        lastEnemyIndex = index;
-        return enemySprites[index];
+        
     }
 
-
+   
     public void TakeDamage(float damage)
     {
         health -= damage;
         enemyHealthSlider.value = health / maxHealth;
 
         //NumberVFX
-        VFXManager.instance.SpawnNumber(VFXManager.instance.numberSpawnPos.position, damage);
+        VFXManager.instance.SpawnNumber(VFXManager.instance.numberSpawnPos.position,damage);
         VFXManager.instance.SpawnParticle(Vector2.up, 0);
         animator.SetTrigger("hurt");
+
     }
 
     public void DealDamage()
@@ -68,5 +57,7 @@ public class Enemy : MonoBehaviour
         Player.instance.TakeDamage(damage);
         VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
         VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
+
+
     }
 }
