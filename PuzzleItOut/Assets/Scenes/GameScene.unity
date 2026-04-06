@@ -292,6 +292,7 @@ MonoBehaviour:
   - {fileID: 2452852964976488020, guid: 8fad7716e9e883b4a982eb79a41d4e17, type: 3}
   - {fileID: 9093983602769707787, guid: 693f930b623fe744ca616a797f031ca6, type: 3}
   - {fileID: 2452852964976488020, guid: 4cfa32c3594082146a87c41ba111f97d, type: 3}
+  - {fileID: 2834216522806747584, guid: e59fdf94345c3d14887bdfea2e6cc23e, type: 3}
   numberSpawnPos: {fileID: 17965174}
 --- !u!4 &17965174
 Transform:
@@ -1742,7 +1743,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 174507820355795364, guid: fe0e3bbff11e60b499cd00e48f486595, type: 3}
-  m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
+  m_Color: {r: 0.7056604, g: 0.7056604, b: 0.7056604, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1761,7 +1762,7 @@ Transform:
   m_GameObject: {fileID: 270597670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41, y: -0.07, z: 0}
+  m_LocalPosition: {x: 0.64, y: -0.07, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []

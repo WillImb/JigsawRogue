@@ -114,6 +114,8 @@ public class DeckManager : MonoBehaviour
                 piecesPlayed.Add(bm.occupied[i]);
                 discard.Add(bm.occupied[i].gameObject);
                 GameObject piece = bm.slots[i].GetChild(0).gameObject;
+
+                VFXManager.instance.SpawnParticle(piece.transform.position, 5);
                 Destroy(piece);
                 bm.occupied[i] = null;
             }
