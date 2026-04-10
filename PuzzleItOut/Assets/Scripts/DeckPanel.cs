@@ -6,27 +6,43 @@ public class DeckPanel : MonoBehaviour
     private DeckManager deckManager;
     private List<GameObject> deck;
 
+    [SerializeField] private Transform contentParent;   // UI container (Grid / Vertical Layout)
+    [SerializeField] private GameObject pieceUIPrefab;  // UI version of piece
+
     void Start()
     {
-        // assign deck manager
         deckManager = DeckManager.instance;
         deck = deckManager.deck;
+
+        PopulateDeckPanel();
     }
 
-    void populateDeckPanel()
+    public void PopulateDeckPanel()
     {
-        // pseudo-code
-        // for each piece in deck
-        // make visible
-        setDeckVisible(true);
-    }
-
-    void setDeckVisible(bool isVisible)
-    {
-        foreach (GameObject piece in deck)
+        // Clear old UI
+        foreach (Transform child in contentParent)
         {
-            if (piece != null)
-                piece.SetActive(isVisible);
+            Destroy(child.gameObject);
+        }
+
+        // Create one UI piece per deck entry
+        foreach (GameObject piecePrefab in deck)
+        {
+            GameObject uiPiece = Instantiate(pieceUIPrefab, contentParent);
+
+            // Reset transform for UI layout
+            RectTransform rect = uiPiece.GetComponent<RectTransform>();
+            rect.localScale = Vector3.one;
+            rect.localRotation = Quaternion.identity;
+
+            // Copy data
+            Piece original = piecePrefab.GetComponent<Piece>();
+            Piece ui = uiPiece.GetComponent<Piece>();
+
+            if (original != null && ui != null)
+            {
+                ui.CopyFrom(original);
+            }
         }
     }
 }

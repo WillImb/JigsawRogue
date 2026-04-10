@@ -155,4 +155,29 @@ public class Piece : MonoBehaviour
 
        
     }
+
+    public void CopyFrom(Piece other)
+    {
+        if (other == null) return;
+
+        // Copy scriptable reference
+        this.pieceData = other.pieceData;
+
+        // Copy level if you use it
+        this.pieceLevel = other.pieceLevel;
+
+        // Rebuild sides from data (IMPORTANT so rotations stay consistent)
+        sides = new sideType[4];
+        sides[0] = pieceData.north;
+        sides[1] = pieceData.east;
+        sides[2] = pieceData.south;
+        sides[3] = pieceData.west;
+
+        // Reset transform for UI (optional but recommended)
+        transform.rotation = Quaternion.identity;
+
+        // Disable dragging for UI copies (VERY IMPORTANT)
+        dragging = false;
+        isPlaced = false;
+    }
 }
