@@ -8,6 +8,7 @@ TagManager:
   - SpellBook
   - AttackButton
   - Enemy
+  - DeckManager
   layers:
   - Default
   - TransparentFX
