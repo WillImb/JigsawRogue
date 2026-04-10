@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using static UnityEditor.PlayerSettings;
+using UnityEngine.InputSystem;
 
 public class VFXManager : MonoBehaviour
 {
@@ -21,11 +24,20 @@ public class VFXManager : MonoBehaviour
             instance = this;
         }
     }
-
+    private void Start()
+    {
+        InputManager.Instance.Gameplay.Click.started += SpawnMouseVFX;
+    }
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void SpawnMouseVFX(InputAction.CallbackContext ctx)
+    {
+        Vector3 pos = Camera.main.ScreenToWorldPoint(InputManager.Instance.Gameplay.Point.ReadValue<Vector2>());
+        Instantiate(particles[6], pos, Quaternion.identity);
     }
 
 

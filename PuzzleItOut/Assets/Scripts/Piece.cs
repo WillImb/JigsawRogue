@@ -11,6 +11,9 @@ public class Piece : MonoBehaviour
     private sideType[] sides;
     private int pieceLevel;
 
+    Vector3 velo = Vector3.zero;
+    public float smoothTime = 0f;
+
     void Awake()
     {
         cam = Camera.main;
@@ -21,8 +24,8 @@ public class Piece : MonoBehaviour
     {
         cam = Camera.main;
 
-        InputManager.Instance.Gameplay.Click.started += StartDrag;
-        InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+        InputManager.Instance.Gameplay.Click.started += PieceDrag;
+        //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
     }
@@ -31,8 +34,8 @@ public class Piece : MonoBehaviour
     {
         if (InputManager.Instance == null) return;
 
-        InputManager.Instance.Gameplay.Click.started -= StartDrag;
-        InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.Click.started -= PieceDrag;
+        //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
@@ -40,8 +43,8 @@ public class Piece : MonoBehaviour
     void Start()
     {
 
-        InputManager.Instance.Gameplay.Click.started += StartDrag;
-        InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+        InputManager.Instance.Gameplay.Click.started += PieceDrag;
+        //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
 
@@ -57,8 +60,8 @@ public class Piece : MonoBehaviour
     {
         if (InputManager.Instance == null) return;
 
-        InputManager.Instance.Gameplay.Click.started -= StartDrag;
-        InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.Click.started -= PieceDrag;
+        //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
@@ -71,7 +74,7 @@ public class Piece : MonoBehaviour
         Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
         worldPos.z = 0f;
 
-        transform.position = worldPos + offset;
+        transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime); 
     }
 
     public sideType[] GetAllSides()
@@ -135,6 +138,41 @@ public class Piece : MonoBehaviour
             return;
         }
         DeckManager.instance.ReturnToHand(this);
+    }
+
+    void PieceDrag(InputAction.CallbackContext ctx)
+    {
+        //startDrag
+        if (!dragging)
+        {
+            velo = Vector3.zero;
+            Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+            Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
+
+            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+            if (!hit || hit.transform != transform) return;
+
+           // offset = transform.position - (Vector3)worldPos;
+            dragging = true;
+            if (isPlaced == true)
+            {
+                isPlaced = false;
+                BoardManager.instance.RemovePiece(this);
+            }
+
+        }
+        else
+        {
+            //endDrag
+            dragging = false;
+            if (BoardManager.instance.TryPlacePiece(this))
+            {
+                isPlaced = true;
+                DeckManager.instance.RemoveFromHand(this);
+                return;
+            }
+            DeckManager.instance.ReturnToHand(this);
+        }
     }
     void HandleRotateClockwise(InputAction.CallbackContext ctx)
     {

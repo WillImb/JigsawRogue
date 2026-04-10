@@ -7,6 +7,8 @@ public class TransitionManager : MonoBehaviour
     public static TransitionManager instance;
 
     public Animator animator;
+
+    public bool trigger;
    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -27,7 +29,8 @@ public class TransitionManager : MonoBehaviour
             //loadShopScene
             SceneManager.LoadScene(4);
         }
-        
+       
+
     }
 
 
