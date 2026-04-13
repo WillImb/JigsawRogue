@@ -2516,6 +2516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 424644383}
   - component: {fileID: 424644384}
+  - component: {fileID: 424644385}
   m_Layer: 5
   m_Name: ShopTransition
   m_TagString: Untagged
@@ -2531,13 +2532,13 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424644382}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 9729.7295}
-  m_LocalScale: {x: 1.001001, y: 1.001001, z: 1.001001}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 0.009259259, y: 0.009259259, z: 0.009259259}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1251682685}
   - {fileID: 1995392090}
-  m_Father: {fileID: 1783151084}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2566,6 +2567,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &424644385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424644382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c6b5b2a932087c4481ed0af2b3f8446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 424644384}
+  trigger: 0
 --- !u!1 &438918784
 GameObject:
   m_ObjectHideFlags: 0
@@ -5876,7 +5891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1251682685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6143,75 +6158,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 404237835}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1467938732
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1467938735}
-  - component: {fileID: 1467938734}
-  - component: {fileID: 1467938733}
-  m_Layer: 0
-  m_Name: TransitionManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!95 &1467938733
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467938732}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dda370c7c2dfe454abd8bdd9e845d9e5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1467938734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467938732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c6b5b2a932087c4481ed0af2b3f8446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 424644384}
-  trigger: 0
---- !u!4 &1467938735
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467938732}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 990.5639, y: 339.77756, z: -0.004042237}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470066985
 GameObject:
@@ -7924,7 +7870,6 @@ RectTransform:
   m_LocalScale: {x: 0.00925, y: 0.00925, z: 0.00925}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 424644383}
   - {fileID: 498012126}
   - {fileID: 289834502}
   - {fileID: 752381665}
@@ -8901,7 +8846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1995392090
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9226,7 +9171,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fcbcf7c59515f024c8133d3fb4d43f29, type: 2}
   - {fileID: 11400000, guid: c8df5e9fb43495a46997d1db112314fb, type: 2}
   - {fileID: 11400000, guid: b3f44300c21b8f14a97aed95e88abe01, type: 2}
-  lvl: 1
 --- !u!4 &2039856961
 Transform:
   m_ObjectHideFlags: 0
@@ -9828,10 +9772,10 @@ SceneRoots:
   - {fileID: 1817444263}
   - {fileID: 918126234}
   - {fileID: 2039856961}
-  - {fileID: 1467938735}
   - {fileID: 668178967}
   - {fileID: 17965174}
   - {fileID: 270597672}
   - {fileID: 118654150}
+  - {fileID: 424644383}
   - {fileID: 1783151084}
   - {fileID: 1507023141}
