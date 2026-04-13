@@ -6,8 +6,8 @@ public class DeckPanel : MonoBehaviour
     private DeckManager deckManager;
     private List<GameObject> deck;
 
-    [SerializeField] private Transform contentParent;   // UI container (Grid / Vertical Layout)
-    [SerializeField] private GameObject pieceUIPrefab;  // UI version of piece
+    [SerializeField] private Transform contentParent;   // ui container to set pieces off of
+    [SerializeField] private GameObject pieceUIPrefab;  // ui version of piece (need to replace)
 
     void Start()
     {
@@ -17,25 +17,28 @@ public class DeckPanel : MonoBehaviour
         PopulateDeckPanel();
     }
 
+    /// <summary>
+    /// Adds visual representations for each piece in players deck into deck panel
+    /// </summary>
     public void PopulateDeckPanel()
     {
-        // Clear old UI
+        // clear old UI if any (this shouldnt be necessary but just in case)
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Create one UI piece per deck entry
+        // for each piece in deck create a visual variant
         foreach (GameObject piecePrefab in deck)
         {
             GameObject uiPiece = Instantiate(pieceUIPrefab, contentParent);
 
-            // Reset transform for UI layout
+            // reset transformations
             RectTransform rect = uiPiece.GetComponent<RectTransform>();
             rect.localScale = Vector3.one;
             rect.localRotation = Quaternion.identity;
 
-            // Copy data
+            // copy data of original piece
             Piece original = piecePrefab.GetComponent<Piece>();
             Piece ui = uiPiece.GetComponent<Piece>();
 
