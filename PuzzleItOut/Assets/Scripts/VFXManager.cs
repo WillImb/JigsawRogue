@@ -1,9 +1,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using static UnityEditor.PlayerSettings;
 using UnityEngine.InputSystem;
+using System.Collections;
+using static UnityEditor.PlayerSettings;
 
 public class VFXManager : MonoBehaviour
 {
@@ -27,11 +27,24 @@ public class VFXManager : MonoBehaviour
     private void Start()
     {
         InputManager.Instance.Gameplay.Click.started += SpawnMouseVFX;
+      
     }
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public IEnumerator goldCoroutine(float amt)
+    {
+        Debug.Log("yo" + amt.ToString());
+        for(int i = 0; i < amt; i++)
+        {
+            Instantiate(particles[7], Vector3.zero, Quaternion.identity);
+            yield return new WaitForSeconds(.1f);
+        }
+
+       
     }
 
     void SpawnMouseVFX(InputAction.CallbackContext ctx)

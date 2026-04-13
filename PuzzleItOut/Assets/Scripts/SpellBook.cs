@@ -7,7 +7,7 @@ public class Spellbook : MonoBehaviour
 {
     public static Spellbook instance;
     public List<ComboScriptable> combosUnlocked;
-    public int lvl;
+    
     void Awake()
     {
         

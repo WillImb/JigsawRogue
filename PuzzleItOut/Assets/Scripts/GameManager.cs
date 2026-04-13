@@ -66,7 +66,9 @@ public class GameManager : MonoBehaviour
         if (combo != null)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
-            CombatManager.Instance.CalculateGold(combo, currentPieces);
+            float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
+            StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
+
             CombatManager.Instance.CalculateHealth(combo, currentPieces);
         }
         else
@@ -80,23 +82,20 @@ public class GameManager : MonoBehaviour
     {
         if (currentEnemy.health <= 0)
         {
+            
             //win
             //SceneManager.LoadScene(4);
-            if (Spellbook.instance.lvl == 1)
-            {
+            
 
-                Spellbook.instance.lvl += 1;
+                
+                Debug.Log("yo s]bgb");
                 TransitionManager.instance.ActivateTransition("ShopTransition");
                
 
-            }
-            else
-            {
-                Spellbook.instance.lvl = 1;
-                DeckManager.instance.gameObject.SetActive(false);                
-                SceneManager.LoadScene(5);
-            }
-            return;
+            
+                
+            
+            
         }
         else if (Player.instance.GetHealth() <= 0)
         {

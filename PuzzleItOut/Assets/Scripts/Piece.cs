@@ -14,9 +14,12 @@ public class Piece : MonoBehaviour
     Vector3 velo = Vector3.zero;
     public float smoothTime = 0f;
 
+    public GameObject pieceHalo;
+
     void Awake()
     {
         cam = Camera.main;
+        pieceHalo = BoardManager.instance.pieceHalo;
     }
 
     // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes
@@ -74,7 +77,10 @@ public class Piece : MonoBehaviour
         Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
         worldPos.z = 0f;
 
-        transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime); 
+        transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
+
+        pieceHalo.transform.position = transform.position;
+        pieceHalo.transform.rotation = transform.rotation;
     }
 
     public sideType[] GetAllSides()
@@ -165,6 +171,7 @@ public class Piece : MonoBehaviour
         {
             //endDrag
             dragging = false;
+            pieceHalo.transform.position = new Vector3(-1000, -1000, 0);
             if (BoardManager.instance.TryPlacePiece(this))
             {
                 isPlaced = true;
