@@ -8,6 +8,8 @@ public class Player:MonoBehaviour
     float gold;
     public float maxHealth;
     float health;
+    public bool completedTutorial;
+
 
     public Slider playerHealthSlider;
 
