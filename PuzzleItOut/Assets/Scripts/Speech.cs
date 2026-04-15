@@ -13,6 +13,7 @@ public class Speech : MonoBehaviour
 
     Coroutine currentLine;
 
+    
     public GameObject progressBtn;
     public GameObject endBtn;
 
@@ -20,8 +21,11 @@ public class Speech : MonoBehaviour
     void OnEnable()
     {
         line = 0;
+
         progressBtn.SetActive(true);
         endBtn.SetActive(false);
+        
+        
         message = speech[line];
         currentLine = StartCoroutine(SpeechCoroutine());
     }
@@ -42,28 +46,38 @@ public class Speech : MonoBehaviour
             index++;
             yield return new WaitForSeconds(speed);
         }
+
+        
     }
 
     public void ProgressSpeech()
     {
+        line++;
         //if still talking finish their message
         if(textBox.text != message)
         {
             StopCoroutine(currentLine);
             textBox.text = message;
+
+            if (line >= speech.Length)
+            {
+                progressBtn.SetActive(false);
+                endBtn.SetActive(true);
+            }
         }
         //if done talking
         else
         {
-            line++;
-            //if this is their last line appear the button that ends their speech -- if they have one
-            if (line == speech.Length-1 && progressBtn && endBtn)
+            
+
+            if (line >= speech.Length)
             {
                 progressBtn.SetActive(false);
                 endBtn.SetActive(true);
-            }            
-                message = speech[line];
-                currentLine = StartCoroutine(SpeechCoroutine());
+            }
+
+            message = speech[line];
+            currentLine = StartCoroutine(SpeechCoroutine());
 
             
         }
