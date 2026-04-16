@@ -47,18 +47,24 @@ public class Speech : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
 
-        
+        line++;
+
+        if (line >= speech.Length)
+        {
+            progressBtn.SetActive(false);
+            endBtn.SetActive(true);
+        }
     }
 
     public void ProgressSpeech()
     {
-        line++;
+       
         //if still talking finish their message
         if(textBox.text != message)
         {
             StopCoroutine(currentLine);
             textBox.text = message;
-
+            line++;
             if (line >= speech.Length)
             {
                 progressBtn.SetActive(false);
@@ -67,18 +73,9 @@ public class Speech : MonoBehaviour
         }
         //if done talking
         else
-        {
-            
-
-            if (line >= speech.Length)
-            {
-                progressBtn.SetActive(false);
-                endBtn.SetActive(true);
-            }
-
+        {        
             message = speech[line];
             currentLine = StartCoroutine(SpeechCoroutine());
-
             
         }
     }
