@@ -22,9 +22,13 @@ public class Speech : MonoBehaviour
     {
         line = 0;
 
+        if(line == speech.Length)
+        {
+            endBtn.SetActive(true);
+            return;
+        }
         progressBtn.SetActive(true);
-        endBtn.SetActive(false);
-        
+        endBtn.SetActive(false);      
         
         message = speech[line];
         currentLine = StartCoroutine(SpeechCoroutine());

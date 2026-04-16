@@ -37,7 +37,7 @@ public class VFXManager : MonoBehaviour
 
     public IEnumerator goldCoroutine(float amt)
     {
-        Debug.Log("yo" + amt.ToString());
+        
         for(int i = 0; i < amt; i++)
         {
             Instantiate(particles[7], new Vector3(0,-2.56f,0) , Quaternion.identity);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -64,5 +65,47 @@ public class TutorialManager : MonoBehaviour
         stage += 1;
     }
     
+
+
+    public void TutorialCast()
+    {
+        //game manager do turn        
+
+        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
+
+        int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
+        ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
+
+        if (combo != null)
+        {
+            Debug.Log("yoooo");
+            StartCoroutine(CastTutCoroutine());
+            
+        }
+        else
+        {
+            //if player casted a incorrect spell
+            HideTutPanel(8);
+            ShowTutPanel(9);
+        }
+
+    }
+    public IEnumerator CastTutCoroutine()
+    {
+        //called if player casts a successful spell
+        float curHealth = Player.instance.GetHealth();
+
+        HideTutPanel(8);
+
+        GameManager.instance.DoTurn();
+        while(curHealth <= Player.instance.GetHealth())
+        {
+           
+            yield return new WaitForEndOfFrame();
+        }
+
+        ShowTutPanel(10);
+    }
+
 
 }
