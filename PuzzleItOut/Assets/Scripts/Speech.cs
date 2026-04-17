@@ -17,6 +17,7 @@ public class Speech : MonoBehaviour
     public GameObject progressBtn;
     public GameObject endBtn;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {

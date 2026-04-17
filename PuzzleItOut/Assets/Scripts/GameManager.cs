@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     public void DoTurn()
     {
         attackButton.interactable = false;
+        Camera.main.GetComponent<CameraShake>().StartShake();
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
 

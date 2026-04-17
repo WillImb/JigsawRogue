@@ -1,16 +1,29 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public AnimationCurve curve;
+    public float duration = 1;
+
+    public IEnumerator Shake()
     {
-        
+        Vector3 startPos = transform.position;
+        float elapsedTime = 0f;
+
+        while(elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float strength = curve.Evaluate(elapsedTime / duration);
+            transform.position = startPos + Random.insideUnitSphere * strength;
+            yield return null;
+        }
+
+        transform.position = startPos;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartShake()
     {
-        
+        StartCoroutine(Shake());
     }
 }
