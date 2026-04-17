@@ -26,6 +26,10 @@ public class ShopManager : MonoBehaviour
     // reference to the players spellbook (singleton)
     public GameObject spellBook;
 
+    // reference to deck panel 
+    public GameObject deckPanel;
+    private bool isUpgrading;
+
     void Start()
     {
         // assign a random piece/combo from the pools to Shop UI game objects
@@ -157,6 +161,24 @@ public class ShopManager : MonoBehaviour
 
             // hide button when piece is bought
             obj.SetActive(false);
+        }
+    }
+
+    /*
+     * 
+     */
+    public void SetUpgrading(bool upgrading)
+    {
+        isUpgrading = upgrading;
+    }
+
+    public void SetDeckPanelActive(bool active)
+    {
+        deckPanel.SetActive(active);
+
+        if (active && isUpgrading)
+        {
+            // upgrade logic
         }
     }
 }

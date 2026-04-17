@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieceData: {fileID: 11400000, guid: e76b532c92006dd4487ac8a69e9957c2, type: 2}
+  baseSprite: {fileID: 4644699212075628087, guid: c68713b19e211e8439ba24cbff9c460e, type: 3}
 --- !u!61 &3686381454695325410
 BoxCollider2D:
   m_ObjectHideFlags: 0

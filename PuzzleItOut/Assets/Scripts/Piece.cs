@@ -10,6 +10,7 @@ public class Piece : MonoBehaviour
     public PieceScriptable pieceData;
     private sideType[] sides;
     private int pieceLevel;
+    public Sprite baseSprite;
 
     void Awake()
     {
@@ -166,17 +167,17 @@ public class Piece : MonoBehaviour
         // Copy level if you use it
         this.pieceLevel = other.pieceLevel;
 
-        // Rebuild sides from data (IMPORTANT so rotations stay consistent)
+        // Rebuild sides from data 
         sides = new sideType[4];
         sides[0] = pieceData.north;
         sides[1] = pieceData.east;
         sides[2] = pieceData.south;
         sides[3] = pieceData.west;
 
-        // Reset transform for UI (optional but recommended)
+        // Reset transform for UI
         transform.rotation = Quaternion.identity;
 
-        // Disable dragging for UI copies (VERY IMPORTANT)
+        // Disable dragging for UI copies
         dragging = false;
         isPlaced = false;
     }
