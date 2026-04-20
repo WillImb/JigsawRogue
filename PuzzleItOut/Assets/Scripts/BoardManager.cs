@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] public Transform[] slots;
     public Piece[] occupied;
 
+    public GameObject pieceHalo;
     void Awake()
     {
         if (instance == null)
@@ -83,6 +85,8 @@ public class BoardManager : MonoBehaviour
     {
         occupied[index] = piece;
         piece.LockToSlot(slots[index]);
+        //Spawn the place VFX
+        VFXManager.instance.SpawnParticle(slots[index].position, 1);
     }
 
     int GetClosestSlot(Vector3 piecePos)
@@ -106,6 +110,7 @@ public class BoardManager : MonoBehaviour
 
     public void RemovePiece(Piece piece)
     {
+        
         for (int i = 0; i < occupied.Length; i++)
         {
             if (occupied[i] == piece)
@@ -114,6 +119,17 @@ public class BoardManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public List<PieceScriptable> GetBoardPieces()
+    {
+        List<PieceScriptable> pieces = new List<PieceScriptable>();
+        foreach (Piece piece in occupied)
+        {
+            if (piece != null)
+                pieces.Add(piece.pieceData);
+        }
+        return pieces;
     }
 
 }

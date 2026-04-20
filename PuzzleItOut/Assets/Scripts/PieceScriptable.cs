@@ -4,6 +4,7 @@ using UnityEngine;
 public class PieceScriptable : ScriptableObject
 {
     public string pieceName;
+    public int id;
     public int baseDamange;
     public cardType cardType;
     public sideType north;
@@ -14,6 +15,7 @@ public class PieceScriptable : ScriptableObject
     public float healingValue;
     public float combatValue;
     public float goldValue;
+    public float probabilityValue;
 }
 
 public enum cardType

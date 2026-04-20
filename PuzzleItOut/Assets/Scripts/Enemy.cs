@@ -7,7 +7,11 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public float damage;
 
+    public Animator animator;
+
     public Slider enemyHealthSlider;
+
+    public Sprite[] sprites;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,6 +19,12 @@ public class Enemy : MonoBehaviour
     {
         health = maxHealth;
         enemyHealthSlider.value = health / maxHealth;
+               
+        
+        GetComponentInChildren<Image>().sprite = sprites[0];
+
+        
+        
 
     }
 
@@ -30,10 +40,19 @@ public class Enemy : MonoBehaviour
         health -= damage;
         enemyHealthSlider.value = health / maxHealth;
 
+        //NumberVFX
+        VFXManager.instance.SpawnNumber(VFXManager.instance.numberSpawnPos.position,damage);
+        VFXManager.instance.SpawnParticle(Vector2.up, 0);
+        animator.SetTrigger("hurt");
+
     }
 
     public void DealDamage()
     {
         Player.instance.TakeDamage(damage);
+        VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
+        VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
+
+
     }
 }

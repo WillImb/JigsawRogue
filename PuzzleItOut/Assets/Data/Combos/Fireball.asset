@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: 
   comboName: Fireball
-  comboList:
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
-  - {fileID: 11400000, guid: 876574a1face549a2a2e1ef38ce5931e, type: 2}
+  requiredTypes: 0000000000000000
+  activeIngredients: 00000000
+  multiplier: 2

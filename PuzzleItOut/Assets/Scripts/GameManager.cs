@@ -34,7 +34,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+
         StartGame();
+        DeckManager.instance.gameObject.SetActive(true);
+
     }
 
     // Update is called once per frame
@@ -46,46 +49,53 @@ public class GameManager : MonoBehaviour
     void StartGame()
     {
         DeckManager.instance.ShuffleDeck();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
-        DeckManager.instance.DrawPiece();
+
+        DeckManager.instance.DrawPiecesTillMax();
+
     }
 
     public void DoTurn()
     {
-        //called when attack button is clicked
         attackButton.interactable = false;
 
-        //Currently not working because spell book is empty
-        //This Will be changed to finding the matching spell in spell book once it has been implemented;
-        ComboScriptable combo = Spellbook.instance.combosUnlocked[0];
-       
-        if(combo != null)
+        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
+
+        int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
+        ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
+
+        if (combo != null)
         {
-            currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo));
-            CombatManager.Instance.CalculateGold(combo);
-            CombatManager.Instance.CalculateHealth(combo);
+            currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
+            float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
+            StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
+
+            CombatManager.Instance.CalculateHealth(combo, currentPieces);
         }
         else
         {
             currentEnemy.TakeDamage(0);
-
         }
-        
 
         EndTurn();
-
     }
     void EndTurn()
     {
         if (currentEnemy.health <= 0)
         {
+            
             //win
-            SceneManager.LoadScene(4);
-            return;
+            //SceneManager.LoadScene(4);
+            
+
+                
+                Debug.Log("yo s]bgb");
+                TransitionManager.instance.ActivateTransition("ShopTransition");
+               
+
+            
+                
+            
+            
         }
         else if (Player.instance.GetHealth() <= 0)
         {
@@ -109,15 +119,16 @@ public class GameManager : MonoBehaviour
         else if (turnState == TurnState.enemyTurn)
         {
             //switch to enemy's turn
-            turnState = TurnState.playerTurn;
             attackButton.interactable = true;
+            turnState = TurnState.playerTurn;
         }
         
     }
     void DoEnemyTurn()
     {
-        currentEnemy.DealDamage();
-        EndTurn();
+        VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
+        currentEnemy.Invoke("DealDamage",.35f);
+        Invoke("EndTurn",1);
     }
    
 }

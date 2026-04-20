@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272e180541c90204c86e98bfe9d42056, type: 3}
   m_Name: FireBL_Piece
   m_EditorClassIdentifier: 
-  pieceName: FireBL
+  pieceName: Fire
+  id: 0
   baseDamange: 10
   cardType: 0
   north: 2
@@ -20,5 +21,6 @@ MonoBehaviour:
   south: 0
   west: 0
   healingValue: 0
-  combatValue: 0
-  goldValue: 0
+  combatValue: 5
+  goldValue: 1
+  probabilityValue: 0

@@ -1,29 +1,40 @@
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Spellbook : MonoBehaviour
 {
     public static Spellbook instance;
     public List<ComboScriptable> combosUnlocked;
-
+    
     void Awake()
     {
+        
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // nothing done in on scene loaded atm
     }
 
     public bool ComboUnlocked(ComboScriptable combo)
@@ -43,5 +54,10 @@ public class Spellbook : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void AddToSpellbook(GameObject clickedObject)
+    {
+        
     }
 }

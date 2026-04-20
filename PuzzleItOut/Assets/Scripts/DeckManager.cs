@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeckManager : MonoBehaviour
 {
@@ -15,21 +16,36 @@ public class DeckManager : MonoBehaviour
     void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
 
         occupied = new Piece[handSlots.Length];
     }
 
-    void Start()
+    void OnEnable()
     {
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Update()
+    void OnDisable()
     {
-        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Shop")
+        {
+            SetPiecesVisible(false);
+        }
+        else if (scene.name == "GameScene")
+        {
+            SetPiecesVisible(true);
+        }
     }
 
     //shuffles deck using Fisher-Yates algo
@@ -98,6 +114,8 @@ public class DeckManager : MonoBehaviour
                 piecesPlayed.Add(bm.occupied[i]);
                 discard.Add(bm.occupied[i].gameObject);
                 GameObject piece = bm.slots[i].GetChild(0).gameObject;
+
+                VFXManager.instance.SpawnParticle(piece.transform.position, 5);
                 Destroy(piece);
                 bm.occupied[i] = null;
             }
@@ -125,4 +143,31 @@ public class DeckManager : MonoBehaviour
         piece.LockToSlot(handSlots[index]);
     }
 
+    // adds a piece to the deck
+    public void AddPiece(GameObject piecePrefab)
+    {
+        if (piecePrefab == null)
+        {
+            Debug.LogWarning("Can't add null piece to deck");
+            return;
+        }
+
+        deck.Add(piecePrefab);
+        Debug.Log($"Added {piecePrefab.name} to deck. Deck now has {deck.Count} pieces.");
+    }
+
+    void SetPiecesVisible(bool visible)
+    {
+        foreach (GameObject piece in hand)
+        {
+            if (piece != null)
+                piece.SetActive(visible);
+        }
+
+        foreach (GameObject piece in discard)
+        {
+            if (piece != null)
+                piece.SetActive(visible);
+        }
+    }
 }
