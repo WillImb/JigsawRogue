@@ -7,6 +7,7 @@ public class Piece : MonoBehaviour
     private Vector3 offset;
     private bool dragging;
     private bool isPlaced;
+    private bool isHovered;
     public PieceScriptable pieceData;
     private sideType[] sides;
     private int pieceLevel;
@@ -71,16 +72,37 @@ public class Piece : MonoBehaviour
 
     void Update()
     {
-        if (!dragging) return;
+        if (dragging)
+        {
+            isHovered = false;
 
-        Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
-        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
-        worldPos.z = 0f;
+            Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+            Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+            worldPos.z = 0f;
 
-        transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
 
-        pieceHalo.transform.position = transform.position;
-        pieceHalo.transform.rotation = transform.rotation;
+            pieceHalo.transform.position = transform.position;
+            pieceHalo.transform.rotation = transform.rotation;
+            return;
+        }
+
+        // hover detection
+        Vector2 hoverScreenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+        Vector2 hoverWorldPos = cam.ScreenToWorldPoint(hoverScreenPos);
+        RaycastHit2D hit = Physics2D.Raycast(hoverWorldPos, Vector2.zero);
+        bool nowHovered = hit && hit.transform == transform;
+
+        if (nowHovered && !isHovered)
+        {
+            isHovered = true;
+            TooltipManager.instance.ShowTooltip(pieceData);
+        }
+        else if (!nowHovered && isHovered)
+        {
+            isHovered = false;
+            TooltipManager.instance.HideTooltip();
+        }
     }
 
     public sideType[] GetAllSides()
@@ -159,6 +181,7 @@ public class Piece : MonoBehaviour
             if (!hit || hit.transform != transform) return;
 
            // offset = transform.position - (Vector3)worldPos;
+            TooltipManager.instance.HideTooltip();
             dragging = true;
             if (isPlaced == true)
             {
@@ -197,7 +220,5 @@ public class Piece : MonoBehaviour
     {
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
-
-       
     }
 }
