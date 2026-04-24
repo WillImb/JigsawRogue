@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
 
         StartGame();
+        PanelManager.instance.DisableButtons("2");
         DeckManager.instance.gameObject.SetActive(true);
 
     }
@@ -57,11 +58,14 @@ public class GameManager : MonoBehaviour
     public void DoTurn()
     {
         attackButton.interactable = false;
+        Camera.main.GetComponent<CameraShake>().StartShake();
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
 
         int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
         ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
+
+        
 
         if (combo != null)
         {
@@ -69,7 +73,7 @@ public class GameManager : MonoBehaviour
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
             StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
-            CombatManager.Instance.CalculateHealth(combo, currentPieces);
+            Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));           
         }
         else
         {
@@ -84,14 +88,10 @@ public class GameManager : MonoBehaviour
         {
             
             //win
-            //SceneManager.LoadScene(4);
-            
-
-                
-                Debug.Log("yo s]bgb");
-                TransitionManager.instance.ActivateTransition("ShopTransition");
-               
-
+            //SceneManager.LoadScene(4)
+            TransitionManager.instance.ActivateTransition("ShopTransition");
+            currentEnemy.gameObject.SetActive(false);
+            return;
             
                 
             
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         else if (turnState == TurnState.enemyTurn)
         {
             //switch to enemy's turn
-            attackButton.interactable = true;
+            
             turnState = TurnState.playerTurn;
         }
         

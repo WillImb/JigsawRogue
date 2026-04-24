@@ -16,6 +16,9 @@ public class VFXManager : MonoBehaviour
 
     public Transform numberSpawnPos;
 
+
+    public Collider2D moneyBag;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -37,10 +40,11 @@ public class VFXManager : MonoBehaviour
 
     public IEnumerator goldCoroutine(float amt)
     {
-        Debug.Log("yo" + amt.ToString());
+        
         for(int i = 0; i < amt; i++)
         {
-            Instantiate(particles[7], Vector3.zero, Quaternion.identity);
+            ParticleSystem gold = Instantiate(particles[7], new Vector3(0,-2.56f,0) , Quaternion.identity);
+            gold.trigger.AddCollider(moneyBag);
             yield return new WaitForSeconds(.1f);
         }
 
