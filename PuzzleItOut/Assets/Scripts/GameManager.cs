@@ -65,13 +65,15 @@ public class GameManager : MonoBehaviour
         int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
         ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
 
+        
+
         if (combo != null)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
             StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
-            CombatManager.Instance.CalculateHealth(combo, currentPieces);
+            Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));           
         }
         else
         {

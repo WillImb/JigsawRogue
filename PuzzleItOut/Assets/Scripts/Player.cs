@@ -5,8 +5,9 @@ using UnityEngine.UI;
 public class Player:MonoBehaviour
 {
     public static Player instance;
-    float gold;
+    public float gold;
     public float maxHealth;
+    [SerializeField]
     float health;
     public bool completedTutorial;
 
@@ -54,5 +55,15 @@ public class Player:MonoBehaviour
         health -= damage;
         playerHealthSlider.value = health / maxHealth;
     }
-    
+
+    public void HealHealth(float healing)
+    {
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        playerHealthSlider.value = health / maxHealth;
+
+    }
+
 }
