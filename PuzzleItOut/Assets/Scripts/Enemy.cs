@@ -20,16 +20,11 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         enemyHealthSlider.value = health / maxHealth;
                
-        if (Spellbook.instance.lvl == 1)
-        {
-            GetComponentInChildren<Image>().sprite = sprites[0];
+        
+        GetComponentInChildren<Image>().sprite = sprites[0];
 
-        }
-        else
-        {
-            GetComponentInChildren<Image>().sprite = sprites[1];
-           
-        }
+        
+        
 
     }
 
