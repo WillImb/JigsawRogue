@@ -7,41 +7,58 @@ using UnityEngine.UI;
  * Class: ShopManager
  * Date: 4.1.25
  * Notes: 
- *  - Does not take into account gold
- *  - For some reason pieces in the deck get put in the hand?
  *  - 
  */
 public class ShopManager : MonoBehaviour
 {
-    // shop UI game objects
+    // instance for this class
+    public static ShopManager instance;
+
+    // shop ui game objects
     public List<GameObject> pieces;
-    public List<GameObject> upgrades; // not added yet
+    public List<GameObject> upgrades; 
     public List<GameObject> combos;
 
-    // pieces/Combos that can appear in the shop
+    // pools
     public List<GameObject> piecePool;
     public List<ComboScriptable> comboPool;
     public List<Sprite> sprites;
+    // public List<UpgradeData> upgradePool;
 
-    // reference to the players spellbook (singleton)
-    public GameObject spellBook;
+    // reference variables
+    public GameObject spellBook;   // reference to the players spellbook (singleton)
+    public GameObject deckPanel;   // reference to deck panel 
+    private DeckManager deckManager;
+    public GameObject upgradedPanel;
 
-    // reference to deck panel 
-    public GameObject deckPanel;
+    // is the deck panel open because of upgrading
     [SerializeField] bool isUpgrading;
 
-    private DeckManager deckManager;
+    private GameObject currentUpgradeButton;
 
     void Start()
     {
-        // assign a random piece/combo from the pools to Shop UI game objects
-        AssignShopItems();
-
         // find the spellbook object in the scene (to add bought combos)
         spellBook = GameObject.FindWithTag("SpellBook");
 
         // grab deck manager instance and current deck
         deckManager = DeckManager.instance;
+
+        // assign a random piece/combo from the pools to Shop UI game objects
+        AssignShopItems();
+    }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple ShopManager instances found");
+            Destroy(gameObject);
+        }
     }
 
     /*
@@ -50,88 +67,144 @@ public class ShopManager : MonoBehaviour
      */
     void AssignShopItems()
     {
-        // assign random piece prefabs to piece buttons
+        AssignPieces();
+        AssignCombos();
+    }
+
+    // piece assignment
+    void AssignPieces()
+    {
         for (int i = 0; i < pieces.Count; i++)
         {
-            ShopData data = pieces[i].GetComponent<ShopData>();
-            if (data == null)
-            {
-                Debug.Log("Piece missing ShopData component");
-                continue;
-            }
+            ShopData pieceData = pieces[i].GetComponent<ShopData>();
+            ShopData upgradeData = upgrades[i].GetComponent<ShopData>();
 
-            if (piecePool.Count == 0)
-            {
-                Debug.LogWarning("No piece prefabs assigned");
-                continue;
-            }
-
-            // pick a random prefab
             int index = Random.Range(0, piecePool.Count);
-            GameObject prefab = piecePool[index];
-            Sprite sprite = sprites[index];
 
-            // assign it to ShopData
-            data.piecePrefab = prefab;
+            // assign piece
+            AssignPieceToSlot(pieces[i], pieceData, index);
 
-            // update button text if prefab has a PieceScriptable or name component
-            //TMP_Text text = pieces[i].GetComponentInChildren<TMP_Text>();
-            //if (text != null)
-            //{
-            Piece pieceComponent = prefab.GetComponent<Piece>();
-            //text.text = pieceComponent.pieceData.pieceName;
-            pieces[i].GetComponent<Image>().sprite = sprite;
-            //}
+            // link the corresponding upgrade button
+            pieceData.linkedUpgradeButton = upgrades[i];
         }
+    }
 
-        // assign random combos to combo buttons, ignore already unlocked combos
-        // temp list of combos that arent unlocked yet (should replace later maybe)
-        List<ComboScriptable> lockedCombos = new List<ComboScriptable>();
-        foreach (var combo in comboPool)
+    void AssignPieceToSlot(GameObject slot, ShopData data, int index)
+    {
+        GameObject prefab = piecePool[index];
+        Sprite sprite = sprites[index];
+
+        data.piecePrefab = prefab;
+
+        Image img = slot.GetComponent<Image>();
+        if (img != null)
         {
-            if (!Spellbook.instance.combosUnlocked.Contains(combo))
-            {
-                lockedCombos.Add(combo);
-            }
+            img.sprite = sprite;
         }
+    }
 
-        // list to track which combos are already assigned in this shop
+    // combo assignment
+    void AssignCombos()
+    {
+        List<ComboScriptable> lockedCombos = GetLockedCombos();
         List<ComboScriptable> assignedCombos = new List<ComboScriptable>();
+
+        // if player unlocked all combos
+        if (lockedCombos.Count == 0)
+        {
+            SetAllCombosSoldOut();
+            return;
+        }
 
         for (int i = 0; i < combos.Count; i++)
         {
             ShopData data = combos[i].GetComponent<ShopData>();
             if (data == null) continue;
 
-            // filter out combos already assigned to other buttons
-            List<ComboScriptable> availableCombos = lockedCombos.FindAll(c => !assignedCombos.Contains(c));
+            // refresh available pool each slot
+            List<ComboScriptable> availableCombos = GetAvailableCombos(lockedCombos, assignedCombos);
 
-            // if player unlocked all combos or no new combo is available, display sold out
-            if (availableCombos.Count == 0)
+            // if we still have combos left assign one
+            if (availableCombos.Count > 0)
             {
-                TMP_Text text = combos[i].GetComponentInChildren<TMP_Text>();
-                if (text != null) text.text = "SOLD OUT";
-
-                // disable button
-                combos[i].GetComponent<UnityEngine.UI.Button>().interactable = false;
-                // skip the rest of the loop
-                continue;
+                ComboScriptable selected = GetRandomCombo(availableCombos);
+                AssignComboToSlot(combos[i], data, selected);
+                assignedCombos.Add(selected);
             }
-
-            // get a random combo from the available combos list
-            data.combo = availableCombos[Random.Range(0, availableCombos.Count)];
-
-            // mark this combo as assigned so it won't appear again in this shop
-            assignedCombos.Add(data.combo);
-
-            // update button text to match spell name
-            TMP_Text comboText = combos[i].GetComponentInChildren<TMP_Text>();
-            if (comboText != null && data.combo != null)
+            else
             {
-                comboText.text = data.combo.name;
+                // only happens if we exhausted all combos in THIS shop roll
+                SetComboSoldOut(combos[i]);
             }
         }
     }
+
+    // if all combos are sold out
+    void SetAllCombosSoldOut()
+    {
+        foreach (GameObject slot in combos)
+        {
+            SetComboSoldOut(slot);
+        }
+    }
+
+    // returns a list of locked combos
+    List<ComboScriptable> GetLockedCombos()
+    {
+        List<ComboScriptable> locked = new List<ComboScriptable>();
+
+        foreach (var combo in comboPool)
+        {
+            if (!Spellbook.instance.combosUnlocked.Contains(combo))
+            {
+                locked.Add(combo);
+            }
+        }
+
+        return locked;
+    }
+
+    // returns a list of available combos
+    List<ComboScriptable> GetAvailableCombos(List<ComboScriptable> locked, List<ComboScriptable> assigned)
+    {
+        return locked.FindAll(c => !assigned.Contains(c));
+    }
+
+    // gets a random combo from a given list of combos
+    ComboScriptable GetRandomCombo(List<ComboScriptable> list)
+    {
+        return list[Random.Range(0, list.Count)];
+    }
+
+    // assigns a combo to a slot in the shop
+    void AssignComboToSlot(GameObject slot, ShopData data, ComboScriptable combo)
+    {
+        data.combo = combo;
+
+        TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
+        if (text != null)
+        {
+            text.text = combo.name;
+        }
+    }
+
+    // 
+    void SetComboSoldOut(GameObject slot)
+    {
+        TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
+        if (text != null)
+        {
+            text.text = "SOLD OUT";
+        }
+
+        Button button = slot.GetComponent<Button>();
+        if (button != null)
+        {
+            button.interactable = false;
+        }
+    }
+
+    // purchase methods
 
     /*
      * Called when a piece button is clicked. 
@@ -143,7 +216,7 @@ public class ShopManager : MonoBehaviour
         // only continue if the button has ShopData and a valid piece assigned
         if (data != null && data.piecePrefab != null)
         {
-            // add the piece to the players deck (commented out for now)
+            // add the piece to the players deck
             DeckManager.instance.AddPiece(data.piecePrefab);
 
             // hide button when piece is bought
@@ -152,7 +225,7 @@ public class ShopManager : MonoBehaviour
     }
 
     /*
-     * Called when a piece button is clicked. 
+     * Called when a combo button is clicked. 
      */
     public void BuyCombo(GameObject obj)
     {
@@ -164,10 +237,12 @@ public class ShopManager : MonoBehaviour
             // unlock the combo in players Spellbook
             Spellbook.instance.UnlockCombo(data.combo);
 
-            // hide button when piece is bought
+            // hide button when combo is bought
             obj.SetActive(false);
         }
     }
+
+    // state/ui control
 
     /*
      * 
@@ -191,5 +266,28 @@ public class ShopManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OpenUpgradePanel(GameObject upgradeButton)
+    {
+        isUpgrading = true;
+        currentUpgradeButton = upgradeButton;
+
+        SetDeckPanelActive(true);
+    }
+
+    public void DisableCurrentUpgradeButton()
+    {
+        if (currentUpgradeButton != null)
+        {
+            currentUpgradeButton.SetActive(false);
+            currentUpgradeButton = null;
+        }
+    }
+
+    public void SetUpgradedPanelActive(bool active)
+    {
+        upgradedPanel.SetActive(active);
+        // also set text of upgradedPanel to reflect the type of piece that got upgraded
     }
 }

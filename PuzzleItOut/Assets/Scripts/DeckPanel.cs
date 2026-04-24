@@ -40,8 +40,15 @@ public class DeckPanel : MonoBehaviour
      */
     public void PopulateDeckPanel()
     {
-        foreach (GameObject piecePrefab in deck)
+        foreach (Transform child in contentParent)
         {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < deck.Count; i++)
+        {
+            GameObject piecePrefab = deck[i];
+
             // create UI object under the content parent
             GameObject uiPiece = Instantiate(pieceUIPrefab, contentParent);
 
@@ -49,6 +56,13 @@ public class DeckPanel : MonoBehaviour
             RectTransform rect = uiPiece.GetComponent<RectTransform>();
             // rect.localRotation = Quaternion.identity;
             rect.anchoredPosition = Vector2.zero;
+
+            // assign index to DeckPiece component
+            DeckPiece deckPieceUI = uiPiece.GetComponent<DeckPiece>();
+            if (deckPieceUI != null)
+            {
+                deckPieceUI.index = i;
+            }
 
             // image setup
             // assign sprite that does not contain the element design
