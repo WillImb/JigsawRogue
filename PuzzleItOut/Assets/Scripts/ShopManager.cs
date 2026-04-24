@@ -28,7 +28,9 @@ public class ShopManager : MonoBehaviour
 
     // reference to deck panel 
     public GameObject deckPanel;
-    private bool isUpgrading;
+    [SerializeField] bool isUpgrading;
+
+    private DeckManager deckManager;
 
     void Start()
     {
@@ -37,6 +39,9 @@ public class ShopManager : MonoBehaviour
 
         // find the spellbook object in the scene (to add bought combos)
         spellBook = GameObject.FindWithTag("SpellBook");
+
+        // grab deck manager instance and current deck
+        deckManager = DeckManager.instance;
     }
 
     /*
@@ -178,7 +183,13 @@ public class ShopManager : MonoBehaviour
 
         if (active && isUpgrading)
         {
-            // upgrade logic
+            foreach (GameObject piece in deckManager.deck)
+            {
+                if (piece != null)
+                {
+
+                }
+            }
         }
     }
 }
