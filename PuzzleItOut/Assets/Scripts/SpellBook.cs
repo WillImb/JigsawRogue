@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Spellbook : MonoBehaviour
 {
     public static Spellbook instance;
+
     public List<ComboScriptable> combosUnlocked;
     
     void Awake()
@@ -24,6 +25,7 @@ public class Spellbook : MonoBehaviour
 
     void OnEnable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -34,7 +36,14 @@ public class Spellbook : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // nothing done in on scene loaded atm
+        if (scene.name == "EndOfDemoScene")
+        {
+            if (instance != null)
+            {
+                Destroy(instance.gameObject);
+                instance = null;
+            }
+        }
     }
 
     public bool ComboUnlocked(ComboScriptable combo)

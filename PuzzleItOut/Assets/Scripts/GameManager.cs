@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 
     public Button attackButton;
 
-
     public enum TurnState
     {
         playerTurn,
@@ -23,7 +22,6 @@ public class GameManager : MonoBehaviour
     public Enemy currentEnemy; // change to type enemy when rish adds script
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     void Awake()
     {
         if(instance == null)
@@ -130,5 +128,4 @@ public class GameManager : MonoBehaviour
         currentEnemy.Invoke("DealDamage",.35f);
         Invoke("EndTurn",1);
     }
-   
 }

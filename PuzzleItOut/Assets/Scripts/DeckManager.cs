@@ -170,4 +170,29 @@ public class DeckManager : MonoBehaviour
                 piece.SetActive(visible);
         }
     }
+
+    public void UpgradePiece(int index)
+    {
+        if (index < 0 || index >= deck.Count)
+        {
+            Debug.LogWarning("Invalid deck index");
+            return;
+        }
+
+        GameObject pieceObj = deck[index];
+        Piece piece = pieceObj.GetComponent<Piece>();
+
+        if (piece == null || piece.pieceData == null)
+        {
+            Debug.LogWarning("Missing Piece or PieceData");
+            return;
+        }
+
+        // temp upgrade
+        piece.pieceData.combatValue += 1;
+        piece.pieceData.healingValue += 1;
+        piece.pieceData.goldValue += 1;
+
+        Debug.Log($"Upgraded {piece.pieceData.pieceName}" + " #" + index);
+    }
 }

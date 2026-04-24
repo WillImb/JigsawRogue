@@ -7,20 +7,14 @@ public class Piece : MonoBehaviour
     private Vector3 offset;
     private bool dragging;
     private bool isPlaced;
-    private bool isHovered;
     public PieceScriptable pieceData;
     private sideType[] sides;
     private int pieceLevel;
-
-    Vector3 velo = Vector3.zero;
-    public float smoothTime = 0f;
-
-    public GameObject pieceHalo;
+    public Sprite baseSprite;
 
     void Awake()
     {
         cam = Camera.main;
-        pieceHalo = BoardManager.instance.pieceHalo;
     }
 
     // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes
@@ -28,8 +22,8 @@ public class Piece : MonoBehaviour
     {
         cam = Camera.main;
 
-        InputManager.Instance.Gameplay.Click.started += PieceDrag;
-        //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+        InputManager.Instance.Gameplay.Click.started += StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
     }
@@ -38,8 +32,8 @@ public class Piece : MonoBehaviour
     {
         if (InputManager.Instance == null) return;
 
-        InputManager.Instance.Gameplay.Click.started -= PieceDrag;
-        //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.Click.started -= StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
@@ -47,8 +41,8 @@ public class Piece : MonoBehaviour
     void Start()
     {
 
-        InputManager.Instance.Gameplay.Click.started += PieceDrag;
-        //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+        InputManager.Instance.Gameplay.Click.started += StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
 
@@ -64,45 +58,21 @@ public class Piece : MonoBehaviour
     {
         if (InputManager.Instance == null) return;
 
-        InputManager.Instance.Gameplay.Click.started -= PieceDrag;
-        //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+        InputManager.Instance.Gameplay.Click.started -= StartDrag;
+        InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
     void Update()
     {
-        if (dragging)
-        {
-            isHovered = false;
+        if (!dragging) return;
 
-            Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
-            Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
-            worldPos.z = 0f;
+        Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+        worldPos.z = 0f;
 
-            transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
-
-            pieceHalo.transform.position = transform.position;
-            pieceHalo.transform.rotation = transform.rotation;
-            return;
-        }
-
-        // hover detection
-        Vector2 hoverScreenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
-        Vector2 hoverWorldPos = cam.ScreenToWorldPoint(hoverScreenPos);
-        RaycastHit2D hit = Physics2D.Raycast(hoverWorldPos, Vector2.zero);
-        bool nowHovered = hit && hit.transform == transform;
-
-        if (nowHovered && !isHovered)
-        {
-            isHovered = true;
-            TooltipManager.instance.ShowTooltip(pieceData);
-        }
-        else if (!nowHovered && isHovered)
-        {
-            isHovered = false;
-            TooltipManager.instance.HideTooltip();
-        }
+        transform.position = worldPos + offset;
     }
 
     public sideType[] GetAllSides()
@@ -167,43 +137,6 @@ public class Piece : MonoBehaviour
         }
         DeckManager.instance.ReturnToHand(this);
     }
-
-    void PieceDrag(InputAction.CallbackContext ctx)
-    {
-        //startDrag
-        if (!dragging)
-        {
-            velo = Vector3.zero;
-            Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
-            Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
-
-            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-            if (!hit || hit.transform != transform) return;
-
-           // offset = transform.position - (Vector3)worldPos;
-            TooltipManager.instance.HideTooltip();
-            dragging = true;
-            if (isPlaced == true)
-            {
-                isPlaced = false;
-                BoardManager.instance.RemovePiece(this);
-            }
-
-        }
-        else
-        {
-            //endDrag
-            dragging = false;
-            pieceHalo.transform.position = new Vector3(-1000, -1000, 0);
-            if (BoardManager.instance.TryPlacePiece(this))
-            {
-                isPlaced = true;
-                DeckManager.instance.RemoveFromHand(this);
-                return;
-            }
-            DeckManager.instance.ReturnToHand(this);
-        }
-    }
     void HandleRotateClockwise(InputAction.CallbackContext ctx)
     {
         if (!dragging) return;
@@ -220,5 +153,32 @@ public class Piece : MonoBehaviour
     {
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
+
+       
+    }
+
+    public void CopyFrom(Piece other)
+    {
+        if (other == null) return;
+
+        // Copy scriptable reference
+        this.pieceData = other.pieceData;
+
+        // Copy level if you use it
+        this.pieceLevel = other.pieceLevel;
+
+        // Rebuild sides from data 
+        sides = new sideType[4];
+        sides[0] = pieceData.north;
+        sides[1] = pieceData.east;
+        sides[2] = pieceData.south;
+        sides[3] = pieceData.west;
+
+        // Reset transform for UI
+        transform.rotation = Quaternion.identity;
+
+        // Disable dragging for UI copies
+        dragging = false;
+        isPlaced = false;
     }
 }
