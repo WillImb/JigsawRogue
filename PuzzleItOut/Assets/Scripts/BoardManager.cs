@@ -8,7 +8,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] public Transform[] slots;
     public Piece[] occupied;
 
-    public GameObject pieceHalo;
     void Awake()
     {
         if (instance == null)

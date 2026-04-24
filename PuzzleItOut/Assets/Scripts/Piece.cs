@@ -19,7 +19,7 @@ public class Piece : MonoBehaviour
     void Awake()
     {
         cam = Camera.main;
-        pieceHalo = BoardManager.instance.pieceHalo;
+        pieceHalo = DeckManager.instance.pieceHalo;
     }
 
     // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes

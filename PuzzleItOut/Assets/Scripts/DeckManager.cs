@@ -13,6 +13,8 @@ public class DeckManager : MonoBehaviour
     private Transform[] handSlots;
     private Piece[] occupied;
 
+    public GameObject pieceHalo;
+
     void Awake()
     {
         if (instance == null)
