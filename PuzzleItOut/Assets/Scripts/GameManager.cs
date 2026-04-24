@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
 
         StartGame();
+        PanelManager.instance.DisableButtons("2");
         DeckManager.instance.gameObject.SetActive(true);
 
     }
@@ -85,14 +86,10 @@ public class GameManager : MonoBehaviour
         {
             
             //win
-            //SceneManager.LoadScene(4);
-            
-
-                
-                Debug.Log("yo s]bgb");
-                TransitionManager.instance.ActivateTransition("ShopTransition");
-               
-
+            //SceneManager.LoadScene(4)
+            TransitionManager.instance.ActivateTransition("ShopTransition");
+            currentEnemy.gameObject.SetActive(false);
+            return;
             
                 
             
@@ -120,7 +117,7 @@ public class GameManager : MonoBehaviour
         else if (turnState == TurnState.enemyTurn)
         {
             //switch to enemy's turn
-            attackButton.interactable = true;
+            
             turnState = TurnState.playerTurn;
         }
         
