@@ -6,9 +6,7 @@ TagManager:
   tags:
   - PlayerHealthSlider
   - SpellBook
-  - AttackButton
-  - Enemy
-  - DeckManager
+  - Gold
   layers:
   - Default
   - TransparentFX

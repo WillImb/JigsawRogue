@@ -25,7 +25,7 @@ public class Piece : MonoBehaviour
         InputManager.Instance.Gameplay.Click.started += StartDrag;
         InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
-        InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
+        //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
     }
 
     void OnDisable()
@@ -35,7 +35,7 @@ public class Piece : MonoBehaviour
         InputManager.Instance.Gameplay.Click.started -= StartDrag;
         InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
-        InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
+        //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
     void Start()
@@ -44,7 +44,7 @@ public class Piece : MonoBehaviour
         InputManager.Instance.Gameplay.Click.started += StartDrag;
         InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
-        InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
+        //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
 
         //Side Data
         sides = new sideType[4];
@@ -61,7 +61,7 @@ public class Piece : MonoBehaviour
         InputManager.Instance.Gameplay.Click.started -= StartDrag;
         InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
-        InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
+        //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
     void Update()
