@@ -5119,6 +5119,7 @@ MonoBehaviour:
   - {fileID: 178610593}
   - {fileID: 1717604993}
   - {fileID: 315630747}
+  pieceHalo: {fileID: 2236090437695645377}
 --- !u!4 &404237835
 Transform:
   m_ObjectHideFlags: 0
@@ -20501,7 +20502,6 @@ MonoBehaviour:
   - {fileID: 1859949532}
   - {fileID: 1983694094}
   occupied: []
-  pieceHalo: {fileID: 2236090437695645377}
 --- !u!4 &1817444263
 Transform:
   m_ObjectHideFlags: 0
