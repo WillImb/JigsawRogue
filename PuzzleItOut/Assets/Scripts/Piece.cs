@@ -5,6 +5,7 @@ public class Piece : MonoBehaviour
 {
     private Camera cam;
     private Vector3 offset;
+    public Sprite baseSprite;
     private bool dragging;
     private bool isPlaced;
     public PieceScriptable pieceData;
