@@ -1,4 +1,3 @@
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
 
 public class ShopData : MonoBehaviour

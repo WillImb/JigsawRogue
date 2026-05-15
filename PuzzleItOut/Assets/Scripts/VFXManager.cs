@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System.Collections;
-using static UnityEditor.PlayerSettings;
+
 
 public class VFXManager : MonoBehaviour
 {

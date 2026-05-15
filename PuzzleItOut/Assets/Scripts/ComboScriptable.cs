@@ -19,34 +19,22 @@ public class ComboScriptable : ScriptableObject
     [Header("Multiplier")]
     public float multiplier = 2f;
 
-    public float Damage(List<PieceScriptable> pieces)
+    public int Damage(List<PieceScriptable> pieces)
     {
-        float sum = pieces.Sum(p => p.combatValue);
-        foreach (var p in pieces)
-        {
-            Debug.Log(p.combatValue);
-        }
-        return activeIngredients.Contains(IngredientType.Combat) ? sum * multiplier : sum;
+        int sum = pieces.Sum(p => p.combatValue);
+        return activeIngredients.Contains(IngredientType.Combat) ? (int)(sum * multiplier) : sum;
     }
 
-    public float Health(List<PieceScriptable> pieces)
+    public int Health(List<PieceScriptable> pieces)
     {
-        float sum = pieces.Sum(p => p.healingValue);
-        foreach (var p in pieces)
-        {
-            Debug.Log(p.healingValue);
-        }
-        return activeIngredients.Contains(IngredientType.Health) ? sum * multiplier : sum;
+        int sum = pieces.Sum(p => p.healingValue);
+        return activeIngredients.Contains(IngredientType.Health) ? (int)(sum * multiplier) : sum;
     }
 
-    public float Gold(List<PieceScriptable> pieces)
+    public int Gold(List<PieceScriptable> pieces)
     {
-        float sum = pieces.Sum(p => p.goldValue);
-        foreach (var p in pieces)
-        {
-            Debug.Log(p.goldValue);
-        }
-        return activeIngredients.Contains(IngredientType.Gold) ? sum * multiplier : sum;
+        int sum = pieces.Sum(p => p.goldValue);
+        return activeIngredients.Contains(IngredientType.Gold) ? (int)(sum * multiplier) : sum;
     }
 
     public float Probability(List<PieceScriptable> pieces)
