@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class Player:MonoBehaviour
 {
     public static Player instance;
-    public float gold;
-    public float maxHealth;
+    public int gold;
+    public int maxHealth;
     [SerializeField]
-    float health;
+    int health;
     public bool completedTutorial;
 
 
@@ -29,40 +29,40 @@ public class Player:MonoBehaviour
     public void Start()
     {
         health = maxHealth;
-        playerHealthSlider.value = health / maxHealth;
+        playerHealthSlider.value = health / (float)maxHealth;
 
     }
 
-    public float GetGold()
+    public int GetGold()
     {
         return gold;
     }
 
-    public float GetHealth()
+    public int GetHealth()
     {
         return health;
     }
 
     // doesnt actually do anything yet
-    public void SpendGold(float goldToSpend)
+    public void SpendGold(int goldToSpend)
     {
         gold -= goldToSpend;
     }
 
     // no game over detection
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
-        playerHealthSlider.value = health / maxHealth;
+        playerHealthSlider.value = health / (float)maxHealth;
     }
 
-    public void HealHealth(float healing)
+    public void HealHealth(int healing)
     {
         if (health > maxHealth)
         {
             health = maxHealth;
         }
-        playerHealthSlider.value = health / maxHealth;
+        playerHealthSlider.value = health / (float)maxHealth;
 
     }
 

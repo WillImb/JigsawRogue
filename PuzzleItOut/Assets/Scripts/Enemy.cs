@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public float health;
-    public float maxHealth;
-    public float damage;
+    public int health;
+    public int maxHealth;
+    public int damage;
 
     public Animator animator;
 
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        enemyHealthSlider.value = health / maxHealth;
+        enemyHealthSlider.value = health / (float)maxHealth;
                
         
         GetComponentInChildren<Image>().sprite = sprites[0];
@@ -35,10 +35,10 @@ public class Enemy : MonoBehaviour
     }
 
    
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
-        enemyHealthSlider.value = health / maxHealth;
+        enemyHealthSlider.value = health / (float)maxHealth;
 
         //NumberVFX
         if (damage > 0)

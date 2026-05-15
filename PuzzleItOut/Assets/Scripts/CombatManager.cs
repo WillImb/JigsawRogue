@@ -27,7 +27,7 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void DealDamage(float damage)
+    public void DealDamage(int damage)
     {
         return;
     }
@@ -60,23 +60,23 @@ public class CombatManager : MonoBehaviour
         return -1;
     }
 
-    public float CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        float result = combo.Damage(pieces);
+        int result = combo.Damage(pieces);
         
         return result;
     }
 
-    public float CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        float result = combo.Gold(pieces);
+        int result = combo.Gold(pieces);
         //Debug.Log($"'{combo.comboName}' generated {result} gold");
         return result;
     }
 
-    public float CalculateHealth(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateHealth(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        float result = combo.Health(pieces);
+        int result = combo.Health(pieces);
         //Debug.Log($"'{combo.comboName}' healed {result} health");
         return result;
     }
