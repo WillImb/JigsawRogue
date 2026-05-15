@@ -4,10 +4,15 @@ using TMPro;
 using UnityEngine.UI;
 
 /*
- * Class: ShopManager
- * Date: 4.1.25
- * Notes: 
- *  - 
+ * Author(s): Anthony L
+ * Date: 5.15.26
+ * Notes:
+ *  - SetAllCombosSoldOut() is currently deprecated since upgrade buttons just disappear
+ *    when they're bought
+ *  - I plan on separating upgrade panel and deck panel into two different things. This
+ *    will be added as a task or subtask on the Trello - AL
+ *  - Added summary comments for every method and shifted some things around for organization
+ *    purposes
  */
 public class ShopManager : MonoBehaviour
 {
@@ -16,7 +21,7 @@ public class ShopManager : MonoBehaviour
 
     // shop ui game objects
     public List<GameObject> pieces;
-    public List<GameObject> upgrades; 
+    public List<GameObject> upgrades;
     public List<GameObject> combos;
 
     // pools
@@ -36,18 +41,6 @@ public class ShopManager : MonoBehaviour
 
     private GameObject currentUpgradeButton;
 
-    void Start()
-    {
-        // find the spellbook object in the scene (to add bought combos)
-        spellBook = GameObject.FindWithTag("SpellBook");
-
-        // grab deck manager instance and current deck
-        deckManager = DeckManager.instance;
-
-        // assign a random piece/combo from the pools to Shop UI game objects
-        AssignShopItems();
-    }
-
     void Awake()
     {
         if (instance == null)
@@ -61,17 +54,30 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    /*
-     * Assigns random piece/combo from the pools to each shop button. Also
-     * prevents duplicates from appearing in the shop.
-     */
+    void Start()
+    {
+        // find the spellbook object in the scene (to add bought combos)
+        spellBook = GameObject.FindWithTag("SpellBook");
+
+        // grab deck manager instance and current deck
+        deckManager = DeckManager.instance;
+
+        // assign a random piece/combo from the pools to Shop UI game objects
+        AssignShopItems();
+    }
+
+    /// <summary>
+    /// Assigns random pieces and combos to all shop slots
+    /// </summary>
     void AssignShopItems()
     {
         AssignPieces();
         AssignCombos();
     }
 
-    // piece assignment
+    /// <summary>
+    /// Assigns random pieces to each piece slot and links their corresponding upgrade buttons
+    /// </summary>
     void AssignPieces()
     {
         for (int i = 0; i < pieces.Count; i++)
@@ -89,6 +95,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Assigns a piece prefab and sprite to a specific shot slot
+    /// </summary>
     void AssignPieceToSlot(GameObject slot, ShopData data, int index)
     {
         GameObject prefab = piecePool[index];
@@ -103,7 +112,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // combo assignment
+    /// <summary>
+    /// Assigns available combos to combo shop slots while preventing duplicates
+    /// </summary>
     void AssignCombos()
     {
         List<ComboScriptable> lockedCombos = GetLockedCombos();
@@ -139,7 +150,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // if all combos are sold out
+    /// <summary>
+    /// Marks all combo slots as sold out when no locked combos remain
+    /// </summary>
     void SetAllCombosSoldOut()
     {
         foreach (GameObject slot in combos)
@@ -148,7 +161,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // returns a list of locked combos
+    /// <summary>
+    /// Returns a list of combos the player has not unlocked yet
+    /// </summary>
     List<ComboScriptable> GetLockedCombos()
     {
         List<ComboScriptable> locked = new List<ComboScriptable>();
@@ -164,19 +179,25 @@ public class ShopManager : MonoBehaviour
         return locked;
     }
 
-    // returns a list of available combos
+    /// <summary>
+    /// Returns combos that are locked and not already assigned in the current shop roll
+    /// </summary>
     List<ComboScriptable> GetAvailableCombos(List<ComboScriptable> locked, List<ComboScriptable> assigned)
     {
         return locked.FindAll(c => !assigned.Contains(c));
     }
 
-    // gets a random combo from a given list of combos
+    /// <summary>
+    /// Returns a random combo from the given combo list
+    /// </summary>
     ComboScriptable GetRandomCombo(List<ComboScriptable> list)
     {
         return list[Random.Range(0, list.Count)];
     }
 
-    // assigns a combo to a slot in the shop
+    /// <summary>
+    /// Assigns combo data and display text to a combo shop slot
+    /// </summary>
     void AssignComboToSlot(GameObject slot, ShopData data, ComboScriptable combo)
     {
         data.combo = combo;
@@ -188,7 +209,10 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // 
+    /// <summary>
+    /// Disables a combo slot and displays sold out text
+    /// </summary>
+    /// <param name="slot"></param>
     void SetComboSoldOut(GameObject slot)
     {
         TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
@@ -204,14 +228,12 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    // purchase methods
-
-    /*
-     * Called when a piece button is clicked. 
-     */
-    public void BuyPiece(GameObject obj)
+    /// <summary>
+    /// Buys a piece, adds it to the player's deck, and hides the purchased piece
+    /// </summary>
+    public void BuyPiece(GameObject piece)
     {
-        ShopData data = obj.GetComponent<ShopData>();
+        ShopData data = piece.GetComponent<ShopData>();
 
         // only continue if the button has ShopData and a valid piece assigned
         if (data != null && data.piecePrefab != null)
@@ -220,16 +242,16 @@ public class ShopManager : MonoBehaviour
             DeckManager.instance.AddPiece(data.piecePrefab);
 
             // hide button when piece is bought
-            obj.SetActive(false);
+            piece.SetActive(false);
         }
     }
 
-    /*
-     * Called when a combo button is clicked. 
-     */
-    public void BuyCombo(GameObject obj)
+    /// <summary>
+    /// Buys a combo, unlocks it in the spellbook, and hides the purchsed combo
+    /// </summary>
+    public void BuyCombo(GameObject combo)
     {
-        ShopData data = obj.GetComponent<ShopData>();
+        ShopData data = combo.GetComponent<ShopData>();
 
         // only continue if the button has ShopData and a valid combo assigned
         if (data != null && data.combo != null)
@@ -238,20 +260,22 @@ public class ShopManager : MonoBehaviour
             Spellbook.instance.UnlockCombo(data.combo);
 
             // hide button when combo is bought
-            obj.SetActive(false);
+            combo.SetActive(false);
         }
     }
 
-    // state/ui control
-
-    /*
-     * 
-     */
+    /// <summary>
+    /// Sets whether the player is currently upgrading a piece
+    /// </summary>
     public void SetUpgrading(bool upgrading)
     {
         isUpgrading = upgrading;
     }
 
+    /// <summary>
+    /// Toggles deck panel visibility
+    /// </summary>
+    /// <param name="active"></param>
     public void SetDeckPanelActive(bool active)
     {
         deckPanel.SetActive(active);
@@ -268,6 +292,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens the upgrade flow and stores the selected upgrade button reference
+    /// </summary>
     public void OpenUpgradePanel(GameObject upgradeButton)
     {
         isUpgrading = true;
@@ -276,6 +303,9 @@ public class ShopManager : MonoBehaviour
         SetDeckPanelActive(true);
     }
 
+    /// <summary>
+    /// Disables currently used upgrade button after upgrading
+    /// </summary>
     public void DisableCurrentUpgradeButton()
     {
         if (currentUpgradeButton != null)
@@ -285,6 +315,9 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggles the upgraded panel visibility and updates upgrade feedback UI
+    /// </summary>
     public void SetUpgradedPanelActive(bool active)
     {
         upgradedPanel.SetActive(active);

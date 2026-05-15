@@ -4,11 +4,10 @@ using UnityEngine.UI;
 using TMPro;
 
 /*
- * Class: DeckPanel
- * Date: 4.17.26
+ * Author(s): Anthony L
+ * Date: 5.15.26
  * Notes:
  *  - Displays all pieces currently in the players deck
- *  - 
  */
 public class DeckPanel : MonoBehaviour
 {
@@ -23,6 +22,16 @@ public class DeckPanel : MonoBehaviour
 
     // prefab used to visually represent a piece in UI
     [SerializeField] private GameObject pieceUIPrefab;
+
+    void OnEnable()
+    {
+        DeckManager.OnDeckUpdated += PopulateDeckPanel;
+    }
+
+    void OnDisable()
+    {
+        DeckManager.OnDeckUpdated -= PopulateDeckPanel;
+    }
 
     void Start()
     {
