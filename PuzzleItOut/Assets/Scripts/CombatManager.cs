@@ -32,8 +32,6 @@ public class CombatManager : MonoBehaviour
         return;
     }
 
-
-
     public int FindCombo(List<PieceScriptable> currentCombo)
     {
         List<cardType> submittedTypes = currentCombo

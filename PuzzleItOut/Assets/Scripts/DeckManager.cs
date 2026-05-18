@@ -46,6 +46,9 @@ public class DeckManager : MonoBehaviour
         }
         else if (scene.name == "GameScene")
         {
+            // reassign piece halo
+            pieceHalo = GameObject.Find("PieceHalo");
+
             SetPiecesVisible(true);
         }
     }
