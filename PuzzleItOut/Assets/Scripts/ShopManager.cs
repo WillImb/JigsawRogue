@@ -37,7 +37,7 @@ public class ShopManager : MonoBehaviour
     public GameObject upgradedPanel;
 
     // is the deck panel open because of upgrading
-    [SerializeField] bool isUpgrading;
+    [SerializeField] public bool isUpgrading;
 
     private GameObject currentUpgradeButton;
 

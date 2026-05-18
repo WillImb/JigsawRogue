@@ -35,23 +35,27 @@ public class DeckPiece : MonoBehaviour
 
     void OnClick()
     {
-        DeckManager.instance.UpgradePiece(index);
-
-        ShopManager.instance.SetUpgradedPanelActive(true);
-
-        // disable the upgrade button that opened this
-        ShopManager.instance.DisableCurrentUpgradeButton();
-
-        if (button != null)
+        // check to see if we're in upgrade panel
+        if (ShopManager.instance.isUpgrading)
         {
-            button.interactable = false;
-        }
+            DeckManager.instance.UpgradePiece(index);
 
-        if (image != null)
-        {
-            Color c = image.color;
-            c.a = 0.3f;
-            image.color = c;
+            ShopManager.instance.SetUpgradedPanelActive(true);
+
+            // disable the upgrade button that opened this
+            ShopManager.instance.DisableCurrentUpgradeButton();
+
+            if (button != null)
+            {
+                button.interactable = false;
+            }
+
+            if (image != null)
+            {
+                Color c = image.color;
+                c.a = 0.3f;
+                image.color = c;
+            }
         }
     }
 }
