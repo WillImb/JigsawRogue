@@ -26,6 +26,14 @@ public class DeckPanel : MonoBehaviour
     void OnEnable()
     {
         DeckManager.OnDeckUpdated += PopulateDeckPanel;
+
+        deckManager = DeckManager.instance;
+
+        if (deckManager != null)
+        {
+            deck = deckManager.deck;
+            PopulateDeckPanel();
+        }
     }
 
     void OnDisable()
@@ -37,7 +45,6 @@ public class DeckPanel : MonoBehaviour
     {
         // grab deck manager instance and current deck
         deckManager = DeckManager.instance;
-        deck = deckManager.deck;
 
         // populate UI with current deck contents
         PopulateDeckPanel();
@@ -49,6 +56,19 @@ public class DeckPanel : MonoBehaviour
      */
     public void PopulateDeckPanel()
     {
+        if (deckManager == null)
+        {
+            deckManager = DeckManager.instance;
+        }
+
+        if (deckManager == null || deckManager.deck == null)
+        {
+            Debug.LogWarning("DeckManager or deck is missing");
+            return;
+        }
+
+        deck = deckManager.deck;
+
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
