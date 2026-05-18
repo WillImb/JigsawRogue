@@ -20,7 +20,7 @@ MonoBehaviour:
   east: 1
   south: 0
   west: 0
-  healingValue: 2
+  healingValue: 5
   combatValue: 5
   goldValue: 3
   probabilityValue: 0

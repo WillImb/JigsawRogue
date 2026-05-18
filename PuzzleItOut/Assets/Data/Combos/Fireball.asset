@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  comboName: Fireball
+  comboName: Spark
   requiredTypes: 0000000000000000
   activeIngredients: 00000000
   multiplier: 2

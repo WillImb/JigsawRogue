@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Air3
   m_EditorClassIdentifier: 
-  comboName: Air3
+  comboName: Wind Tunnel
   requiredTypes: 020000000200000002000000
   activeIngredients: 
   multiplier: 3

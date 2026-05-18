@@ -51,12 +51,12 @@ public class CombatManager : MonoBehaviour
 
             if (submittedTypes.SequenceEqual(comboTypes))
             {
-                //Debug.Log($"Match found — '{Spellbook.instance.combosUnlocked[i].comboName}'");
+                Debug.Log($"Match found — '{Spellbook.instance.combosUnlocked[i].comboName}'");
                 return i;
             }
         }
 
-        //Debug.Log("No match found");
+        Debug.Log("No match found");
         return -1;
     }
 
