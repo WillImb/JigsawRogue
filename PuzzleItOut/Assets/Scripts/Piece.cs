@@ -7,6 +7,7 @@ public class Piece : MonoBehaviour
     private Vector3 offset;
     public Sprite baseSprite;
     private bool dragging;
+    public bool isHovered;
     private bool isPlaced;
     public PieceScriptable pieceData;
     private sideType[] sides;
@@ -72,16 +73,42 @@ public class Piece : MonoBehaviour
 
     void Update()
     {
-        if (!dragging) return;
+       
 
-        Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
-        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
-        worldPos.z = 0f;
+        if (dragging)
+        {
+            isHovered = false;
 
-        transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
 
-        pieceHalo.transform.position = transform.position;
-        pieceHalo.transform.rotation = transform.rotation;
+            Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+            Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+            worldPos.z = 0f;
+
+            transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
+
+            pieceHalo.transform.position = transform.position;
+            pieceHalo.transform.rotation = transform.rotation;
+            return;
+        }
+
+
+        // hover detection
+        Vector2 hoverScreenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+        Vector2 hoverWorldPos = cam.ScreenToWorldPoint(hoverScreenPos);
+        RaycastHit2D hit = Physics2D.Raycast(hoverWorldPos, Vector2.zero);
+        bool nowHovered = hit && hit.transform == transform;
+
+        if (nowHovered && !isHovered)
+        {
+            isHovered = true;
+            TooltipManager.instance.ShowTooltip(pieceData);
+        }
+        else if (!nowHovered && isHovered)
+        {
+            isHovered = false;
+            TooltipManager.instance.HideTooltip();
+        }
+      
     }
 
     public sideType[] GetAllSides()
@@ -124,7 +151,8 @@ public class Piece : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
         if (!hit || hit.transform != transform) return;
 
-        offset = transform.position - (Vector3)worldPos;
+        //offset = transform.position - (Vector3)worldPos;
+        TooltipManager.instance.HideTooltip();
         dragging = true;
         if (isPlaced == true)
         {
@@ -159,7 +187,7 @@ public class Piece : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
             if (!hit || hit.transform != transform) return;
 
-           // offset = transform.position - (Vector3)worldPos;
+            // offset = transform.position - (Vector3)worldPos;
             dragging = true;
             if (isPlaced == true)
             {
@@ -199,6 +227,6 @@ public class Piece : MonoBehaviour
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
 
-       
+
     }
 }
