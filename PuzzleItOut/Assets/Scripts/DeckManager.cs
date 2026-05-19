@@ -50,6 +50,8 @@ public class DeckManager : MonoBehaviour
             pieceHalo = GameObject.Find("PieceHalo");
 
             SetPiecesVisible(true);
+
+            ReassignPieceHalo(scene);
         }
     }
 
@@ -199,5 +201,31 @@ public class DeckManager : MonoBehaviour
         piece.pieceData.goldValue += 1;
 
         Debug.Log($"Upgraded {piece.pieceData.pieceName}" + " #" + index);
+    }
+
+    /// <summary>
+    /// Finds PieceHalo when re-entering GameScene and reassigns it to all pieces
+    /// </summary>
+    void ReassignPieceHalo(Scene scene)
+    {
+        if (scene.name == "GameScene")
+        {
+            SetPiecesVisible(true);
+
+            pieceHalo = GameObject.Find("PieceHalo");
+
+            foreach (GameObject pieceObj in hand)
+            {
+                if (pieceObj != null)
+                {
+                    Piece piece = pieceObj.GetComponent<Piece>();
+
+                    if (piece != null)
+                    {
+                        piece.pieceHalo = pieceHalo;
+                    }
+                }
+            }
+        }
     }
 }
