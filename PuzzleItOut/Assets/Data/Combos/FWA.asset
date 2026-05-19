@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: FWA
   m_EditorClassIdentifier: 
-  comboName: FWA
+  comboName: Acid Rain
   requiredTypes: 000000000100000002000000
   activeIngredients: 
   multiplier: 3

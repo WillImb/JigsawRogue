@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: WEA
   m_EditorClassIdentifier: 
-  comboName: WEA
+  comboName: Flash Flood
   requiredTypes: 010000000300000002000000
   activeIngredients: 
   multiplier: 3

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Earth4
   m_EditorClassIdentifier: 
-  comboName: Earth4
+  comboName: Rockslide
   requiredTypes: 03000000030000000300000003000000
   activeIngredients: 
   multiplier: 4

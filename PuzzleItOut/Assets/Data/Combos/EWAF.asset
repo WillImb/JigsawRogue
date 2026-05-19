@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: EWAF
   m_EditorClassIdentifier: 
-  comboName: EWAF
+  comboName: Elemental Rainbow
   requiredTypes: 03000000010000000200000000000000
   activeIngredients: 
   multiplier: 4

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Sandy Gust
   m_EditorClassIdentifier: 
-  comboName: Sandy Gust
+  comboName: Erosion
   requiredTypes: 0200000003000000
   activeIngredients: 
   multiplier: 2
