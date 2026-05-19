@@ -1,13 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpecialComboEffects : MonoBehaviour
 {
     public delegate void SpecialComboEffect();
-    public delegate int SpecialAdditionEffect(int value);
-    List<SpecialComboEffect> effectListBuffer;
+    public delegate int SpecialAdditionEffect(List<PieceScriptable> pieces);
+    public delegate int SpecialAddtoMultiplierEffect(List<PieceScriptable> pieces);
+    public delegate int SpecialRawMultiplierEffect(List<PieceScriptable> pieces);
+
+    List<Action> effectListBuffer;
     List<SpecialAdditionEffect> additionList;
+    List<SpecialAddtoMultiplierEffect> addToMultiplierList;
+    List<SpecialRawMultiplierEffect> rawMultiplierList;
+
+
 
     delegate void MultiTurnEffect(int turncounter, MultiTurnEffect func);
     /*
@@ -31,36 +39,36 @@ public class SpecialComboEffects : MonoBehaviour
     /// next turn, addition
     /// fire cards stats +1
     /// </summary>
-    void Spark() // fire fire combo
+    int Spark(List<PieceScriptable> pieces) // fire fire combo
     {
-        
+        return pieces.Count(piece => piece.cardType == cardType.fire);
     }
 
     /// <summary>
     /// next turn, addition
     /// water cards stats +1
     /// </summary>
-    void Splash() // water water combo
+    int Splash(List<PieceScriptable> pieces) // water water combo
     {
-        
+        return pieces.Count(piece => piece.cardType == cardType.water);
     }
 
     /// <summary>
     /// next turn, addition
     /// earth cards stats +1
     /// </summary>
-    void Pebble() // earth earth combo
+    int Pebble(List<PieceScriptable> pieces) // earth earth combo
     {
-        
+        return pieces.Count(piece => piece.cardType == cardType.earth);
     }
 
     /// <summary>
     /// next turn, addition
     /// air cards stats +1
     /// </summary>
-    void Gust() // air air combo
+    int Gust(List<PieceScriptable> pieces) // air air combo
     {
-        
+        return pieces.Count(piece => piece.cardType == cardType.air);
     }
 
     /// <summary>
@@ -76,9 +84,9 @@ public class SpecialComboEffects : MonoBehaviour
     /// next turn, add to multiplier
     /// +1 multiplier if >= 2 fire cards
     /// </summary>
-    void Flame() // fire fire fire combo
+    int Flame(List<PieceScriptable> pieces) // fire fire fire combo
     {
-        
+        return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
     }
 
     /// <summary>
