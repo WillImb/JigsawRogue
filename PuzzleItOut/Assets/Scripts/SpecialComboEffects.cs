@@ -88,8 +88,10 @@ public class SpecialComboEffects : MonoBehaviour
     /// <param name="turncounter"></param>
     void Wildfire(int turncounter = 3)
     {
+
+
         // if it has more turns left
-        if (turncounter == 0)
+        if (turncounter <= 0)
         return;
 
         //add to list

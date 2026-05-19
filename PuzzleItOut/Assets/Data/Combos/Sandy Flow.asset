@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
-  m_Name: Earth3
+  m_Name: Sandy Flow
   m_EditorClassIdentifier: 
-  comboName: Boulder
-  requiredTypes: 030000000300000003000000
+  comboName: Sandy Flow
+  requiredTypes: 01000000010000000300000002000000
   activeIngredients: 
-  multiplier: 3
+  multiplier: 4
