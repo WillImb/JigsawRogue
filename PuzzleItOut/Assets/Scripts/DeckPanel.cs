@@ -4,11 +4,10 @@ using UnityEngine.UI;
 using TMPro;
 
 /*
- * Class: DeckPanel
- * Date: 4.17.26
+ * Author(s): Anthony L
+ * Date: 5.15.26
  * Notes:
  *  - Displays all pieces currently in the players deck
- *  - 
  */
 public class DeckPanel : MonoBehaviour
 {
@@ -24,11 +23,28 @@ public class DeckPanel : MonoBehaviour
     // prefab used to visually represent a piece in UI
     [SerializeField] private GameObject pieceUIPrefab;
 
+    void OnEnable()
+    {
+        DeckManager.OnDeckUpdated += PopulateDeckPanel;
+
+        deckManager = DeckManager.instance;
+
+        if (deckManager != null)
+        {
+            deck = deckManager.deck;
+            PopulateDeckPanel();
+        }
+    }
+
+    void OnDisable()
+    {
+        DeckManager.OnDeckUpdated -= PopulateDeckPanel;
+    }
+
     void Start()
     {
         // grab deck manager instance and current deck
         deckManager = DeckManager.instance;
-        deck = deckManager.deck;
 
         // populate UI with current deck contents
         PopulateDeckPanel();
@@ -40,6 +56,19 @@ public class DeckPanel : MonoBehaviour
      */
     public void PopulateDeckPanel()
     {
+        if (deckManager == null)
+        {
+            deckManager = DeckManager.instance;
+        }
+
+        if (deckManager == null || deckManager.deck == null)
+        {
+            Debug.LogWarning("DeckManager or deck is missing");
+            return;
+        }
+
+        deck = deckManager.deck;
+
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);

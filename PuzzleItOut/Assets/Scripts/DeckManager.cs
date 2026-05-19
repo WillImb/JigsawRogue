@@ -1,19 +1,30 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Author(s): Anthony L
+ * Date: 5.15.26
+ * Notes:
+ *  - Currently, there's a bug where your pieces from the discard pile aren't returned to you
+ */
 public class DeckManager : MonoBehaviour
 {
     public static DeckManager instance;
     public List<GameObject> deck;
     public List<GameObject> hand;
     public List<GameObject> discard;
-    [SerializeField]
-    private Transform[] handSlots;
+    [SerializeField] private Transform[] handSlots;
     private Piece[] occupied;
 
+    // piece halo needs to be reassigned when coming back into game scene
+    // that or piece halo can be turned into a prefab and assigned on start
     public GameObject pieceHalo;
+
+    // event for updating deck
+    public static event Action OnDeckUpdated;
 
     void Awake()
     {
@@ -60,7 +71,7 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = deck.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i + 1);
+            int randomIndex = UnityEngine.Random.Range(0, i + 1);
             GameObject temp = deck[i];
             deck[i] = deck[randomIndex];
             deck[randomIndex] = temp;
@@ -75,6 +86,9 @@ public class DeckManager : MonoBehaviour
             GameObject spawnedPiece = Instantiate(prefab);
             hand.Add(spawnedPiece);
             deck.RemoveAt(deck.Count - 1);
+
+            // invoke UI refresh
+            OnDeckUpdated?.Invoke();
 
             ReturnToHand(spawnedPiece.GetComponent<Piece>());
         }
@@ -151,16 +165,20 @@ public class DeckManager : MonoBehaviour
     }
 
     // adds a piece to the deck
-    public void AddPiece(GameObject piecePrefab)
+    public void AddPiece(GameObject piece)
     {
-        if (piecePrefab == null)
+        if (piece == null)
         {
             Debug.LogWarning("Can't add null piece to deck");
             return;
         }
 
-        deck.Add(piecePrefab);
-        Debug.Log($"Added {piecePrefab.name} to deck. Deck now has {deck.Count} pieces.");
+        deck.Add(piece);
+
+        // trigger UI refresh 
+        OnDeckUpdated?.Invoke();
+
+        Debug.Log($"Added {piece.name} to deck. Deck now has {deck.Count} pieces.");
     }
 
     void SetPiecesVisible(bool visible)
