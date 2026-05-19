@@ -19570,6 +19570,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 323265433}
     - target: {fileID: 4074002526099788251, guid: 66e4225393829e84894f08db0e426fb3, type: 3}
+      propertyPath: offset.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074002526099788251, guid: 66e4225393829e84894f08db0e426fb3, type: 3}
+      propertyPath: offset.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074002526099788251, guid: 66e4225393829e84894f08db0e426fb3, type: 3}
       propertyPath: typeText
       value: 
       objectReference: {fileID: 160739638}
