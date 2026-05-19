@@ -1,40 +1,86 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class SpecialComboEffects : MonoBehaviour
 {
-    public delegate void SpecialComboEffect();
     public delegate int SpecialAdditionEffect(List<PieceScriptable> pieces);
     public delegate int SpecialAddtoMultiplierEffect(List<PieceScriptable> pieces);
     public delegate int SpecialRawMultiplierEffect(List<PieceScriptable> pieces);
+    public delegate void SpecialUniqueEffect();
 
     List<Action> effectListBuffer;
-    List<SpecialAdditionEffect> additionList;
-    List<SpecialAddtoMultiplierEffect> addToMultiplierList;
-    List<SpecialRawMultiplierEffect> rawMultiplierList;
+    List<string> additionListBuffer;
+    List<string> addToMultiplierListBuffer;
+    List<string> rawMultiplierListBuffer;
+    List<string> additionList;
+    List<string> addToMultiplierList;
+    List<string> rawMultiplierList;
 
+    /// <summary>
+    /// priorties
+    /// 0: instant - effect happens immediately, seperate from calculations   
+    /// 1: addition - value gets added/subtracted when cards are summing their values
+    /// 2: add to multiplier - value gets added to the multiplier after summing base values
+    /// 3: raw multiplier - value multiplies total after cards are done calculating their values
+    /// 4: unique - effects are seperate from the calculations, and non instant
+    /// </summary>
+    public enum priority
+    {
+        instant,
+        addition,
+        addToMultiplier,
+        rawMultiplier,
+        unique
+    }
 
-
-    delegate void MultiTurnEffect(int turncounter, MultiTurnEffect func);
-    /*
-    priorties
-    0: instant - effect happens immediately, seperate from calculations
-        
-    1: addition - value gets added/subtracted when cards are summing their values
-    2: add to multiplier - value gets added to the multiplier after summing base values
-    3: raw multiplier - value multiplies total after cards are done calculating their values
-
-    4: unique - effects are seperate from the calculations, and non instant
-
-    occurences
+    /* occurences
     next turn
     persistent/next # turns
     start of turn/end of turn
     on enemy's turn/enemy's next attack
     */
+    delegate void MultiTurnEffect(int turncounter, MultiTurnEffect func);
 
+    void addEffect(ComboScriptable combo)
+    {
+        // find effect
+
+        // add to correct list
+        switch (combo.priority)
+        {
+            case priority.instant:
+                Invoke(combo.comboName, 0.0f);
+                break;
+            case priority.addition:
+                additionListBuffer.Add(combo.comboName);
+                break;
+            case priority.addToMultiplier:
+                addToMultiplierListBuffer.Add(combo.comboName);
+                break;
+            case priority.rawMultiplier:
+                rawMultiplierListBuffer.Add(combo.comboName);
+                break;
+            case priority.unique:
+                break;
+            default:
+                break;
+        }
+    }
+
+    void moveFromBuffer()
+    {
+        additionList.AddRange(additionListBuffer);
+        additionListBuffer.Clear();
+        addToMultiplierList.AddRange(addToMultiplierList);
+        addToMultiplierListBuffer.Clear();
+        rawMultiplierList.AddRange(rawMultiplierListBuffer);
+        rawMultiplierListBuffer.Clear();
+    }
+    
+    // Combo Effects
     /// <summary>
     /// next turn, addition
     /// fire cards stats +1

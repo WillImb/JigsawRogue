@@ -19,6 +19,9 @@ public class ComboScriptable : ScriptableObject
     [Header("Multiplier")]
     public float multiplier = 2f;
 
+    [Header("Combo Effects")]
+    public SpecialComboEffects.priority priority;
+
     public int Damage(List<PieceScriptable> pieces)
     {
         int sum = pieces.Sum(p => p.combatValue);

@@ -16,3 +16,4 @@ MonoBehaviour:
   requiredTypes: 0100000001000000
   activeIngredients: 00000000
   multiplier: 2
+  priority: 1
