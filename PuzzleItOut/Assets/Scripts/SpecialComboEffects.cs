@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
-public class SpecialComboEffects : MonoBehaviour
+public class SpecialComboManager : MonoBehaviour
 {
-    public delegate int SpecialAdditionEffect(List<PieceScriptable> pieces);
-    public delegate int SpecialAddtoMultiplierEffect(List<PieceScriptable> pieces);
-    public delegate int SpecialRawMultiplierEffect(List<PieceScriptable> pieces);
-    public delegate void SpecialUniqueEffect();
-
-    List<Action> effectListBuffer;
-    List<string> additionListBuffer;
-    List<string> addToMultiplierListBuffer;
-    List<string> rawMultiplierListBuffer;
-    List<string> additionList;
-    List<string> addToMultiplierList;
-    List<string> rawMultiplierList;
+    public static SpecialComboManager Instance;
+    void Awake()
+    {
+        Instance = this;
+    }
+    //List<Action> effectListBuffer;
+    public List<(string Name, int Turns)> additionListBuffer;
+    public List<(string Name, int Turns)> addToMultiplierListBuffer;
+    public List<(string Name, int Turns)> rawMultiplierListBuffer;
+    public List<(string Name, int Turns)> uniqueListBuffer;
+    public List<(string Name, int Turns)> additionList;
+    public List<(string Name, int Turns)> addToMultiplierList;
+    public List<(string Name, int Turns)> rawMultiplierList;
+    public List<(string Name, int Turns)> uniqueList;
 
     /// <summary>
     /// priorties
@@ -42,42 +43,95 @@ public class SpecialComboEffects : MonoBehaviour
     start of turn/end of turn
     on enemy's turn/enemy's next attack
     */
-    delegate void MultiTurnEffect(int turncounter, MultiTurnEffect func);
-
-    void addEffect(ComboScriptable combo)
+    void Start()
     {
-        // find effect
-
-        // add to correct list
+        additionListBuffer = new List<(string Name, int Turns)>();
+        addToMultiplierListBuffer = new List<(string Name, int Turns)>();
+        rawMultiplierListBuffer = new List<(string Name, int Turns)>();
+        uniqueListBuffer = new List<(string Name, int Turns)>();
+        additionList = new List<(string Name, int Turns)>();
+        addToMultiplierList = new List<(string Name, int Turns)>();
+        rawMultiplierList = new List<(string Name, int Turns)>();
+        uniqueList = new List<(string Name, int Turns)>();
+        clearEffects();
+    }
+    public void clearEffects()
+    {
+        additionList.Clear();
+        additionListBuffer.Clear();
+        addToMultiplierList.Clear();
+        addToMultiplierListBuffer.Clear();
+        rawMultiplierList.Clear();
+        rawMultiplierListBuffer.Clear();
+        uniqueList.Clear();
+        uniqueListBuffer.Clear();
+    }
+    public void addEffect(ComboScriptable combo)
+    {
         switch (combo.priority)
         {
             case priority.instant:
                 Invoke(combo.comboName, 0.0f);
                 break;
             case priority.addition:
-                additionListBuffer.Add(combo.comboName);
+                additionListBuffer.Add((combo.comboName, combo.turns));
                 break;
             case priority.addToMultiplier:
-                addToMultiplierListBuffer.Add(combo.comboName);
+                addToMultiplierListBuffer.Add((combo.comboName, combo.turns));
                 break;
             case priority.rawMultiplier:
-                rawMultiplierListBuffer.Add(combo.comboName);
+                rawMultiplierListBuffer.Add((combo.comboName, combo.turns));
                 break;
             case priority.unique:
+                uniqueListBuffer.Add((combo.comboName, combo.turns));
                 break;
             default:
+                print("priority for "+combo.comboName+" not found");
                 break;
         }
     }
 
-    void moveFromBuffer()
+    public void moveFromBuffer()
     {
         additionList.AddRange(additionListBuffer);
         additionListBuffer.Clear();
-        addToMultiplierList.AddRange(addToMultiplierList);
+
+        addToMultiplierList.AddRange(addToMultiplierListBuffer);
         addToMultiplierListBuffer.Clear();
+
         rawMultiplierList.AddRange(rawMultiplierListBuffer);
         rawMultiplierListBuffer.Clear();
+
+        uniqueList.AddRange(uniqueListBuffer);
+        uniqueListBuffer.Clear();
+    }
+
+    /// <summary>
+    /// goes through lists, reduces turn counts by 1, and removes and that are equal to 0
+    /// </summary>
+    public void cleanTurnLists()
+    {
+        // for(int index = additionList.Count - 1;index > -1; index--)
+        // {   
+        //     //reduce count by 1
+        //     additionList[index] = (additionList[index].Name, additionList[index].Turns - 1);
+
+        //     //remove turns = 0
+        //     if(additionList[index].Turns == 0)
+        //     {
+        //         additionList.RemoveAt(index);
+        //     }
+        // }
+
+        print("cleaning lists");
+        additionList.ForEach(e => e = (e.Name, e.Turns - 1));
+        additionList.RemoveAll(e => e.Turns == 0);
+        addToMultiplierList.ForEach(e => e = (e.Name, e.Turns - 1));
+        addToMultiplierList.RemoveAll(e => e.Turns == 0);
+        rawMultiplierList.ForEach(e => e = (e.Name, e.Turns - 1));
+        rawMultiplierList.RemoveAll(e => e.Turns == 0);
+        uniqueList.ForEach(e => e = (e.Name, e.Turns - 1));
+        uniqueList.RemoveAll(e => e.Turns == 0);
     }
     
     // Combo Effects
@@ -139,16 +193,19 @@ public class SpecialComboEffects : MonoBehaviour
     /// next # turns, add to multiplier
     /// +0 to +3 for next 3 turns
     /// </summary>
-    /// <param name="turncounter"></param>
-    void Wildfire(int turncounter = 3)
+
+    int Wildfire(List<PieceScriptable> pieces) // fire air air combo
     {
-
-
-        // if it has more turns left
-        if (turncounter <= 0)
-        return;
-
-        //add to list
-        Wildfire(turncounter-1);
+        return UnityEngine.Random.Range(0,4);
     }
+
+    /// <summary>
+    /// next # turns, unique
+    /// +5 health
+    /// </summary>
+    void Campfire() // fire air combo
+    {
+        Player.instance.HealHealth(5);
+    }
+
 }

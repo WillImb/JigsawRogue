@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float money;
 
     public Button attackButton;
+    public Button specialAttackButton;
 
     public enum TurnState
     {
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
 
         StartGame();
-        PanelManager.instance.DisableButtons("2");
+        PanelManager.instance.DisableButtons("2,4");
         DeckManager.instance.gameObject.SetActive(true);
 
     }
@@ -53,9 +54,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void DoTurn()
+
+    public void DoTurn(int castType)
     {
         attackButton.interactable = false;
+        specialAttackButton.interactable = false;
         Camera.main.GetComponent<CameraShake>().StartShake();
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
@@ -64,20 +67,36 @@ public class GameManager : MonoBehaviour
         ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
 
         
+        if (combo == null)
+        {
+            EndTurn();
+            return;
+        }
 
-        if (combo != null)
+        if(castType == 0)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
             StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
-            Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));           
-        }
-        else
+            Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));
+        }  
+        else if(castType == 1)
         {
-            currentEnemy.TakeDamage(0);
+            SpecialComboManager.Instance.addEffect(combo);
         }
+        // if (combo != null)
+        // {
+        //     currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
+        //     float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
+        //     StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
+        //     Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));           
+        // }
+        // else
+        // {
+        //     currentEnemy.TakeDamage(0);
+        // }
         EndTurn();
     }
     void EndTurn()
@@ -90,10 +109,6 @@ public class GameManager : MonoBehaviour
             TransitionManager.instance.ActivateTransition("ShopTransition");
             currentEnemy.gameObject.SetActive(false);
             return;
-            
-                
-            
-            
         }
         else if (Player.instance.GetHealth() <= 0)
         {
@@ -106,10 +121,12 @@ public class GameManager : MonoBehaviour
         //The end of the Players turn
         if(turnState == TurnState.playerTurn)
         {
-            
+            print("number of unique combos in buffer: "+SpecialComboManager.Instance.uniqueListBuffer.Count);
+            print("number of unique combos in active list: "+SpecialComboManager.Instance.uniqueList.Count);
+            SpecialComboManager.Instance.uniqueList.ForEach(e => SpecialComboManager.Instance.Invoke(e.Name,0.0f));
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
-            //switdh to enemy's turn
+            //switch to enemy's turn
             turnState = TurnState.enemyTurn;
             Invoke("DoEnemyTurn",1);
 
@@ -119,6 +136,8 @@ public class GameManager : MonoBehaviour
             //switch to enemy's turn
             
             turnState = TurnState.playerTurn;
+            SpecialComboManager.Instance.cleanTurnLists();
+            SpecialComboManager.Instance.moveFromBuffer();
         }
         
     }

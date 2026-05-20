@@ -97,7 +97,7 @@ public class TutorialManager : MonoBehaviour
 
         HideTutPanel(8);
 
-        GameManager.instance.DoTurn();
+        GameManager.instance.DoTurn(0);
         while(curHealth <= Player.instance.GetHealth())
         {
            

@@ -86,7 +86,7 @@ public class BoardManager : MonoBehaviour
         piece.LockToSlot(slots[index]);
         //Spawn the place VFX
         VFXManager.instance.SpawnParticle(slots[index].position, 1);
-        PanelManager.instance.EnableButtons("2");
+        PanelManager.instance.EnableButtons("2,4");
     }
 
     int GetClosestSlot(Vector3 piecePos)
