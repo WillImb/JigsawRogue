@@ -1,36 +1,37 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Player:MonoBehaviour
+public class Player : MonoBehaviour
 {
     public static Player instance;
+
     public int gold;
     public int maxHealth;
-    [SerializeField]
-    int health;
+    public int maxMana;
+    // these values are public for testing purposes
+    public int health;
+    public int mana;
+
     public bool completedTutorial;
 
+    public event Action<int, int> OnHealthChanged;
+    public event Action<int, int> OnManaChanged;
 
-    public Slider playerHealthSlider;
-
-    // no combo type yet
-    // List<Combo> AllCombos
-    // List<Combo? CombosUnlocked
-
-    public void Awake()
+    void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
     }
 
-    public void Start()
+    void Start()
     {
         health = maxHealth;
-        playerHealthSlider.value = health / (float)maxHealth;
+        mana = maxMana;
 
+        OnHealthChanged?.Invoke(health, maxHealth);
+        OnManaChanged?.Invoke(mana, maxMana);
     }
 
     public int GetGold()
@@ -43,7 +44,11 @@ public class Player:MonoBehaviour
         return health;
     }
 
-    // doesnt actually do anything yet
+    public int GetMana()
+    {
+        return mana;
+    }
+
     public void SpendGold(int goldToSpend)
     {
         gold -= goldToSpend;
@@ -53,17 +58,43 @@ public class Player:MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        playerHealthSlider.value = health / (float)maxHealth;
+
+        if (health < 0)
+        {
+            health = 0;
+        }
+
+        OnHealthChanged?.Invoke(health, maxHealth);
     }
 
     public void HealHealth(int healing)
     {
+        health += healing;
+
         if (health > maxHealth)
         {
             health = maxHealth;
         }
-        playerHealthSlider.value = health / (float)maxHealth;
 
+        OnHealthChanged?.Invoke(health, maxHealth);
     }
 
+    public void SpendMana(int manaToSpend)
+    {
+        mana -= manaToSpend;
+
+        if (mana < 0)
+        {
+            mana = 0;
+        }
+
+        OnManaChanged?.Invoke(mana, maxMana);
+    }
+
+    public void ResetMana()
+    {
+        mana = maxMana;
+
+        OnManaChanged?.Invoke(mana, maxMana);
+    }
 }
