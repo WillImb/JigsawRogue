@@ -121,8 +121,6 @@ public class GameManager : MonoBehaviour
         //The end of the Players turn
         if(turnState == TurnState.playerTurn)
         {
-            print("number of unique combos in buffer: "+SpecialComboManager.Instance.uniqueListBuffer.Count);
-            print("number of unique combos in active list: "+SpecialComboManager.Instance.uniqueList.Count);
             SpecialComboManager.Instance.uniqueList.ForEach(e => SpecialComboManager.Instance.Invoke(e.Name,0.0f));
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
@@ -133,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
         else if (turnState == TurnState.enemyTurn)
         {
-            //switch to enemy's turn
+            //switch to player's turn
             
             turnState = TurnState.playerTurn;
             SpecialComboManager.Instance.cleanTurnLists();

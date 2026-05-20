@@ -68,16 +68,14 @@ public class CombatManager : MonoBehaviour
     public int CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
     {
         int result = combo.Gold(pieces);
-        //Debug.Log($"'{combo.comboName}' generated {result} gold");
-        Debug.Log(result+" gold from combo: "+combo.comboName);
+
         return result;
     }
 
     public int CalculateHealth(ComboScriptable combo, List<PieceScriptable> pieces)
     {
         int result = combo.Health(pieces);
-        //Debug.Log($"'{combo.comboName}' healed {result} health");
-        Debug.Log(result+" health from combo: "+combo.comboName);
+
         return result;
     }
 }

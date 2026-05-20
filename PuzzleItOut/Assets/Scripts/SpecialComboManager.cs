@@ -10,7 +10,7 @@ public class SpecialComboManager : MonoBehaviour
     {
         Instance = this;
     }
-    //List<Action> effectListBuffer;
+
     public List<(string Name, int Turns)> additionListBuffer;
     public List<(string Name, int Turns)> addToMultiplierListBuffer;
     public List<(string Name, int Turns)> rawMultiplierListBuffer;
@@ -55,6 +55,7 @@ public class SpecialComboManager : MonoBehaviour
         uniqueList = new List<(string Name, int Turns)>();
         clearEffects();
     }
+    
     public void clearEffects()
     {
         additionList.Clear();
@@ -66,6 +67,7 @@ public class SpecialComboManager : MonoBehaviour
         uniqueList.Clear();
         uniqueListBuffer.Clear();
     }
+
     public void addEffect(ComboScriptable combo)
     {
         switch (combo.priority)
@@ -110,9 +112,7 @@ public class SpecialComboManager : MonoBehaviour
     /// goes through lists, reduces turn counts by 1, and removes and that are equal to 0
     /// </summary>
     public void cleanTurnLists()
-    {
-        //print("cleaning lists");
-        
+    {        
         for(int index = additionList.Count - 1;index > -1; index--)
         {   
             //reduce count by 1
@@ -139,7 +139,7 @@ public class SpecialComboManager : MonoBehaviour
         uniqueList.RemoveAll(e => e.Turns == 0);
     }
     
-    // Combo Effects
+#region Combo Effects
     /// <summary>
     /// next turn, addition
     /// fire cards stats +1
@@ -212,5 +212,5 @@ public class SpecialComboManager : MonoBehaviour
     {
         Player.instance.HealHealth(5);
     }
-
+#endregion
 }

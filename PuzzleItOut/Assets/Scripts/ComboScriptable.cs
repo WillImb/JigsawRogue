@@ -22,6 +22,7 @@ public class ComboScriptable : ScriptableObject
     [Header("Combo Effects")]
     public SpecialComboManager.priority priority;
     public int turns = 1;
+    
     public int Damage(List<PieceScriptable> pieces)
     {
         int sum = pieces.Sum(p => p.combatValue);
