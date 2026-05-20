@@ -71,13 +71,63 @@ public class BoardManager : MonoBehaviour
         }
         if (placedPieceSide == sideType.In)
         {
-            return true;
+            if(CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide))
+                return true;
         }
         if (placedPieceSide == sideType.Out)
         {
-            return neighborPieceSide == sideType.In;
+            if (CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide))
+                return neighborPieceSide == sideType.In;
         }
         return false;
+    }
+
+    private bool CheckElementNeighbor(Piece piece, int neighborIndex, sideType side, sideType neighborSide)
+    {
+        cardType otherCardType = occupied[neighborIndex].pieceData.cardType;
+        if (side == sideType.Out)
+        {
+            switch (piece.pieceData.cardType)
+            {
+                case cardType.fire:
+                    if (otherCardType == cardType.water)
+                        return false;
+                break;
+                case cardType.water:
+                break;
+                case cardType.air:
+                    if (otherCardType == cardType.water)
+                        return false;
+                break;
+                case cardType.earth:
+                    if (otherCardType == cardType.fire || otherCardType == cardType.air)
+                        return false;
+                break;
+            }
+        }
+        else if(side == sideType.In){
+            switch (piece.pieceData.cardType)
+            {
+                case cardType.fire:
+                    if (otherCardType == cardType.earth)
+                        return false;
+                break;
+                case cardType.water:
+                    if (otherCardType == cardType.fire || otherCardType == cardType.air)
+                        return false;
+                    break;
+                case cardType.air:
+                    if (otherCardType == cardType.earth)
+                        return false;
+                break;
+                case cardType.earth:
+                    
+                break;
+            }
+        }
+
+
+        return true;
     }
 
     void PlacePiece(Piece piece, int index)

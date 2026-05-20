@@ -90,7 +90,7 @@ public class Piece : MonoBehaviour
             pieceHalo.transform.rotation = transform.rotation;
             return;
         }
-
+        
 
         // hover detection
         Vector2 hoverScreenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
