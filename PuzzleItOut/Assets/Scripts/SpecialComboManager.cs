@@ -111,26 +111,31 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     public void cleanTurnLists()
     {
-        // for(int index = additionList.Count - 1;index > -1; index--)
-        // {   
-        //     //reduce count by 1
-        //     additionList[index] = (additionList[index].Name, additionList[index].Turns - 1);
-
-        //     //remove turns = 0
-        //     if(additionList[index].Turns == 0)
-        //     {
-        //         additionList.RemoveAt(index);
-        //     }
-        // }
-
-        print("cleaning lists");
-        additionList.ForEach(e => e = (e.Name, e.Turns - 1));
+        //print("cleaning lists");
+        
+        for(int index = additionList.Count - 1;index > -1; index--)
+        {   
+            //reduce count by 1
+            additionList[index] = (additionList[index].Name, additionList[index].Turns - 1);
+        }
         additionList.RemoveAll(e => e.Turns == 0);
-        addToMultiplierList.ForEach(e => e = (e.Name, e.Turns - 1));
+        
+        for(int index = addToMultiplierList.Count - 1;index > -1; index--)
+        {   
+            addToMultiplierList[index] = (addToMultiplierList[index].Name, addToMultiplierList[index].Turns - 1);
+        }
         addToMultiplierList.RemoveAll(e => e.Turns == 0);
-        rawMultiplierList.ForEach(e => e = (e.Name, e.Turns - 1));
+        
+        for(int index = rawMultiplierList.Count - 1;index > -1; index--)
+        {   
+            rawMultiplierList[index] = (rawMultiplierList[index].Name, rawMultiplierList[index].Turns - 1);
+        }
         rawMultiplierList.RemoveAll(e => e.Turns == 0);
-        uniqueList.ForEach(e => e = (e.Name, e.Turns - 1));
+        
+        for(int index = uniqueList.Count - 1;index > -1; index--)
+        {   
+            uniqueList[index] = (uniqueList[index].Name, uniqueList[index].Turns - 1);
+        }
         uniqueList.RemoveAll(e => e.Turns == 0);
     }
     
