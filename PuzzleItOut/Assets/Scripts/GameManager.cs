@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         //The end of the Players turn
         if(turnState == TurnState.playerTurn)
         {
-            SpecialComboManager.Instance.uniqueList.ForEach(e => SpecialComboManager.Instance.Invoke(e.Name,0.0f));
+            SpecialComboManager.Instance.uniqueList.ForEach(e => e.Effect.Invoke(SpecialComboManager.Instance, null));
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
             //switch to enemy's turn

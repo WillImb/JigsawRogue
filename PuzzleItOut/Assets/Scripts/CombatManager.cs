@@ -62,35 +62,69 @@ public class CombatManager : MonoBehaviour
         // base value from pieces
         result += pieces.Sum(p => p.combatValue);
 
-        //addition value from effects
+        // addition value from effects
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
             result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
         }
 
-        if (combo.activeIngredients.Contains(IngredientType.Combat))
-        {
-            //value from multiplier
-            int multiplier = (int)combo.multiplier;
+        // value from multiplier
+        int multiplier = (int)combo.multiplier;
 
-            //add to multiplier value from effects
-            result *= multiplier;
+        for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
+        {
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
         }
+        // add to multiplier value from effects
+        result *= multiplier;
+
         //int result = combo.Damage(pieces);
         return result;
     }
 
     public int CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        int result = combo.Gold(pieces);
+        int result = 0;
 
+        result += pieces.Sum(p => p.goldValue);
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
+        {
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+        }
+
+        int multiplier = (int)combo.multiplier;
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
+        {
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+        }
+
+        result *= multiplier;
+        //int result = combo.Gold(pieces);
         return result;
     }
 
     public int CalculateHealth(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        int result = combo.Health(pieces);
+        int result = 0;
 
+        result += pieces.Sum(p => p.healingValue);
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
+        {
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+        }
+
+        int multiplier = (int)combo.multiplier;
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
+        {
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+        }
+        
+        result *= multiplier;
+        //int result = combo.Health(pieces);
         return result;
     }
 }

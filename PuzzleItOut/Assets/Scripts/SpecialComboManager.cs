@@ -13,13 +13,13 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     public List<(MethodInfo Effect, int Turns)> additionListBuffer;
-    public List<(string Name, int Turns)> addToMultiplierListBuffer;
-    public List<(string Name, int Turns)> rawMultiplierListBuffer;
-    public List<(string Name, int Turns)> uniqueListBuffer;
+    public List<(MethodInfo Effect, int Turns)> addToMultiplierListBuffer;
+    public List<(MethodInfo Effect, int Turns)> rawMultiplierListBuffer;
+    public List<(MethodInfo Effect, int Turns)> uniqueListBuffer;
     public List<(MethodInfo Effect, int Turns)> additionList;
-    public List<(string Name, int Turns)> addToMultiplierList;
-    public List<(string Name, int Turns)> rawMultiplierList;
-    public List<(string Name, int Turns)> uniqueList;
+    public List<(MethodInfo Effect, int Turns)> addToMultiplierList;
+    public List<(MethodInfo Effect, int Turns)> rawMultiplierList;
+    public List<(MethodInfo Effect, int Turns)> uniqueList;
 
     /// <summary>
     /// priorties
@@ -47,13 +47,13 @@ public class SpecialComboManager : MonoBehaviour
     void Start()
     {
         additionListBuffer = new List<(MethodInfo Effect, int Turns)>();
-        addToMultiplierListBuffer = new List<(string Name, int Turns)>();
-        rawMultiplierListBuffer = new List<(string Name, int Turns)>();
-        uniqueListBuffer = new List<(string Name, int Turns)>();
+        addToMultiplierListBuffer = new List<(MethodInfo Effect, int Turns)>();
+        rawMultiplierListBuffer = new List<(MethodInfo Effect, int Turns)>();
+        uniqueListBuffer = new List<(MethodInfo Effect, int Turns)>();
         additionList = new List<(MethodInfo Effect, int Turns)>();
-        addToMultiplierList = new List<(string Name, int Turns)>();
-        rawMultiplierList = new List<(string Name, int Turns)>();
-        uniqueList = new List<(string Name, int Turns)>();
+        addToMultiplierList = new List<(MethodInfo Effect, int Turns)>();
+        rawMultiplierList = new List<(MethodInfo Effect, int Turns)>();
+        uniqueList = new List<(MethodInfo Effect, int Turns)>();
         clearEffects();
     }
     
@@ -82,19 +82,19 @@ public class SpecialComboManager : MonoBehaviour
         switch (combo.priority)
         {
             case priority.instant:
-                Invoke(combo.comboName, 0.0f);
+                effect.Invoke(this, null);
                 break;
             case priority.addition:
                 additionListBuffer.Add((effect, combo.turns));
                 break;
             case priority.addToMultiplier:
-                addToMultiplierListBuffer.Add((combo.comboName, combo.turns));
+                addToMultiplierListBuffer.Add((effect, combo.turns));
                 break;
             case priority.rawMultiplier:
-                rawMultiplierListBuffer.Add((combo.comboName, combo.turns));
+                rawMultiplierListBuffer.Add((effect, combo.turns));
                 break;
             case priority.unique:
-                uniqueListBuffer.Add((combo.comboName, combo.turns));
+                uniqueListBuffer.Add((effect, combo.turns));
                 break;
             default:
                 print("priority for "+combo.comboName+" not found");
@@ -102,6 +102,9 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// moves effects from the buffer (they were just casted) to the main lists (will take effect next turn and so on)
+    /// </summary>
     public void moveFromBuffer()
     {
         additionList.AddRange(additionListBuffer);
@@ -131,19 +134,19 @@ public class SpecialComboManager : MonoBehaviour
         
         for(int index = addToMultiplierList.Count - 1;index > -1; index--)
         {   
-            addToMultiplierList[index] = (addToMultiplierList[index].Name, addToMultiplierList[index].Turns - 1);
+            addToMultiplierList[index] = (addToMultiplierList[index].Effect, addToMultiplierList[index].Turns - 1);
         }
         addToMultiplierList.RemoveAll(e => e.Turns == 0);
         
         for(int index = rawMultiplierList.Count - 1;index > -1; index--)
         {   
-            rawMultiplierList[index] = (rawMultiplierList[index].Name, rawMultiplierList[index].Turns - 1);
+            rawMultiplierList[index] = (rawMultiplierList[index].Effect, rawMultiplierList[index].Turns - 1);
         }
         rawMultiplierList.RemoveAll(e => e.Turns == 0);
         
         for(int index = uniqueList.Count - 1;index > -1; index--)
         {   
-            uniqueList[index] = (uniqueList[index].Name, uniqueList[index].Turns - 1);
+            uniqueList[index] = (uniqueList[index].Effect, uniqueList[index].Turns - 1);
         }
         uniqueList.RemoveAll(e => e.Turns == 0);
     }
@@ -222,5 +225,6 @@ public class SpecialComboManager : MonoBehaviour
     {
         Player.instance.HealHealth(5);
     }
+
 #endregion
 }
