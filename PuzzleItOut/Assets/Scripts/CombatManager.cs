@@ -49,7 +49,7 @@ public class CombatManager : MonoBehaviour
 
             if (submittedTypes.SequenceEqual(comboTypes))
             {
-                Debug.Log($"Match found — '{Spellbook.instance.combosUnlocked[i].comboName}'");
+                //Debug.Log($"Match found — '{Spellbook.instance.combosUnlocked[i].comboName}'");
                 return i;
             }
         }

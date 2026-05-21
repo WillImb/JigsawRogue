@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class SpecialComboManager : MonoBehaviour
@@ -56,6 +57,7 @@ public class SpecialComboManager : MonoBehaviour
         clearEffects();
     }
     
+#region List Control
     public void clearEffects()
     {
         additionList.Clear();
@@ -70,6 +72,17 @@ public class SpecialComboManager : MonoBehaviour
 
     public void addEffect(ComboScriptable combo)
     {
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.name, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
+        
+        if(effect != null)
+            Debug.Log("effect with combo name "+combo.name+" was found. method name is: "+effect.Name);
+            //Debug.Log("Spark was found");
+        else
+        {   
+            Debug.Log("effect with combo name "+combo.name+" was not found in SpecialComboManager");
+            //Debug.Log("Spark was not found");
+            return;
+        }
         switch (combo.priority)
         {
             case priority.instant:
@@ -138,7 +151,8 @@ public class SpecialComboManager : MonoBehaviour
         }
         uniqueList.RemoveAll(e => e.Turns == 0);
     }
-    
+#endregion
+
 #region Combo Effects
     /// <summary>
     /// next turn, addition
@@ -146,7 +160,7 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     int Spark(List<PieceScriptable> pieces) // fire fire combo
     {
-        return pieces.Count(piece => piece.cardType == cardType.fire);
+       return pieces.Count(piece => piece.cardType == cardType.fire);
     }
 
     /// <summary>
