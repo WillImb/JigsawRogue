@@ -78,7 +78,6 @@ public class CombatManager : MonoBehaviour
         // add to multiplier value from effects
         result *= multiplier;
 
-        //int result = combo.Damage(pieces);
         return result;
     }
 
