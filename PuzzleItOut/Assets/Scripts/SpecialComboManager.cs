@@ -12,11 +12,11 @@ public class SpecialComboManager : MonoBehaviour
         Instance = this;
     }
 
-    public List<(string Name, int Turns)> additionListBuffer;
+    public List<(MethodInfo Effect, int Turns)> additionListBuffer;
     public List<(string Name, int Turns)> addToMultiplierListBuffer;
     public List<(string Name, int Turns)> rawMultiplierListBuffer;
     public List<(string Name, int Turns)> uniqueListBuffer;
-    public List<(string Name, int Turns)> additionList;
+    public List<(MethodInfo Effect, int Turns)> additionList;
     public List<(string Name, int Turns)> addToMultiplierList;
     public List<(string Name, int Turns)> rawMultiplierList;
     public List<(string Name, int Turns)> uniqueList;
@@ -46,11 +46,11 @@ public class SpecialComboManager : MonoBehaviour
     */
     void Start()
     {
-        additionListBuffer = new List<(string Name, int Turns)>();
+        additionListBuffer = new List<(MethodInfo Effect, int Turns)>();
         addToMultiplierListBuffer = new List<(string Name, int Turns)>();
         rawMultiplierListBuffer = new List<(string Name, int Turns)>();
         uniqueListBuffer = new List<(string Name, int Turns)>();
-        additionList = new List<(string Name, int Turns)>();
+        additionList = new List<(MethodInfo Effect, int Turns)>();
         addToMultiplierList = new List<(string Name, int Turns)>();
         rawMultiplierList = new List<(string Name, int Turns)>();
         uniqueList = new List<(string Name, int Turns)>();
@@ -74,22 +74,18 @@ public class SpecialComboManager : MonoBehaviour
     {
         MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.name, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
         
-        if(effect != null)
-            Debug.Log("effect with combo name "+combo.name+" was found. method name is: "+effect.Name);
-            //Debug.Log("Spark was found");
-        else
-        {   
-            Debug.Log("effect with combo name "+combo.name+" was not found in SpecialComboManager");
-            //Debug.Log("Spark was not found");
+        if(effect==null){
+            Debug.Log("Combo method doesn't exist, or name does not match any in SpecialComboManager");
             return;
         }
+
         switch (combo.priority)
         {
             case priority.instant:
                 Invoke(combo.comboName, 0.0f);
                 break;
             case priority.addition:
-                additionListBuffer.Add((combo.comboName, combo.turns));
+                additionListBuffer.Add((effect, combo.turns));
                 break;
             case priority.addToMultiplier:
                 addToMultiplierListBuffer.Add((combo.comboName, combo.turns));
@@ -129,7 +125,7 @@ public class SpecialComboManager : MonoBehaviour
         for(int index = additionList.Count - 1;index > -1; index--)
         {   
             //reduce count by 1
-            additionList[index] = (additionList[index].Name, additionList[index].Turns - 1);
+            additionList[index] = (additionList[index].Effect, additionList[index].Turns - 1);
         }
         additionList.RemoveAll(e => e.Turns == 0);
         

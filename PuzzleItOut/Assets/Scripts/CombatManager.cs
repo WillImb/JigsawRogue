@@ -19,12 +19,10 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
-
     }
 
     void Update()
     {
-
     }
 
     public void DealDamage(int damage)
@@ -60,8 +58,25 @@ public class CombatManager : MonoBehaviour
 
     public int CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        int result = combo.Damage(pieces);
-        
+        int result = 0;
+        // base value from pieces
+        result += pieces.Sum(p => p.combatValue);
+
+        //addition value from effects
+        for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
+        {
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+        }
+
+        if (combo.activeIngredients.Contains(IngredientType.Combat))
+        {
+            //value from multiplier
+            int multiplier = (int)combo.multiplier;
+
+            //add to multiplier value from effects
+            result *= multiplier;
+        }
+        //int result = combo.Damage(pieces);
         return result;
     }
 
