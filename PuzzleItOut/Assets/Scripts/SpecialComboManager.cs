@@ -165,6 +165,103 @@ public class SpecialComboManager : MonoBehaviour
 #endregion
 
 #region Combo Effects
+
+    void AcidRain(){}
+
+    void Ashfall(){}
+
+    void BeachBonfire(){}
+
+    void Boulder(){}
+
+    /// <summary>
+    /// next # turns, unique
+    /// +5 health
+    /// </summary>
+    void Campfire() // fire air combo
+    {
+        Player.instance.HealHealth(5);
+    }
+
+    void Clay(){}
+
+    void ConvergentBoundary(){}
+
+    void Cyclone(){}
+
+    void ElementalRainbow(){}
+
+    void Erosion(){}
+
+    void ExplosiveClay(){}
+
+    void Fireball(){}
+
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 fire cards
+    /// </summary>
+    int Flame(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire combo
+    {
+        return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
+    }
+
+    void FlashFlood(){}
+
+    void Fog(){}
+
+    void ForgingSteel(){}
+
+    void Frostbite(){}
+
+    /// <summary>
+    /// next turn, addition
+    /// air cards stats +1
+    /// </summary>
+    int Gust(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air combo
+    {
+        return pieces.Count(piece => piece.cardType == cardType.air);
+    }
+
+    void HotCoal(){}
+
+    void Mist(){}
+
+    void MoltenGold(){}
+
+    void Mudslide(){}
+
+    void OceanVents(){}
+
+    /// <summary>
+    /// next turn, addition
+    /// earth cards stats +1
+    /// </summary>
+    int Pebble(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth combo
+    {
+        return pieces.Count(piece => piece.cardType == cardType.earth);
+    }
+
+    void PetrichorMudslide(){}
+
+    void Plasma(){}
+
+    void Quicksand(){}
+
+    void Rockslide(){}
+
+    void Sandbar(){}
+
+    void SandyFlow(){}
+
+    void Scorch(){}
+
+    void Simmer(){}
+
+    void Sinkhole(){}
+
+    void Smog(){}
+
     /// <summary>
     /// next turn, addition
     /// fire cards stats +1
@@ -185,24 +282,6 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     /// <summary>
-    /// next turn, addition
-    /// earth cards stats +1
-    /// </summary>
-    int Pebble(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth combo
-    {
-        return pieces.Count(piece => piece.cardType == cardType.earth);
-    }
-
-    /// <summary>
-    /// next turn, addition
-    /// air cards stats +1
-    /// </summary>
-    int Gust(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air combo
-    {
-        return pieces.Count(piece => piece.cardType == cardType.air);
-    }
-
-    /// <summary>
     /// instant
     /// +20 health
     /// </summary>
@@ -211,32 +290,13 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth(20);
     }
 
-    /// <summary>
-    /// next turn, add to multiplier
-    /// +1 multiplier if >= 2 fire cards
-    /// </summary>
-    int Flame(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire combo
-    {
-        return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
-    }
+    void SteamRoom(){}
 
-    /// <summary>
-    /// next # turns, add to multiplier
-    /// +0 to +3 for next 3 turns
-    /// </summary>
-    int Wildfire(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire air air combo
-    {
-        return UnityEngine.Random.Range(0,4);
-    }
+    void Swamp(){}
 
-    /// <summary>
-    /// next # turns, unique
-    /// +5 health
-    /// </summary>
-    void Campfire() // fire air combo
-    {
-        Player.instance.HealHealth(5);
-    }
+    void Tornado(){}
+
+    void Tsunami(){}
 
     /// <summary>
     /// multiple effects, instant
@@ -271,5 +331,18 @@ public class SpecialComboManager : MonoBehaviour
         // damage to be dealt
         GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5,11));
     }
-#endregion
+
+    void Wave(){}
+
+    /// <summary>
+    /// next # turns, add to multiplier
+    /// +0 to +3 for next 3 turns
+    /// </summary>
+    int Wildfire(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire air air combo
+    {
+        return UnityEngine.Random.Range(0,4);
+    }
+
+    void WindTunnel(){}
+    #endregion
 }
