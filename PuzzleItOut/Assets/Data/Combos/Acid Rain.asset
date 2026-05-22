@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Acid Rain
   m_EditorClassIdentifier: 
-  comboName: Acid Rain
+  comboName: AcidRain
   requiredTypes: 000000000100000002000000
-  activeIngredients: 
   multiplier: 3
+  priority: 0
+  turns: 1

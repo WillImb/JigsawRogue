@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Sandy Flow
   m_EditorClassIdentifier: 
-  comboName: Sandy Flow
+  comboName: SandyFlow
   requiredTypes: 01000000010000000300000002000000
-  activeIngredients: 
   multiplier: 4
+  priority: 0
+  turns: 1

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
-  m_Name: Wind Tunnel
+  m_Name: Blazing Winds
   m_EditorClassIdentifier: 
-  comboName: WindTunnel
-  requiredTypes: 020000000200000002000000
-  multiplier: 3
+  comboName: BlazingWinds
+  requiredTypes: 00000000020000000200000002000000
+  multiplier: 4
   priority: 0
   turns: 1

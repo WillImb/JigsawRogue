@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Elemental Rainbow
   m_EditorClassIdentifier: 
-  comboName: Elemental Rainbow
+  comboName: ElementalRainbow
   requiredTypes: 03000000010000000200000000000000
-  activeIngredients: 
   multiplier: 4
+  priority: 0
+  turns: 1
