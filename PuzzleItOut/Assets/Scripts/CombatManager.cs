@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class CombatManager : MonoBehaviour
 {
@@ -65,7 +66,7 @@ public class CombatManager : MonoBehaviour
         // addition value from effects
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
         }
 
         // value from multiplier
@@ -73,11 +74,17 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
         }
         // add to multiplier value from effects
         result *= multiplier;
 
+        for (int index = 0 ; index < SpecialComboManager.Instance.rawMultiplierList.Count; index++)
+        {
+            Debug.Log(SpecialComboManager.Instance.rawMultiplierList[index].Effect.Name);
+            result *= (int)SpecialComboManager.Instance.rawMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
+        }
+        
         return result;
     }
 
@@ -89,18 +96,22 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold});
         }
 
         int multiplier = (int)combo.multiplier;
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold});
         }
 
         result *= multiplier;
-        //int result = combo.Gold(pieces);
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.rawMultiplierList.Count; index++)
+        {
+            result *= (int)SpecialComboManager.Instance.rawMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold});
+        }
         return result;
     }
 
@@ -112,18 +123,22 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health});
         }
 
         int multiplier = (int)combo.multiplier;
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces});
+            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health});
         }
         
         result *= multiplier;
-        //int result = combo.Health(pieces);
+
+        for (int index = 0 ; index < SpecialComboManager.Instance.rawMultiplierList.Count; index++)
+        {
+            result *= (int)SpecialComboManager.Instance.rawMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health});
+        }
         return result;
     }
 }

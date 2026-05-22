@@ -13,8 +13,8 @@ public class ComboScriptable : ScriptableObject
     [Header("Required Card Types")]
     public List<cardType> requiredTypes;
 
-    [Header("Active Ingredients")]
-    public List<IngredientType> activeIngredients;
+    // [Header("Active Ingredients")]
+    // public List<IngredientType> activeIngredients;
 
     [Header("Multiplier")]
     public float multiplier = 2f;
@@ -23,6 +23,7 @@ public class ComboScriptable : ScriptableObject
     public SpecialComboManager.priority priority;
     public int turns = 1;
     
+    /*
     public int Damage(List<PieceScriptable> pieces)
     {
         int sum = pieces.Sum(p => p.combatValue);
@@ -46,4 +47,5 @@ public class ComboScriptable : ScriptableObject
         float sum = pieces.Sum(p => p.probabilityValue);
         return activeIngredients.Contains(IngredientType.Probability) ? sum * multiplier : sum;
     }
+    */
 }

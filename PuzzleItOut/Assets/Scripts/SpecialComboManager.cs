@@ -11,7 +11,7 @@ public class SpecialComboManager : MonoBehaviour
     {
         Instance = this;
     }
-
+#region declarations
     public List<(MethodInfo Effect, int Turns)> additionListBuffer;
     public List<(MethodInfo Effect, int Turns)> addToMultiplierListBuffer;
     public List<(MethodInfo Effect, int Turns)> rawMultiplierListBuffer;
@@ -21,6 +21,7 @@ public class SpecialComboManager : MonoBehaviour
     public List<(MethodInfo Effect, int Turns)> rawMultiplierList;
     public List<(MethodInfo Effect, int Turns)> uniqueList;
 
+
     /// <summary>
     /// priorties
     /// 0: instant - effect happens immediately, seperate from calculations   
@@ -29,6 +30,8 @@ public class SpecialComboManager : MonoBehaviour
     /// 3: raw multiplier - value multiplies total after cards are done calculating their values
     /// 4: unique - effects are seperate from the calculations, and non instant
     /// </summary>
+    public delegate int NumberEffect (List<PieceScriptable> pieces, AffectedStat affectedStat);
+    public delegate void UniqueEffect ();
     public enum priority
     {
         instant,
@@ -38,12 +41,21 @@ public class SpecialComboManager : MonoBehaviour
         unique
     }
 
+    [Flags]
+    public enum AffectedStat
+    {
+        NoRequirements = 0,
+        Damage = 1,
+        Gold = 2,
+        Health = 4
+    }
     /* occurences
     next turn
     persistent/next # turns
     start of turn/end of turn
     on enemy's turn/enemy's next attack
     */
+#endregion
     void Start()
     {
         additionListBuffer = new List<(MethodInfo Effect, int Turns)>();
@@ -72,7 +84,7 @@ public class SpecialComboManager : MonoBehaviour
 
     public void addEffect(ComboScriptable combo)
     {
-        MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.name, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.comboName, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
         
         if(effect==null){
             Debug.Log("Combo method doesn't exist, or name does not match any in SpecialComboManager");
@@ -157,16 +169,17 @@ public class SpecialComboManager : MonoBehaviour
     /// next turn, addition
     /// fire cards stats +1
     /// </summary>
-    int Spark(List<PieceScriptable> pieces) // fire fire combo
+    int Spark(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire combo
     {
-       return pieces.Count(piece => piece.cardType == cardType.fire);
+        Debug.Log(affectedStat);
+        return pieces.Count(piece => piece.cardType == cardType.fire);
     }
 
     /// <summary>
     /// next turn, addition
     /// water cards stats +1
     /// </summary>
-    int Splash(List<PieceScriptable> pieces) // water water combo
+    int Splash(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water water combo
     {
         return pieces.Count(piece => piece.cardType == cardType.water);
     }
@@ -175,7 +188,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next turn, addition
     /// earth cards stats +1
     /// </summary>
-    int Pebble(List<PieceScriptable> pieces) // earth earth combo
+    int Pebble(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth combo
     {
         return pieces.Count(piece => piece.cardType == cardType.earth);
     }
@@ -184,7 +197,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next turn, addition
     /// air cards stats +1
     /// </summary>
-    int Gust(List<PieceScriptable> pieces) // air air combo
+    int Gust(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air combo
     {
         return pieces.Count(piece => piece.cardType == cardType.air);
     }
@@ -202,7 +215,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next turn, add to multiplier
     /// +1 multiplier if >= 2 fire cards
     /// </summary>
-    int Flame(List<PieceScriptable> pieces) // fire fire fire combo
+    int Flame(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire combo
     {
         return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
     }
@@ -211,8 +224,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next # turns, add to multiplier
     /// +0 to +3 for next 3 turns
     /// </summary>
-
-    int Wildfire(List<PieceScriptable> pieces) // fire air air combo
+    int Wildfire(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire air air combo
     {
         return UnityEngine.Random.Range(0,4);
     }
@@ -226,5 +238,38 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth(5);
     }
 
+    /// <summary>
+    /// multiple effects, instant
+    /// next turn, raw multiplier
+    /// 2x damage
+    /// next # turns, unique
+    /// deal 5-10 damage
+    /// </summary>
+    void VolcanicRock()
+    {
+        // NumberEffect VolcanicRockMultiplierEffect = delegate (List<PieceScriptable> pieces, AffectedStat affectedStat)
+        // {  
+        //     return affectedStat.HasFlag(AffectedStat.Damage) ? 2 : 1;
+        // };
+        NumberEffect volcanicRockMultiplierEffect = VolcanicRockMultiplierEffect;
+        rawMultiplierListBuffer.Add((volcanicRockMultiplierEffect.Method, 1));
+
+        // UniqueEffect VolcanicRockBurnEffect = delegate ()
+        // {
+        //     // damage to be dealt
+        //     UnityEngine.Random.Range(5,11);
+        // };
+        UniqueEffect volcanicRockBurnEffect = VolcanicRockBurnEffect;
+        uniqueListBuffer.Add((volcanicRockBurnEffect.Method, 3));
+    }
+    int VolcanicRockMultiplierEffect(List<PieceScriptable> pieces, AffectedStat affectedStat)
+    {  
+        return affectedStat.HasFlag(AffectedStat.Damage) ? 2 : 1;
+    }
+    void VolcanicRockBurnEffect()
+    {
+        // damage to be dealt
+        GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5,11));
+    }
 #endregion
 }

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
   m_Name: Volcanic Rock
   m_EditorClassIdentifier: 
-  comboName: Volcanic Rock
+  comboName: VolcanicRock
   requiredTypes: 0000000003000000
   activeIngredients: 
   multiplier: 2
+  priority: 0
+  turns: 1
