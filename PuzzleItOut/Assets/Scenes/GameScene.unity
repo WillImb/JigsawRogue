@@ -2082,7 +2082,7 @@ GameObject:
   - component: {fileID: 163385272}
   - component: {fileID: 163385271}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2105,7 +2105,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -569.34, y: 1.36}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &163385271
 MonoBehaviour:
@@ -2127,7 +2127,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2672,7 +2672,7 @@ GameObject:
   - component: {fileID: 233804331}
   - component: {fileID: 233804330}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2695,7 +2695,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -362, y: -5}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233804330
 MonoBehaviour:
@@ -2717,7 +2717,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3166,7 +3166,7 @@ GameObject:
   - component: {fileID: 290492648}
   - component: {fileID: 290492647}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3189,7 +3189,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -362, y: -5}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &290492647
 MonoBehaviour:
@@ -3211,7 +3211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5962,7 +5962,7 @@ GameObject:
   - component: {fileID: 464483154}
   - component: {fileID: 464483153}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5985,7 +5985,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &464483153
 MonoBehaviour:
@@ -6007,7 +6007,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6072,7 +6072,7 @@ GameObject:
   - component: {fileID: 478930541}
   - component: {fileID: 478930540}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6095,7 +6095,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &478930540
 MonoBehaviour:
@@ -6117,7 +6117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6261,7 +6261,7 @@ GameObject:
   - component: {fileID: 497309997}
   - component: {fileID: 497309996}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6284,7 +6284,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497309996
 MonoBehaviour:
@@ -6306,7 +6306,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7224,8 +7224,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 272, y: -503}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_AnchoredPosition: {x: 634, y: -528}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546494203
 MonoBehaviour:
@@ -7247,7 +7247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11825,7 +11825,7 @@ GameObject:
   - component: {fileID: 912178376}
   - component: {fileID: 912178375}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11848,7 +11848,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &912178375
 MonoBehaviour:
@@ -11870,7 +11870,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12244,7 +12244,7 @@ GameObject:
   - component: {fileID: 948829913}
   - component: {fileID: 948829912}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12267,7 +12267,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &948829912
 MonoBehaviour:
@@ -12289,7 +12289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12531,7 +12531,7 @@ GameObject:
   - component: {fileID: 983534759}
   - component: {fileID: 983534758}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12554,7 +12554,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &983534758
 MonoBehaviour:
@@ -12576,7 +12576,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -18935,7 +18935,7 @@ GameObject:
   - component: {fileID: 1612965966}
   - component: {fileID: 1612965965}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18958,7 +18958,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -72, y: -318.56}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1612965965
 MonoBehaviour:
@@ -18980,7 +18980,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20545,7 +20545,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1731509175
 MonoBehaviour:
@@ -20567,7 +20567,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21467,7 +21467,7 @@ GameObject:
   - component: {fileID: 1795197260}
   - component: {fileID: 1795197259}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21490,7 +21490,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1795197259
 MonoBehaviour:
@@ -21512,7 +21512,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23432,8 +23432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_AnchoredPosition: {x: 0, y: 3.785}
+  m_SizeDelta: {x: 235.33, y: 407.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2000612744
 MonoBehaviour:
@@ -23710,7 +23710,7 @@ GameObject:
   - component: {fileID: 2019276680}
   - component: {fileID: 2019276679}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ShopkeeperImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23733,7 +23733,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -442, y: -4.560028}
-  m_SizeDelta: {x: 235.33, y: 325.94}
+  m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2019276679
 MonoBehaviour:
@@ -23755,7 +23755,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8721114048000093177, guid: 420f79d65687fbf44b7a30f730838055, type: 3}
+  m_Sprite: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
