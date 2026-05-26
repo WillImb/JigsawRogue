@@ -82,12 +82,35 @@ public class SpecialComboManager : MonoBehaviour
         uniqueListBuffer.Clear();
     }
 
+    /// <summary>
+    /// adds effects to their correct list or refreshes their duration
+    /// </summary>
+    /// <param name="combo"></param>
     public void addEffect(ComboScriptable combo)
     {
         MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.comboName, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
         
         if(effect==null){
             Debug.Log("Combo method doesn't exist, or name does not match any in SpecialComboManager");
+            return;
+        }
+        //duration refresh
+        if(additionList.Any(t => t.Effect == effect))
+        {
+            Debug.Log("refreshed "+combo.comboName);
+            additionList[additionList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
+            return;
+        } 
+        else if(addToMultiplierList.Any(t => t.Effect == effect))
+        {
+            Debug.Log("refreshed "+combo.comboName);
+            addToMultiplierList[addToMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
+            return;
+        }
+        else if(rawMultiplierList.Any(t => t.Effect == effect))
+        {
+            Debug.Log("refreshed "+combo.comboName);
+            rawMultiplierList[rawMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         }
 
