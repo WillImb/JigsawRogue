@@ -198,6 +198,16 @@ public class DeckManager : MonoBehaviour
 
     public void UpgradePiece(int index)
     {
+        // upgrade cost
+        int upgradeCost = 1;
+
+        // make sure player can afford upgrade
+        if (!GoldManager.Instance.CanAfford(upgradeCost))
+        {
+            Debug.Log("Not enough gold to upgrade");
+            return;
+        }
+
         if (index < 0 || index >= deck.Count)
         {
             Debug.LogWarning("Invalid deck index");
@@ -212,6 +222,9 @@ public class DeckManager : MonoBehaviour
             Debug.LogWarning("Missing Piece or PieceData");
             return;
         }
+
+        // spend gold
+        GoldManager.Instance.SpendGold(upgradeCost);
 
         // temp upgrade
         piece.pieceData.combatValue += 1;

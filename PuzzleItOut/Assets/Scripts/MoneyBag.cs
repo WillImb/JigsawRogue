@@ -1,24 +1,39 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class MoneyBag : MonoBehaviour
 {
     public Animator animator;
-
     public TextMeshProUGUI goldText;
+
     private void Start()
     {
-        goldText.text = Player.instance.gold.ToString();   
+        UpdateGoldText();
+
+        if (GoldManager.Instance != null)
+            GoldManager.Instance.OnGoldChanged += UpdateGoldText;
     }
+
+    private void OnDestroy()
+    {
+        if (GoldManager.Instance != null)
+            GoldManager.Instance.OnGoldChanged -= UpdateGoldText;
+    }
+
     private void OnParticleCollision(GameObject other)
     {
         // animator.SetTrigger("gold");
-        Player.instance.gold += 1;
-       goldText.text = Player.instance.gold.ToString();
 
-
+        GoldManager.Instance.AddGold(1);
     }
 
+    private void UpdateGoldText(int gold)
+    {
+        goldText.text = gold.ToString();
+    }
 
+    private void UpdateGoldText()
+    {
+        goldText.text = GoldManager.Instance.Gold.ToString();
+    }
 }
