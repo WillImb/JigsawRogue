@@ -57,6 +57,8 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    
+
     private bool CheckNeighbor(Piece piece, int neighborIndex, Direction pieceSide, Direction neighborSide)
     {
         if (occupied[neighborIndex] == null) return true; // Valid if no Neighbor
@@ -67,12 +69,17 @@ public class BoardManager : MonoBehaviour
         //Rules for Placing Pieces
         if (placedPieceSide == sideType.Flat)
         {
-            return neighborPieceSide == sideType.In || neighborPieceSide == sideType.Flat;
+            return false;
+           //return neighborPieceSide == sideType.In || neighborPieceSide == sideType.Flat;
         }
         if (placedPieceSide == sideType.In)
         {
-            if(CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide))
-                return true;
+            if(neighborPieceSide == sideType.In)
+            {
+                return false;
+            }
+            return CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide);
+                
         }
         if (placedPieceSide == sideType.Out)
         {
@@ -81,6 +88,7 @@ public class BoardManager : MonoBehaviour
         }
         return false;
     }
+
 
     private bool CheckElementNeighbor(Piece piece, int neighborIndex, sideType side, sideType neighborSide)
     {
@@ -136,7 +144,11 @@ public class BoardManager : MonoBehaviour
         piece.LockToSlot(slots[index]);
         //Spawn the place VFX
         VFXManager.instance.SpawnParticle(slots[index].position, 1);
-        PanelManager.instance.EnableButtons("2,4");
+        
+        if (CheckOccupiedCount())
+        {
+            PanelManager.instance.EnableButtons("2,4");
+        }
     }
 
     int GetClosestSlot(Vector3 piecePos)
@@ -166,6 +178,17 @@ public class BoardManager : MonoBehaviour
             if (occupied[i] == piece)
             {
                 occupied[i] = null;
+
+                if (CheckOccupiedCount())
+                {
+                    PanelManager.instance.EnableButtons("2,4");
+                }
+                else
+                {
+                    PanelManager.instance.DisableButtons("2,4");
+
+                }
+
                 return;
             }
         }
@@ -180,6 +203,24 @@ public class BoardManager : MonoBehaviour
                 pieces.Add(piece.pieceData);
         }
         return pieces;
+    }
+
+    private bool CheckOccupiedCount()
+    {
+        int count = 0;
+        for (int i = 0; i < occupied.Length; i++)
+        {
+            if (occupied[i])
+            {
+                count++;
+            }
+        }
+        if (count >= 2)
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }
