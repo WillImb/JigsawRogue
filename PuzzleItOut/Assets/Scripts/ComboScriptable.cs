@@ -23,5 +23,9 @@ public class ComboScriptable : ScriptableObject
     public SpecialComboManager.priority priority;
     public int turns = 1;
 
-    public int manaCost;
+    [Header("Mana")]
+    public int ManaCost
+    {
+        get { return requiredTypes != null ? requiredTypes.Count : 0; }
+    }
 }

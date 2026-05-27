@@ -72,14 +72,14 @@ public class GameManager : MonoBehaviour
         }
 
         // check mana
-        if (Player.instance.GetMana() < combo.manaCost)
+        if (Player.instance.GetMana() < combo.ManaCost)
         {
             attackButton.interactable = true;
             specialAttackButton.interactable = true;
             return;
         }
 
-        Player.instance.SpendMana(combo.manaCost);
+        Player.instance.SpendMana(combo.ManaCost);
 
         if (castType == 0)
         {
