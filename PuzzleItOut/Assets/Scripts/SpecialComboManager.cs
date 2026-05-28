@@ -214,7 +214,17 @@ public class SpecialComboManager : MonoBehaviour
 
     void ElementalRainbow(){}
 
-    void Erosion(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier for each card with 30% chance to not trigger or 70% chance for +1 multiplier for each card
+    /// </summary>
+    int Erosion(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth air combo
+    {
+        if (UnityEngine.Random.Range(0, 1) <= 0.3f)
+        return 0;
+
+        return pieces.Count;
+    }
 
     void ExplosiveClay(){}
 
@@ -250,9 +260,23 @@ public class SpecialComboManager : MonoBehaviour
 
     void Mist(){}
 
+    /// <summary>
+    /// instant
+    /// </summary>
     void MoltenGold(){}
 
-    void Mudslide(){}
+    /// <summary>
+    /// next turn, addition
+    /// +3 combat stat per card
+    /// </summary>
+    int Mudslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) //water earth earth combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            return pieces.Count * 3;
+        }
+        return 0;
+    }
 
     void OceanVents(){}
 
@@ -267,7 +291,17 @@ public class SpecialComboManager : MonoBehaviour
 
     void PetrichorMudslide(){}
 
-    void Plasma(){}
+    /// <summary>
+    /// instant
+    /// do 3-5 burst of damage with each burst doing 3-7 damage
+    /// </summary>
+    void Plasma() // fire water earth combo
+    {
+        for(int i = 0; i < UnityEngine.Random.Range(3, 6); i++)
+        {
+            GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 8));
+        }
+    }
 
     void Quicksand(){}
 
@@ -291,7 +325,6 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     int Spark(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire combo
     {
-        Debug.Log(affectedStat);
         return pieces.Count(piece => piece.cardType == cardType.fire);
     }
 
