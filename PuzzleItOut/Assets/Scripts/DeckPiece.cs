@@ -35,20 +35,15 @@ public class DeckPiece : MonoBehaviour
 
     void OnClick()
     {
-        // check to see if we're in upgrade panel
         if (ShopManager.instance.isUpgrading)
         {
-            DeckManager.instance.UpgradePiece(index);
+            bool upgraded = ShopManager.instance.BuyUpgrade(index);
 
-            ShopManager.instance.SetUpgradedPanelActive(true);
-
-            // disable the upgrade button that opened this
-            ShopManager.instance.DisableCurrentUpgradeButton();
+            if (!upgraded)
+                return;
 
             if (button != null)
-            {
                 button.interactable = false;
-            }
 
             if (image != null)
             {

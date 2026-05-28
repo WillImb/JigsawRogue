@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 /*
  * Author(s): Anthony L
- * Date: 5.15.26
+ * Date: 5.26.26
  * Notes:
  *  - SetAllCombosSoldOut() is currently deprecated since upgrade buttons just disappear
  *    when they're bought
  *  - I plan on separating upgrade panel and deck panel into two different things. This
  *    will be added as a task or subtask on the Trello - AL
- *  - Added summary comments for every method and shifted some things around for organization
- *    purposes
+ *  - 
  */
 public class ShopManager : MonoBehaviour
 {
@@ -31,10 +30,11 @@ public class ShopManager : MonoBehaviour
     // public List<UpgradeData> upgradePool;
 
     // reference variables
-    public GameObject spellBook;   // reference to the players spellbook (singleton)
     public GameObject deckPanel;   // reference to deck panel 
-    private DeckManager deckManager;
     public GameObject upgradedPanel;
+
+    // temp upgrade cost var for testing
+    [SerializeField] private int upgradeCost = 1;
 
     // is the deck panel open because of upgrading
     [SerializeField] public bool isUpgrading;
@@ -56,12 +56,6 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
-        // find the spellbook object in the scene (to add bought combos)
-        spellBook = GameObject.FindWithTag("SpellBook");
-
-        // grab deck manager instance and current deck
-        deckManager = DeckManager.instance;
-
         // assign a random piece/combo from the pools to Shop UI game objects
         AssignShopItems();
     }
@@ -235,33 +229,60 @@ public class ShopManager : MonoBehaviour
     {
         ShopData data = piece.GetComponent<ShopData>();
 
-        // only continue if the button has ShopData and a valid piece assigned
-        if (data != null && data.piecePrefab != null)
-        {
-            // add the piece to the players deck
-            DeckManager.instance.AddPiece(data.piecePrefab);
+        if (data == null || data.piecePrefab == null)
+            return;
 
-            // hide button when piece is bought
-            piece.SetActive(false);
-        }
+        // check gold first
+        if (!GoldManager.Instance.CanAfford(1))
+            return;
+
+        DeckManager.instance.AddPiece(data.piecePrefab);
+
+        GoldManager.Instance.SpendGold(1);
+
+        piece.SetActive(false);
     }
 
     /// <summary>
-    /// Buys a combo, unlocks it in the spellbook, and hides the purchsed combo
+    /// Buys a combo, unlocks it in the spellbook, and hides the purchased combo
     /// </summary>
     public void BuyCombo(GameObject combo)
     {
         ShopData data = combo.GetComponent<ShopData>();
 
-        // only continue if the button has ShopData and a valid combo assigned
-        if (data != null && data.combo != null)
-        {
-            // unlock the combo in players Spellbook
-            Spellbook.instance.UnlockCombo(data.combo);
+        if (data == null || data.combo == null)
+            return;
 
-            // hide button when combo is bought
-            combo.SetActive(false);
+        // check gold first
+        if (!GoldManager.Instance.CanAfford(1))
+            return;
+
+        Spellbook.instance.UnlockCombo(data.combo);
+
+        GoldManager.Instance.SpendGold(1);
+
+        combo.SetActive(false);
+    }
+
+    /// <summary>
+    /// Upgrades a piece if the Player can afford it
+    /// </summary>
+    public bool BuyUpgrade(int deckIndex)
+    {
+        if (!GoldManager.Instance.CanAfford(upgradeCost))
+        {
+            Debug.Log("Not enough gold to upgrade");
+            return false;
         }
+
+        GoldManager.Instance.SpendGold(upgradeCost);
+
+        DeckManager.instance.UpgradePiece(deckIndex);
+
+        SetUpgradedPanelActive(true);
+        DisableCurrentUpgradeButton();
+
+        return true;
     }
 
     /// <summary>
@@ -282,7 +303,7 @@ public class ShopManager : MonoBehaviour
 
         if (active && isUpgrading)
         {
-            foreach (GameObject piece in deckManager.deck)
+            foreach (GameObject piece in DeckManager.instance.deck)
             {
                 if (piece != null)
                 {
