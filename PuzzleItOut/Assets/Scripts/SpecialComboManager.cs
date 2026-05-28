@@ -226,9 +226,33 @@ public class SpecialComboManager : MonoBehaviour
         return pieces.Count;
     }
 
-    void ExplosiveClay(){}
+    /// <summary>
+    /// next turn, additiion
+    /// +3 damage if combo contains any water air or earth piece
+    /// </summary>
+    int ExplosiveClay(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water earth air air combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            if(pieces.Any(piece => piece.cardType == cardType.water|piece.cardType == cardType.air|piece.cardType == cardType.earth))
+            return 3;
+        }
+        return 0;
+    }
 
-    void Fireball(){}
+    // persistent, addition
+    // +2 to fire pieces stats
+    // persistent, add to multiplier
+    // +1 to multiplier if fire piece
+    int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        // if (pieces.Any(piece => piece.cardType == cardType.fire))
+        // {  
+        //     return pieces.Count(piece => piece.cardType == cardType.fire) * 2;
+        // }
+        return 0;
+    }
+
 
     /// <summary>
     /// next turn, add to multiplier
