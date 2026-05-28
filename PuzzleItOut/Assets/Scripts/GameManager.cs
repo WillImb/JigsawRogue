@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-
     public void DoTurn(int castType)
     {
         attackButton.interactable = false;
@@ -66,14 +65,23 @@ public class GameManager : MonoBehaviour
         int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
         ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
 
-        
         if (combo == null)
         {
             EndTurn();
             return;
         }
 
-        if(castType == 0)
+        // check mana
+        if (Player.instance.GetMana() < combo.ManaCost)
+        {
+            attackButton.interactable = true;
+            specialAttackButton.interactable = true;
+            return;
+        }
+
+        Player.instance.SpendMana(combo.ManaCost);
+
+        if (castType == 0)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
