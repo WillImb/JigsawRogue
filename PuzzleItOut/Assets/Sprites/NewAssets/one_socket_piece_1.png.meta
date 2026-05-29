@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f64000040aa617441912e77e913c9369
+guid: dc354dec67c17a34aabc1a713575cf10
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6082842943875139710
-    second: shopkeeper_default_0
+      213: 2342949614795605785
+    second: one_socket_piece_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,11 +46,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.539}
   spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shopkeeper_default_0
+      name: one_socket_piece_1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 246
+        x: 30
+        y: 39
+        width: 79
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 287b4d12296659ba0800000000000000
-      internalID: -6082842943875139710
+      spriteID: 917c78cd244d38020800000000000000
+      internalID: 2342949614795605785
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shopkeeper_default_0: -6082842943875139710
+      one_socket_piece_1_0: 2342949614795605785
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
