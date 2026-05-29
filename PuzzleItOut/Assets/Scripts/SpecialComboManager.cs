@@ -195,6 +195,18 @@ public class SpecialComboManager : MonoBehaviour
 
     void BeachBonfire(){}
 
+    /// <summary>
+    /// instant
+    /// damage is fire piece combat stat x sum of air pieces combat stat
+    /// </summary>
+    void BlazingWinds() // fire air air air combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        for(int i = 0; i < pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue); i++)
+        {
+            GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.cardType == cardType.fire).combatValue);
+        }
+    }
     void Boulder(){}
 
     /// <summary>
@@ -244,7 +256,7 @@ public class SpecialComboManager : MonoBehaviour
     // +2 to fire pieces stats
     // persistent, add to multiplier
     // +1 to multiplier if fire piece
-    int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire fire combo
     {
         // if (pieces.Any(piece => piece.cardType == cardType.fire))
         // {  
@@ -252,7 +264,6 @@ public class SpecialComboManager : MonoBehaviour
         // }
         return 0;
     }
-
 
     /// <summary>
     /// next turn, add to multiplier
@@ -385,7 +396,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next # turns, unique
     /// deal 5-10 damage
     /// </summary>
-    void VolcanicRock()
+    void VolcanicRock() // fire earth combo
     {
         // NumberEffect VolcanicRockMultiplierEffect = delegate (List<PieceScriptable> pieces, AffectedStat affectedStat)
         // {  

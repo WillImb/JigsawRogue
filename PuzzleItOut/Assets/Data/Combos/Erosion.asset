@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Erosion
   requiredTypes: 0200000003000000
-  activeIngredients: 
   multiplier: 2
+  priority: 2
+  turns: 1
