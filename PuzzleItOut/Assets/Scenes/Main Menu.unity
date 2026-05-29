@@ -591,6 +591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 413062483}
+  trigger: 0
 --- !u!95 &413062483
 Animator:
   serializedVersion: 7
@@ -1189,7 +1190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1133014503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2539,6 +2540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc59e33e435f7e4a8869ab348e4f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttons: []
 --- !u!4 &1855319320
 Transform:
   m_ObjectHideFlags: 0

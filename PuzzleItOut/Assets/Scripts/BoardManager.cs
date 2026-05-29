@@ -25,32 +25,86 @@ public class BoardManager : MonoBehaviour
 
         if (occupied[slotIndex] != null) return false;
 
-        if(!IsValidPlacement(piece, slotIndex)) return false;
+        if(!IsValidPlacement(piece, slotIndex,true)) return false;
 
         PlacePiece(piece, slotIndex);
+        ValidateBoard();
+
         return true;
     }
 
     //Works for 2x2 grid, if expanding better method needs to be found for checking valid placement
-    private bool IsValidPlacement(Piece piece, int slotIndex)
+    private bool IsValidPlacement(Piece piece, int slotIndex,bool placing)
     {
         switch (slotIndex)
         {
             case 0: // TL
-                return CheckNeighbor(piece, 1, Direction.East, Direction.West) &&
-                        CheckNeighbor(piece, 2, Direction.South, Direction.North);
+
+                if(CheckNeighbor(piece, 1, Direction.East, Direction.West, placing) &&
+                        CheckNeighbor(piece, 2, Direction.South, Direction.North, placing)){
+
+                    if (!placing)
+                    {
+                        return (occupied[1] || occupied[2]);
+                    }
+                    else
+                    {
+                        return true;
+
+                    }
+                }
+                return false;
 
             case 1: // TR
-                return CheckNeighbor(piece, 0, Direction.West, Direction.East) &&
-                        CheckNeighbor(piece, 3, Direction.South, Direction.North);
+               if(CheckNeighbor(piece, 0, Direction.West, Direction.East, placing) &&
+                        CheckNeighbor(piece, 3, Direction.South, Direction.North, placing))
+                {
+
+                    if (!placing)
+                    {
+                        return (occupied[0] || occupied[3]);
+                    }
+                    else
+                    {
+                        return true;
+
+                    }
+                }
+                return false;
 
             case 2: // BL
-                return CheckNeighbor(piece, 0, Direction.North, Direction.South) &&
-                        CheckNeighbor(piece, 3, Direction.East, Direction.West);
+                if( CheckNeighbor(piece, 0, Direction.North, Direction.South, placing) &&
+                        CheckNeighbor(piece, 3, Direction.East, Direction.West, placing))
+                {
+
+                    if (!placing)
+                    {
+                        return (occupied[0] || occupied[3]);
+                    }
+                    else
+                    {
+                        return true;
+
+                    }
+                }
+                return false;
 
             case 3: // BR
-                return CheckNeighbor(piece, 2, Direction.West, Direction.East) &&
-                        CheckNeighbor(piece, 1, Direction.North, Direction.South);
+                if (CheckNeighbor(piece, 2, Direction.West, Direction.East, placing) &&
+                        CheckNeighbor(piece, 1, Direction.North, Direction.South, placing))
+                {
+
+                    if (!placing)
+                    {
+                        return (occupied[1] || occupied[2]);
+                    }
+                    else
+                    {
+                        return true;
+
+                    }
+                }
+                return false;
 
             default:
                 return false;
@@ -59,7 +113,7 @@ public class BoardManager : MonoBehaviour
 
     
 
-    private bool CheckNeighbor(Piece piece, int neighborIndex, Direction pieceSide, Direction neighborSide)
+    private bool CheckNeighbor(Piece piece, int neighborIndex, Direction pieceSide, Direction neighborSide,bool placing)
     {
         if (occupied[neighborIndex] == null) return true; // Valid if no Neighbor
 
@@ -67,30 +121,81 @@ public class BoardManager : MonoBehaviour
         sideType neighborPieceSide = occupied[neighborIndex].GetSide(neighborSide);
 
         //Rules for Placing Pieces
-        if (placedPieceSide == sideType.Flat)
+        if (placedPieceSide == sideType.Out && neighborPieceSide != sideType.In)
         {
             return false;
            //return neighborPieceSide == sideType.In || neighborPieceSide == sideType.Flat;
         }
-        if (placedPieceSide == sideType.In)
+        if(placedPieceSide != sideType.In && neighborPieceSide == sideType.Out)
         {
-            if(neighborPieceSide == sideType.In)
+            return false;
+        }
+
+        //this only runs if the player is checking the board for a valid spell
+        if (!placing)
+        {
+            if (placedPieceSide == sideType.Out && neighborPieceSide == sideType.In)
+            {
+                return CheckElementNeighbor(piece, neighborIndex, placedPieceSide);
+            }
+            else if(placedPieceSide == sideType.In)
+            {
+                if(neighborPieceSide == sideType.In || neighborPieceSide == sideType.Flat)
+                {
+                    return false;
+                }
+                else
+                {
+                    return CheckElementNeighbor(piece, neighborIndex, placedPieceSide);
+                }
+            }
+            else if(placedPieceSide == sideType.Flat)
             {
                 return false;
             }
-            return CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide);
-                
+
         }
-        if (placedPieceSide == sideType.Out)
+
+
+        return true;
+    }
+
+    /// <summary>
+    /// Checks to see if a valid spell is on the board, if not, then sets cast buttons to be uninteractable
+    /// </summary>
+    public void ValidateBoard()
+    {
+
+        if (!CheckOccupiedCount())
         {
-            if (CheckElementNeighbor(piece, neighborIndex, placedPieceSide, neighborPieceSide))
-                return neighborPieceSide == sideType.In;
+            PanelManager.instance.DisableButtons("2,4");
+
+            return;
         }
-        return false;
+
+        for(int i = 0; i < occupied.Length; i++)
+        {
+            if (occupied[i] != null)
+            {
+                if(IsValidPlacement(occupied[i], i, false))
+                {
+                    PanelManager.instance.EnableButtons("2,4");
+
+                }
+                else
+                {
+                    PanelManager.instance.DisableButtons("2,4");
+                    return;
+
+                }
+            }
+        }
     }
 
 
-    private bool CheckElementNeighbor(Piece piece, int neighborIndex, sideType side, sideType neighborSide)
+   
+
+    private bool CheckElementNeighbor(Piece piece, int neighborIndex, sideType side)
     {
         cardType otherCardType = occupied[neighborIndex].pieceData.cardType;
         if (side == sideType.Out)
@@ -179,15 +284,7 @@ public class BoardManager : MonoBehaviour
             {
                 occupied[i] = null;
 
-                if (CheckOccupiedCount())
-                {
-                    PanelManager.instance.EnableButtons("2,4");
-                }
-                else
-                {
-                    PanelManager.instance.DisableButtons("2,4");
-
-                }
+                ValidateBoard();
 
                 return;
             }
