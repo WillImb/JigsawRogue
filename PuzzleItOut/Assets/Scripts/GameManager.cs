@@ -50,15 +50,21 @@ public class GameManager : MonoBehaviour
     {
         DeckManager.instance.ShuffleDeck();
 
+        DeckManager.instance.SpawnPieces();
         DeckManager.instance.DrawPiecesTillMax();
+
 
     }
 
     public void DoTurn(int castType)
     {
+        //disable cast buttons
         attackButton.interactable = false;
         specialAttackButton.interactable = false;
+
+        //camera shake
         Camera.main.GetComponent<CameraShake>().StartShake();
+
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
 
@@ -81,6 +87,7 @@ public class GameManager : MonoBehaviour
 
         Player.instance.SpendMana(combo.ManaCost);
 
+        //Cast type can be normal or special cast
         if (castType == 0)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));

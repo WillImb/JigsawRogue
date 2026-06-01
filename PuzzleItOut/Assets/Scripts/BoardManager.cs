@@ -245,6 +245,7 @@ public class BoardManager : MonoBehaviour
 
     void PlacePiece(Piece piece, int index)
     {
+        
         occupied[index] = piece;
         piece.LockToSlot(slots[index]);
         //Spawn the place VFX
@@ -258,6 +259,7 @@ public class BoardManager : MonoBehaviour
 
     int GetClosestSlot(Vector3 piecePos)
     {
+        
         float minDist = float.MaxValue;
         int bestIndex = -1;
 
@@ -282,6 +284,8 @@ public class BoardManager : MonoBehaviour
         {
             if (occupied[i] == piece)
             {
+                DeckManager.instance.hand.Add(occupied[i].gameObject);
+
                 occupied[i] = null;
 
                 ValidateBoard();
