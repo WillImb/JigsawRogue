@@ -2760,6 +2760,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221044394}
   m_CullTransparentMesh: 1
+--- !u!1 &223693287
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 223693288}
+  m_Layer: 0
+  m_Name: DeckSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &223693288
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223693287}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.07, y: -7.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 404237835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233804328
 GameObject:
   m_ObjectHideFlags: 0
@@ -5167,6 +5198,7 @@ MonoBehaviour:
   - {fileID: 2236090437044305892, guid: eff66cd34e354894280c59c02554eced, type: 3}
   - {fileID: 2236090437044305892, guid: 8d368a58ae2deb94c827142ee3fab753, type: 3}
   - {fileID: 2236090437044305892, guid: b4c2834f6d1db451cb302433e6a8b73d, type: 3}
+  physicalDeck: []
   hand: []
   discard: []
   handSlots:
@@ -5176,6 +5208,9 @@ MonoBehaviour:
   - {fileID: 178610593}
   - {fileID: 1717604993}
   - {fileID: 315630747}
+  occupied: []
+  deckSpawn: {fileID: 223693288}
+  discardSpawn: {fileID: 1265593966}
   pieceHalo: {fileID: 2236090437695645377}
 --- !u!4 &404237835
 Transform:
@@ -5196,6 +5231,8 @@ Transform:
   - {fileID: 178610593}
   - {fileID: 1717604993}
   - {fileID: 315630747}
+  - {fileID: 223693288}
+  - {fileID: 1265593966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &424644382
@@ -11933,7 +11970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  maxMana: 25
+  maxMana: 1000
   health: 0
   mana: 0
   completedTutorial: 0
@@ -15339,6 +15376,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1265593965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1265593966}
+  m_Layer: 0
+  m_Name: DiscardSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1265593966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265593965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.84, y: -7.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 404237835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1271041704
 GameObject:
   m_ObjectHideFlags: 0
