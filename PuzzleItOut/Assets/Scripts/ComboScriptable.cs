@@ -20,6 +20,7 @@ public class ComboScriptable : ScriptableObject
     public float multiplier = 2f;
 
     [Header("Combo Effects")]
+    public bool specialUnlocked = false;
     public SpecialComboManager.priority priority;
     public int turns = 1;
 

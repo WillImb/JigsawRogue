@@ -137,6 +137,44 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
+    public bool isEffectActive(string combo)
+    {
+        return false;
+    }
+
+    public (MethodInfo Effect, int Turns) findActiveEffect(string comboName)
+    {
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(comboName, BindingFlags.NonPublic | BindingFlags.Instance);
+        
+        if(additionList.Any(t => t.Effect == effect))
+        {
+            return additionList[additionList.FindIndex(t => t.Effect == effect)];
+        } 
+        else if(addToMultiplierList.Any(t => t.Effect == effect))
+        {
+            return addToMultiplierList[addToMultiplierList.FindIndex(t => t.Effect == effect)];
+        }
+        else if(rawMultiplierList.Any(t => t.Effect == effect))
+        {
+            return rawMultiplierList[rawMultiplierList.FindIndex(t => t.Effect == effect)];
+        }
+        else if(uniqueList.Any(t => t.Effect == effect))
+        {
+            return uniqueList[uniqueList.FindIndex(t => t.Effect == effect)];
+        }
+        return default;
+    }
+
+    public void removeEffect(string comboName)
+    {
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(comboName, BindingFlags.NonPublic | BindingFlags.Instance);
+
+        additionList.RemoveAll(t => t.Effect == effect);
+        addToMultiplierList.RemoveAll(t => t.Effect == effect);
+        rawMultiplierList.RemoveAll(t => t.Effect == effect);
+        uniqueList.RemoveAll(t => t.Effect == effect);
+    }
+
     /// <summary>
     /// moves effects from the buffer (they were just casted) to the main lists (will take effect next turn and so on)
     /// </summary>
@@ -258,11 +296,28 @@ public class SpecialComboManager : MonoBehaviour
     // +1 to multiplier if fire piece
     int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire fire combo
     {
-        // if (pieces.Any(piece => piece.cardType == cardType.fire))
-        // {  
-        //     return pieces.Count(piece => piece.cardType == cardType.fire) * 2;
-        // }
+        //see if this is first turn with this effect
+        if(findActiveEffect("Fireball").Turns == -1 && affectedStat == AffectedStat.Damage) // cause damage happens first
+        {
+            print("adding fireball multiplier effect");
+            NumberEffect fireballAddToMultiplier = FireballAddToMultiplier;
+            addToMultiplierList.Add((fireballAddToMultiplier.Method,-1));
+        }
+        if (pieces.Any(piece => piece.cardType == cardType.fire))
+        {  
+            return pieces.Count(piece => piece.cardType == cardType.fire) * 2;
+        }
+        else
+        {
+            print("removing fireball effects");
+            removeEffect("FireballAddToMultiplier");
+            removeEffect("Fireball");
+        }
         return 0;
+    }
+    int FireballAddToMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return 1;
     }
 
     /// <summary>

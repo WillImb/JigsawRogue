@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Fireball
   requiredTypes: 00000000000000000000000000000000
-  activeIngredients: 
   multiplier: 4
+  specialUnlocked: 0
+  priority: 1
+  turns: -1
