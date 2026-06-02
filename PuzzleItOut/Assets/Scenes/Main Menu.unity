@@ -147,6 +147,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 563693726}
   - {fileID: 277982878}
   - {fileID: 1480392003}
   - {fileID: 1909753149}
@@ -188,6 +189,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8873568d990a6c64dbe4e875231f3f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadingScreen: {fileID: 653568934}
+  loadingSlider: {fileID: 1268565507}
+  loadingCanvasGroup: {fileID: 653568935}
+  minimumLoadingTime: 2
+  fadeDuration: 0.5
 --- !u!4 &111346388
 Transform:
   m_ObjectHideFlags: 0
@@ -483,7 +489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 395691325}
   - component: {fileID: 395691324}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -640,7 +646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 477637620}
   - component: {fileID: 477637619}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -829,7 +835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 563693726}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -844,9 +850,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563693725}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.867496, y: 2.77, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 525.74414, y: 299.19104, z: -9}
+  m_LocalScale: {x: 108.0112, y: 108.0112, z: 108.0112}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1404437257}
@@ -859,8 +865,18 @@ Transform:
   - {fileID: 2099384341}
   - {fileID: 477637620}
   - {fileID: 1721180625}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 103300777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &653568934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4462812086060863743, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+  m_PrefabInstance: {fileID: 2040872601}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &653568935 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3411889440425420770, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+  m_PrefabInstance: {fileID: 2040872601}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &656435286
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,7 +887,7 @@ GameObject:
   m_Component:
   - component: {fileID: 656435288}
   - component: {fileID: 656435287}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1581,6 +1597,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194643168}
   m_CullTransparentMesh: 1
+--- !u!114 &1268565507 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 798796686032181096, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+  m_PrefabInstance: {fileID: 2040872601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1404437255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1591,7 +1618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1404437257}
   - component: {fileID: 1404437256}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1948,7 +1975,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1518389460}
   - component: {fileID: 1518389459}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2347,7 +2374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1721180625}
   - component: {fileID: 1721180624}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2505,7 +2532,7 @@ Transform:
   m_GameObject: {fileID: 1790163031}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.031380653, y: -0.1576426, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2927,7 +2954,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2019997646}
   - component: {fileID: 2019997645}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3004,6 +3031,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 563693726}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!1001 &2040872601
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4462812086060863743, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_Name
+      value: Loading Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462812086060863743, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5737247674764934514, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7853956654642793361, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1e9d57116e2a1ca488e145b9e731947f, type: 3}
 --- !u!1 &2061168891
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,7 +3106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2061168893}
   - component: {fileID: 2061168892}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3101,7 +3193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2099384341}
   - component: {fileID: 2099384340}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3188,7 +3280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2126932238}
   - component: {fileID: 2126932237}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BorderSpriteSheet_2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3270,10 +3362,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 800107585}
+  - {fileID: 2040872601}
   - {fileID: 486495245}
   - {fileID: 1947301699}
   - {fileID: 111346388}
   - {fileID: 1790163033}
-  - {fileID: 563693726}
   - {fileID: 413062484}
   - {fileID: 1855319320}
