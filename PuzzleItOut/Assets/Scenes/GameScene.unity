@@ -3858,7 +3858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 75
-  maxHealth: 75
+  maxHealth: 10000
   damage: 12
   animator: {fileID: 317854670}
   sprites:
