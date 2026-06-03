@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: f64000040aa617441912e77e913c9369
+guid: 46aee8b930512af428c1974aeedb0250
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6082842943875139710
-    second: shopkeeper_default_0
+      213: 6989558913731558952
+    second: water_rune_puzzle_0
+  - first:
+      213: 6996759714255908403
+    second: water_rune_puzzle_1
+  - first:
+      213: 9022181241964245160
+    second: water_rune_puzzle_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shopkeeper_default_0
+      name: water_rune_puzzle_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 246
+        x: 53
+        y: 72
+        width: 21
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 287b4d12296659ba0800000000000000
-      internalID: -6082842943875139710
+      spriteID: 82e72adbcc6eff060800000000000000
+      internalID: 6989558913731558952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: water_rune_puzzle_1
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 65
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33eacf2c3eb791160800000000000000
+      internalID: 6996759714255908403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: water_rune_puzzle_2
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 63
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a0b87ab90a353d70800000000000000
+      internalID: 9022181241964245160
       vertices: []
       indices: 
       edges: []
@@ -135,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shopkeeper_default_0: -6082842943875139710
+      water_rune_puzzle_0: 6989558913731558952
+      water_rune_puzzle_1: 6996759714255908403
+      water_rune_puzzle_2: 9022181241964245160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

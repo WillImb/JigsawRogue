@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.VFX;
 
 /*
  * Author(s): Anthony L
@@ -14,10 +15,15 @@ public class DeckManager : MonoBehaviour
 {
     public static DeckManager instance;
     public List<GameObject> deck;
+    public List<GameObject> physicalDeck;
     public List<GameObject> hand;
     public List<GameObject> discard;
     [SerializeField] private Transform[] handSlots;
+    [SerializeField]
     private Piece[] occupied;
+
+    public Transform deckSpawn;
+    public Transform discardSpawn;
 
     // piece halo needs to be reassigned when coming back into game scene
     // that or piece halo can be turned into a prefab and assigned on start
@@ -49,9 +55,24 @@ public class DeckManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    private void Start()
+    {
+       
+    }
+
+   public void SpawnPieces()
+    {
+        foreach(GameObject g in deck)
+        {
+           physicalDeck.Add(Instantiate(g, deckSpawn.position,Quaternion.identity));
+           
+        }
+    }
+
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Shop")
+        if (scene.name == "Shop" || scene.name == "LoseScene" || scene.name == "Main Menu")
         {
             SetPiecesVisible(false);
         }
@@ -69,28 +90,29 @@ public class DeckManager : MonoBehaviour
     //shuffles deck using Fisher-Yates algo
     public void ShuffleDeck()
     {
-        for (int i = deck.Count - 1; i > 0; i--)
+        for (int i = physicalDeck.Count - 1; i > 0; i--)
         {
             int randomIndex = UnityEngine.Random.Range(0, i + 1);
-            GameObject temp = deck[i];
-            deck[i] = deck[randomIndex];
-            deck[randomIndex] = temp;
+            GameObject temp = physicalDeck[i];
+            physicalDeck[i] = physicalDeck[randomIndex];
+            physicalDeck[randomIndex] = temp;
         }
     }
     //draws piece from top of the deck to hand 
     public void DrawPiece()
     {
-        if (deck.Count != 0)
+        if (physicalDeck.Count != 0)
         {
-            GameObject prefab = deck[deck.Count - 1];
-            GameObject spawnedPiece = Instantiate(prefab);
-            hand.Add(spawnedPiece);
-            deck.RemoveAt(deck.Count - 1);
+            
+            //GameObject prefab = deck[deck.Count - 1];
+            //GameObject spawnedPiece = Instantiate(prefab);
+            hand.Add(physicalDeck[physicalDeck.Count-1]);
+            physicalDeck.RemoveAt(physicalDeck.Count - 1);
 
             // invoke UI refresh
             OnDeckUpdated?.Invoke();
 
-            ReturnToHand(spawnedPiece.GetComponent<Piece>());
+            ReturnToHand(hand[hand.Count-1].GetComponent<Piece>());
         }
     }
 
@@ -98,11 +120,18 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < occupied.Length; i++)
         {
-            if (occupied[i] == null && deck.Count > 0)
+            if (occupied[i] == null && physicalDeck.Count > 0)
             {
+             
                 DrawPiece();
             }
         }
+        if(hand.Count <= 1)
+        {
+            DiscardToDeck();
+            DrawPiecesTillMax();
+        }
+
     }
 
     //discards a specified piece form hand to discard
@@ -113,15 +142,17 @@ public class DeckManager : MonoBehaviour
         hand.RemoveAt(index);
         
         RemoveFromHand(piece.GetComponent<Piece>());
-        Destroy(piece);
+        piece.transform.position = discardSpawn.position;
+        //Destroy(piece);
     }
 
     //removes a piece to hand
     public void RemoveFromHand(Piece piece)
     {
-        int index = System.Array.IndexOf(occupied, piece);
-        if (index == -1) return;
-        occupied[index] = null;
+        hand.Remove(piece.gameObject);
+        //int index = System.Array.IndexOf(occupied, piece);
+        //if (index == -1) return;
+        //occupied[index] = null;
     }
 
     //Discards all pieces on board
@@ -137,17 +168,37 @@ public class DeckManager : MonoBehaviour
                 GameObject piece = bm.slots[i].GetChild(0).gameObject;
 
                 VFXManager.instance.SpawnParticle(piece.transform.position, 5);
-                Destroy(piece);
+                //Destroy(piece);
+                RemoveFromHand(piece.GetComponent<Piece>());
+                piece.transform.parent = null;
+                piece.transform.position = discardSpawn.position;
+
+
+                for(int j = 0; j < occupied.Length; j++)
+                {
+                    if (occupied[j] != null && occupied[j].gameObject == piece)
+                    {
+                        occupied[j] = null;
+                        break;
+                    }
+                }
                 bm.occupied[i] = null;
             }
         }
+
+
+
         return piecesPlayed;
     }
 
     //moves all pieces from discard to deck
     public void DiscardToDeck()
     {
-        deck.AddRange(discard);
+        physicalDeck.AddRange(discard);
+        foreach(GameObject g in physicalDeck)
+        {
+            g.transform.position = deckSpawn.position;
+        }
         discard.Clear();
     }
 
