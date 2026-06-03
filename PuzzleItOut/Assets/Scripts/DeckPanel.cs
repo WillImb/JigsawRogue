@@ -23,6 +23,9 @@ public class DeckPanel : MonoBehaviour
     // prefab used to visually represent a piece in UI
     [SerializeField] private GameObject pieceUIPrefab;
 
+    // piece sprites: f, w, e, a
+    public List<Sprite> sprites;
+
     void OnEnable()
     {
         DeckManager.OnDeckUpdated += PopulateDeckPanel;
@@ -98,9 +101,23 @@ public class DeckPanel : MonoBehaviour
             Image image = uiPiece.GetComponent<Image>();
             Piece piece = piecePrefab.GetComponent<Piece>();
 
-            if (piece != null && image != null)
+            if (piece != null && piece.pieceData != null)
             {
-                image.sprite = piece.baseSprite;
+                // get card type from piece data
+                cardType type = piece.pieceData.cardType;
+
+                // convert enum to int
+                int spriteIndex = (int)type;
+
+                // check
+                if (spriteIndex >= 0 && spriteIndex < sprites.Count)
+                {
+                    image.sprite = sprites[spriteIndex];
+                }
+                else
+                {
+                    Debug.Log("No sprite found for {type}");
+                }
             }
             else
             {
