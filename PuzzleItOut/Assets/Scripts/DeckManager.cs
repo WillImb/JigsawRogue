@@ -24,6 +24,9 @@ public class DeckManager : MonoBehaviour
     public Transform deckSpawn;
     public Transform discardSpawn;
 
+
+    
+
     // piece halo needs to be reassigned when coming back into game scene
     // that or piece halo can be turned into a prefab and assigned on start
     public GameObject pieceHalo;
