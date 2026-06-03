@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     TurnState turnState = TurnState.playerTurn;
 
     public Enemy currentEnemy; // change to type enemy when rish adds script
+    public bool enemyStunned = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -149,8 +151,17 @@ public class GameManager : MonoBehaviour
     }
     void DoEnemyTurn()
     {
-        VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
-        currentEnemy.Invoke("DealDamage",.35f);
-        Invoke("EndTurn",1);
+        //stunned
+        if (enemyStunned)
+        {
+            enemyStunned = false;
+            Invoke("EndTurn",1);
+        }
+        else // not stunned
+        {   
+            VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
+            currentEnemy.Invoke("DealDamage",.35f);
+            Invoke("EndTurn",1);
+        }
     }
 }

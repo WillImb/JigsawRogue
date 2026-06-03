@@ -331,11 +331,29 @@ public class SpecialComboManager : MonoBehaviour
 
     void FlashFlood(){}
 
-    void Fog(){}
+    void Fog() // water air combo
+    {
+        if (UnityEngine.Random.Range(0,0.5f) < 0.5f)
+        {
+            // stun effect
+            GameManager.instance.enemyStunned = true;
+        }
+    }
 
     void ForgingSteel(){}
 
-    void Frostbite(){}
+    void Frostbite() // water water water air combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        if (pieces.Any(p => p.cardType == cardType.fire))
+        {
+            removeEffect("Frostbite");
+            return;
+        }
+        // stun effect goes here
+        GameManager.instance.enemyStunned = true;
+        GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
+    }
 
     /// <summary>
     /// next turn, addition
@@ -393,7 +411,11 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
-    void Quicksand(){}
+    void Quicksand() // water earth
+    {
+        // stun effect
+        GameManager.instance.enemyStunned = true;
+    }
 
     void Rockslide(){}
 
