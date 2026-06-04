@@ -90,26 +90,24 @@ public class SpecialComboManager : MonoBehaviour
     {
         MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.comboName, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
         
-        if(effect==null){
+        //if the effect is not there or the turn duration is infinite
+        if(effect==null || findActiveEffect(combo.comboName).Turns < 0){
             Debug.Log("Combo method doesn't exist, or name does not match any in SpecialComboManager");
             return;
         }
         //duration refresh
         if(additionList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             additionList[additionList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         } 
         else if(addToMultiplierList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             addToMultiplierList[addToMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         }
         else if(rawMultiplierList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             rawMultiplierList[rawMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         }
@@ -326,11 +324,15 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     int Flame(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire combo
     {
-        return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
+        return pieces.Count(p => p.cardType == cardType.fire) >= 2 ? 1 : 0;
     }
 
     void FlashFlood(){}
 
+    /// <summary>
+    /// instant
+    /// 50% chance to stun enemy
+    /// </summary>
     void Fog() // water air combo
     {
         if (UnityEngine.Random.Range(0,0.5f) < 0.5f)
@@ -342,15 +344,27 @@ public class SpecialComboManager : MonoBehaviour
 
     void ForgingSteel(){}
 
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// deal 3-5 damage per turn
+    /// stun
+    /// if fire card played remove effect
+    /// </summary>
     void Frostbite() // water water water air combo
+    {
+        GameManager.instance.enemyStunned = true;
+        UniqueEffect frostbiteDamage = FrostbiteDamage;
+        uniqueList.Add((frostbiteDamage.Method,5));
+    }
+    void FrostbiteDamage()
     {
         List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
         if (pieces.Any(p => p.cardType == cardType.fire))
         {
-            removeEffect("Frostbite");
+            removeEffect("FrostbiteDamage");
             return;
         }
-        // stun effect goes here
         GameManager.instance.enemyStunned = true;
         GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
     }
@@ -411,13 +425,32 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
-    void Quicksand() // water earth
+    /// <summary>
+    /// instant
+    /// stun the enemy
+    /// </summary>
+    void Quicksand() // water earth combo
     {
         // stun effect
         GameManager.instance.enemyStunned = true;
     }
 
-    void Rockslide(){}
+    /// <summary>
+    /// persistent, addition
+    /// +1 to stats of earth card for each turn played with an earth card in a row
+    /// </summary>
+    /// <returns></returns>
+    int Rockslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth earth earth combo
+    {
+        int earthcount = pieces.Count(p => p.cardType == cardType.earth);
+        int consecutiveturns = findActiveEffect("Rockslide").Turns * -1;
+
+        if (earthcount * consecutiveturns == 0)
+        {
+            removeEffect("Rockslide");
+        }
+        return earthcount * consecutiveturns;
+    }
 
     void Sandbar(){}
 
@@ -429,7 +462,10 @@ public class SpecialComboManager : MonoBehaviour
 
     void Sinkhole(){}
 
-    void Smog(){}
+    void Smog()
+    {
+        
+    }
 
     /// <summary>
     /// next turn, addition
