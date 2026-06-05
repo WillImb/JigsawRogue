@@ -16,7 +16,7 @@ public class NumberVfx : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if(stateInfo.normalizedTime >= 1)
         {
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
     }
 }
