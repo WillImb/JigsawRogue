@@ -179,7 +179,7 @@ public class DeckManager : MonoBehaviour
                 //Destroy(piece);
                 RemoveFromHand(piece.GetComponent<Piece>());
                 piece.transform.parent = null;
-                piece.transform.rotation = Quaternion.identity;
+               // piece.transform.rotation = Quaternion.identity;
                 piece.transform.position = discardSpawn.position;
 
 
