@@ -462,9 +462,28 @@ public class SpecialComboManager : MonoBehaviour
 
     void Sinkhole(){}
 
-    void Smog()
+    /// <summary>
+    /// instant
+    /// 50% chance to stun enemy
+    /// next turn, raw multiplier
+    /// 50% chance for double damage
+    /// </summary>
+    void Smog() // fire fire fire air combo
     {
-        
+        if(UnityEngine.Random.Range(0, 0.5f) < 0.5f)
+        {
+            GameManager.instance.enemyStunned = true;
+        }
+        NumberEffect smogDamage = SmogDamage;
+        rawMultiplierListBuffer.Add((smogDamage.Method,1));
+    }
+    int SmogDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat == AffectedStat.Damage && UnityEngine.Random.Range(0, 0.5f) < 0.5f)
+        {
+            return 2;
+        }
+        return 1;
     }
 
     /// <summary>
@@ -496,9 +515,45 @@ public class SpecialComboManager : MonoBehaviour
 
     void SteamRoom(){}
 
-    void Swamp(){}
-
-    void Tornado(){}
+    /// <summary>
+    /// instant
+    /// next turn, addition
+    /// earth or water card +2 stats
+    /// next turn, add to multiplier
+    /// if earth or water card +2 to multiplier
+    /// </summary>
+    void Swamp() // water water earth earth combo
+    {
+        NumberEffect swampAddition = SwampAddition;
+        additionListBuffer.Add((swampAddition.Method, 1));
+        NumberEffect swampMultiplier = SwampMultiplier;
+        addToMultiplierListBuffer.Add((swampMultiplier.Method, 1));
+    }
+    int SwampAddition(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return pieces.Count(p => p.cardType == cardType.water || p.cardType == cardType.earth) * 2;
+    }
+    int SwampMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return pieces.Any(p => p.cardType == cardType.water || p.cardType == cardType.earth) ? 2 : 0;
+    }
+    
+    /// <summary>
+    /// next # turns, addition
+    /// air cards have their stats doubled
+    /// </summary>
+    /// <returns></returns>
+    int Tornado(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air air combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue);
+        else if(affectedStat == AffectedStat.Gold)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.goldValue);
+        else if(affectedStat == AffectedStat.Health)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.healingValue);
+        else
+        return 0;
+    }
 
     void Tsunami(){}
 
