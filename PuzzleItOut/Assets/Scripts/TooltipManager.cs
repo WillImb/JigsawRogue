@@ -55,7 +55,7 @@ public class TooltipManager : MonoBehaviour
     {
         nameText.text    = data.pieceName.ToUpper();
         typeText.text    = data.cardType.ToString().ToUpper();
-        damageText.text  = $"DMG :{data.baseDamange}";
+        damageText.text  = $"DMG :{data.baseDamage}";
         healingText.text = $"HEAL :{data.healingValue:F0}";
         combatText.text  = $"CMB :{data.combatValue:F0}";
         goldText.text    = $"GOLD :{data.goldValue:F0}";
