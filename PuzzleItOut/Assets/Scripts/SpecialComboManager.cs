@@ -386,6 +386,7 @@ public class SpecialComboManager : MonoBehaviour
 
     void ForgingSteel(){}
 
+/* remove this effect
     /// <summary>
     /// instant
     /// next # turns, unique
@@ -410,6 +411,7 @@ public class SpecialComboManager : MonoBehaviour
         GameManager.instance.enemyStunned = true;
         GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
     }
+*/
 
     /// <summary>
     /// next turn, addition
