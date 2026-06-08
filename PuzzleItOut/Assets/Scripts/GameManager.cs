@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     public Enemy currentEnemy; // change to type enemy when rish adds script
     public bool enemyStunned = false;
+    public bool enemyDamageReduced = false;
+    public bool enemyRebound = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

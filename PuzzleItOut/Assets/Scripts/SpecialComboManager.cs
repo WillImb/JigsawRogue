@@ -30,7 +30,7 @@ public class SpecialComboManager : MonoBehaviour
     /// 3: raw multiplier - value multiplies total after cards are done calculating their values
     /// 4: unique - effects are seperate from the calculations, and non instant
     /// </summary>
-    public delegate int NumberEffect (List<PieceScriptable> pieces, AffectedStat affectedStat);
+    public delegate float NumberEffect (List<PieceScriptable> pieces, AffectedStat affectedStat);
     public delegate void UniqueEffect ();
     public enum priority
     {
@@ -225,9 +225,51 @@ public class SpecialComboManager : MonoBehaviour
 
 #region Combo Effects
 
-    void AcidRain(){}
-
-    void Ashfall(){}
+    /// <summary>
+    /// instant and raw multiplier
+    /// 60% chance to lower enemy damage
+    /// and
+    /// 30% chance to lower own damage
+    /// </summary>
+    void AcidRain() // fire water air combo
+    {
+        if(UnityEngine.Random.Range(0,0.6f) < 0.6f)
+        {
+            GameManager.instance.enemyDamageReduced = true;
+        }
+        if(UnityEngine.Random.Range(0,0.3f) < 0.3f)
+        {    
+            NumberEffect acidRainDamageReduction = AcidRainDamageReduction;
+            rawMultiplierListBuffer.Add((acidRainDamageReduction.Method,1));
+        }
+    }
+    float AcidRainDamageReduction(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            return 0.5f;
+        }
+        return 1;
+    }
+    
+    /// <summary>
+    /// instant
+    /// 30% chance for enemy to rebound
+    /// or
+    /// 30% chance to lower enemy damage
+    /// </summary>
+    void Ashfall() // fire earth air combo
+    {
+        float randomFloat = UnityEngine.Random.Range(0.0f,1.0f);
+        if(randomFloat < 0.3f)
+        {
+            GameManager.instance.enemyRebound = true;
+        }
+        else if (randomFloat < 0.6f)
+        {
+            GameManager.instance.enemyDamageReduced = true;
+        }
+    }
 
     void BeachBonfire(){}
 
@@ -313,7 +355,7 @@ public class SpecialComboManager : MonoBehaviour
         }
         return 0;
     }
-    int FireballAddToMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    float FireballAddToMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
     {
         return 1;
     }
@@ -477,7 +519,7 @@ public class SpecialComboManager : MonoBehaviour
         NumberEffect smogDamage = SmogDamage;
         rawMultiplierListBuffer.Add((smogDamage.Method,1));
     }
-    int SmogDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    float SmogDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
     {
         if(affectedStat == AffectedStat.Damage && UnityEngine.Random.Range(0, 0.5f) < 0.5f)
         {
@@ -529,11 +571,11 @@ public class SpecialComboManager : MonoBehaviour
         NumberEffect swampMultiplier = SwampMultiplier;
         addToMultiplierListBuffer.Add((swampMultiplier.Method, 1));
     }
-    int SwampAddition(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    float SwampAddition(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
     {
         return pieces.Count(p => p.cardType == cardType.water || p.cardType == cardType.earth) * 2;
     }
-    int SwampMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    float SwampMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
     {
         return pieces.Any(p => p.cardType == cardType.water || p.cardType == cardType.earth) ? 2 : 0;
     }
@@ -581,7 +623,7 @@ public class SpecialComboManager : MonoBehaviour
         UniqueEffect volcanicRockBurnEffect = VolcanicRockBurnEffect;
         uniqueListBuffer.Add((volcanicRockBurnEffect.Method, 3));
     }
-    int VolcanicRockMultiplierEffect(List<PieceScriptable> pieces, AffectedStat affectedStat)
+    float VolcanicRockMultiplierEffect(List<PieceScriptable> pieces, AffectedStat affectedStat)
     {  
         return affectedStat.HasFlag(AffectedStat.Damage) ? 2 : 1;
     }

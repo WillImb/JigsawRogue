@@ -51,7 +51,18 @@ public class Enemy : MonoBehaviour
 
     public void DealDamage()
     {
-        Player.instance.TakeDamage(damage);
+        if (GameManager.instance.enemyRebound)
+        {
+            TakeDamage(damage);
+        }
+        else if(GameManager.instance.enemyDamageReduced)
+        {
+            Player.instance.TakeDamage((int)(damage*0.5f));
+        }
+        else
+        {
+            Player.instance.TakeDamage(damage);
+        }
         VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
         VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
     }

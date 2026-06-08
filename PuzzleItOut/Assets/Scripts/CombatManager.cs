@@ -59,7 +59,7 @@ public class CombatManager : MonoBehaviour
 
     public int CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
     {
-        int result = 0;
+        float result = 0;
         // base value from pieces
         result += pieces.Sum(p => p.combatValue);
 
@@ -70,7 +70,7 @@ public class CombatManager : MonoBehaviour
         }
 
         // value from multiplier
-        int multiplier = (int)combo.multiplier;
+        float multiplier = combo.multiplier;
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
@@ -82,10 +82,10 @@ public class CombatManager : MonoBehaviour
         for (int index = 0 ; index < SpecialComboManager.Instance.rawMultiplierList.Count; index++)
         {
             Debug.Log(SpecialComboManager.Instance.rawMultiplierList[index].Effect.Name);
-            result *= (int)SpecialComboManager.Instance.rawMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
+            result *= (float)SpecialComboManager.Instance.rawMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
         }
         
-        return result;
+        return (int)result;
     }
 
     public int CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
