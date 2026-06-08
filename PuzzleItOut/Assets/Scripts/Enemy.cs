@@ -54,10 +54,12 @@ public class Enemy : MonoBehaviour
         if (GameManager.instance.enemyRebound)
         {
             TakeDamage(damage);
+            GameManager.instance.enemyRebound = false;
         }
         else if(GameManager.instance.enemyDamageReduced)
         {
             Player.instance.TakeDamage((int)(damage*0.5f));
+            GameManager.instance.enemyDamageReduced = false;
         }
         else
         {
