@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.VFX;
 
 /*
  * Author(s): Anthony L
@@ -24,6 +23,9 @@ public class DeckManager : MonoBehaviour
 
     public Transform deckSpawn;
     public Transform discardSpawn;
+
+
+    
 
     // piece halo needs to be reassigned when coming back into game scene
     // that or piece halo can be turned into a prefab and assigned on start
@@ -62,10 +64,14 @@ public class DeckManager : MonoBehaviour
 
    public void SpawnPieces()
     {
-        foreach(GameObject g in deck)
+        if (physicalDeck.Count + hand.Count < deck.Count)
         {
-           physicalDeck.Add(Instantiate(g, deckSpawn.position,Quaternion.identity));
-           
+            int difference = deck.Count - physicalDeck.Count + hand.Count;
+            foreach (GameObject g in deck)
+            {
+                physicalDeck.Add(Instantiate(g, deckSpawn.position, Quaternion.identity));
+
+            }
         }
     }
 
@@ -103,11 +109,13 @@ public class DeckManager : MonoBehaviour
     {
         if (physicalDeck.Count != 0)
         {
-            
+
             //GameObject prefab = deck[deck.Count - 1];
             //GameObject spawnedPiece = Instantiate(prefab);
-            hand.Add(physicalDeck[physicalDeck.Count-1]);
-            physicalDeck.RemoveAt(physicalDeck.Count - 1);
+            int randomIndex = UnityEngine.Random.Range(0, physicalDeck.Count);
+
+            hand.Add(physicalDeck[randomIndex]);
+            physicalDeck.RemoveAt(randomIndex);
 
             // invoke UI refresh
             OnDeckUpdated?.Invoke();
@@ -126,7 +134,7 @@ public class DeckManager : MonoBehaviour
                 DrawPiece();
             }
         }
-        if(hand.Count <= 1)
+        if(hand.Count <= 5)
         {
             DiscardToDeck();
             DrawPiecesTillMax();
@@ -171,6 +179,7 @@ public class DeckManager : MonoBehaviour
                 //Destroy(piece);
                 RemoveFromHand(piece.GetComponent<Piece>());
                 piece.transform.parent = null;
+               // piece.transform.rotation = Quaternion.identity;
                 piece.transform.position = discardSpawn.position;
 
 

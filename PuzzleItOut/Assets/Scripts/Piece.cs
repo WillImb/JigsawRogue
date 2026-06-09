@@ -77,6 +77,7 @@ public class Piece : MonoBehaviour
 
         if (dragging)
         {
+          
             isHovered = false;
 
 
@@ -180,12 +181,19 @@ public class Piece : MonoBehaviour
         //startDrag
         if (!dragging)
         {
+            
+
             velo = Vector3.zero;
             Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
             Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
 
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
             if (!hit || hit.transform != transform) return;
+
+            foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>())
+            {
+                s.sortingOrder += 2;
+            }
 
             // offset = transform.position - (Vector3)worldPos;
             dragging = true;
@@ -199,6 +207,11 @@ public class Piece : MonoBehaviour
         else
         {
             //endDrag
+
+            foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>())
+            {
+                s.sortingOrder -= 2;
+            }
             dragging = false;
             pieceHalo.transform.position = new Vector3(-1000, -1000, 0);
             if (BoardManager.instance.TryPlacePiece(this))
