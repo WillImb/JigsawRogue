@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6364091854663586771}
   - component: {fileID: 5942638630229663415}
   - component: {fileID: 1261855435158727613}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MoneyBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
