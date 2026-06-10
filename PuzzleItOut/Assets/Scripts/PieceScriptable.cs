@@ -15,7 +15,7 @@ public class PieceScriptable : ScriptableObject
     public int healingValue;
     public int combatValue;
     public int goldValue;
-    public float probabilityValue;
+    //public float probabilityValue;
 }
 
 public enum cardType

@@ -15,5 +15,6 @@ MonoBehaviour:
   comboName: Frostbite
   requiredTypes: 01000000010000000100000002000000
   multiplier: 4
-  priority: 4
-  turns: 5
+  specialUnlocked: 0
+  priority: 0
+  turns: 1

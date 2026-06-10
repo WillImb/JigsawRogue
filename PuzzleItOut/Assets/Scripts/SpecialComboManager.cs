@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,7 +31,7 @@ public class SpecialComboManager : MonoBehaviour
     /// 3: raw multiplier - value multiplies total after cards are done calculating their values
     /// 4: unique - effects are seperate from the calculations, and non instant
     /// </summary>
-    public delegate int NumberEffect (List<PieceScriptable> pieces, AffectedStat affectedStat);
+    public delegate float NumberEffect (List<PieceScriptable> pieces, AffectedStat affectedStat);
     public delegate void UniqueEffect ();
     public enum priority
     {
@@ -90,26 +91,24 @@ public class SpecialComboManager : MonoBehaviour
     {
         MethodInfo effect = typeof(SpecialComboManager).GetMethod(combo.comboName, BindingFlags.NonPublic | BindingFlags.Instance); //, new Type[] {typeof(List<PieceScriptable>)}
         
-        if(effect==null){
+        //if the effect is not there or the turn duration is infinite
+        if(effect==null || findActiveEffect(combo.comboName).Turns < 0){
             Debug.Log("Combo method doesn't exist, or name does not match any in SpecialComboManager");
             return;
         }
         //duration refresh
         if(additionList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             additionList[additionList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         } 
         else if(addToMultiplierList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             addToMultiplierList[addToMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         }
         else if(rawMultiplierList.Any(t => t.Effect == effect))
         {
-            Debug.Log("refreshed "+combo.comboName);
             rawMultiplierList[rawMultiplierList.FindIndex(t => t.Effect == effect)] = (effect, combo.turns);
             return;
         }
@@ -135,6 +134,44 @@ public class SpecialComboManager : MonoBehaviour
                 print("priority for "+combo.comboName+" not found");
                 break;
         }
+    }
+
+    public bool isEffectActive(string combo)
+    {
+        return false;
+    }
+
+    public (MethodInfo Effect, int Turns) findActiveEffect(string comboName)
+    {
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(comboName, BindingFlags.NonPublic | BindingFlags.Instance);
+        
+        if(additionList.Any(t => t.Effect == effect))
+        {
+            return additionList[additionList.FindIndex(t => t.Effect == effect)];
+        } 
+        else if(addToMultiplierList.Any(t => t.Effect == effect))
+        {
+            return addToMultiplierList[addToMultiplierList.FindIndex(t => t.Effect == effect)];
+        }
+        else if(rawMultiplierList.Any(t => t.Effect == effect))
+        {
+            return rawMultiplierList[rawMultiplierList.FindIndex(t => t.Effect == effect)];
+        }
+        else if(uniqueList.Any(t => t.Effect == effect))
+        {
+            return uniqueList[uniqueList.FindIndex(t => t.Effect == effect)];
+        }
+        return default;
+    }
+
+    public void removeEffect(string comboName)
+    {
+        MethodInfo effect = typeof(SpecialComboManager).GetMethod(comboName, BindingFlags.NonPublic | BindingFlags.Instance);
+
+        additionList.RemoveAll(t => t.Effect == effect);
+        addToMultiplierList.RemoveAll(t => t.Effect == effect);
+        rawMultiplierList.RemoveAll(t => t.Effect == effect);
+        uniqueList.RemoveAll(t => t.Effect == effect);
     }
 
     /// <summary>
@@ -189,12 +226,66 @@ public class SpecialComboManager : MonoBehaviour
 
 #region Combo Effects
 
-    void AcidRain(){}
-
-    void Ashfall(){}
+    /// <summary>
+    /// instant and raw multiplier
+    /// 60% chance to lower enemy damage
+    /// and
+    /// 30% chance to lower own damage
+    /// </summary>
+    void AcidRain() // fire water air combo
+    {
+        if(UnityEngine.Random.Range(0,0.6f) < 0.6f)
+        {
+            GameManager.instance.enemyDamageReduced = true;
+        }
+        if(UnityEngine.Random.Range(0,0.3f) < 0.3f)
+        {    
+            NumberEffect acidRainDamageReduction = AcidRainDamageReduction;
+            rawMultiplierListBuffer.Add((acidRainDamageReduction.Method,1));
+        }
+    }
+    float AcidRainDamageReduction(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            return 0.5f;
+        }
+        return 1;
+    }
+    
+    /// <summary>
+    /// instant
+    /// 30% chance for enemy to rebound
+    /// or
+    /// 30% chance to lower enemy damage
+    /// </summary>
+    void Ashfall() // fire earth air combo
+    {
+        float randomFloat = UnityEngine.Random.Range(0.0f,1.0f);
+        if(randomFloat < 0.3f)
+        {
+            GameManager.instance.enemyRebound = true;
+        }
+        else if (randomFloat < 0.6f)
+        {
+            GameManager.instance.enemyDamageReduced = true;
+        }
+    }
 
     void BeachBonfire(){}
 
+    /// <summary>
+    /// instant
+    /// damage is fire piece combat stat x sum of air pieces combat stat
+    /// </summary>
+    void BlazingWinds() // fire air air air combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        for(int i = 0; i < pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue); i++)
+        {
+            GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.cardType == cardType.fire).combatValue);
+        }
+    }
     void Boulder(){}
 
     /// <summary>
@@ -214,11 +305,61 @@ public class SpecialComboManager : MonoBehaviour
 
     void ElementalRainbow(){}
 
-    void Erosion(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier for each card with 30% chance to not trigger or 70% chance for +1 multiplier for each card
+    /// </summary>
+    int Erosion(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth air combo
+    {
+        if (UnityEngine.Random.Range(0, 1) <= 0.3f)
+        return 0;
 
-    void ExplosiveClay(){}
+        return pieces.Count;
+    }
 
-    void Fireball(){}
+    /// <summary>
+    /// next turn, additiion
+    /// +3 damage if combo contains any water air or earth piece
+    /// </summary>
+    int ExplosiveClay(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water earth air air combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            if(pieces.Any(piece => piece.cardType == cardType.water|piece.cardType == cardType.air|piece.cardType == cardType.earth))
+            return 3;
+        }
+        return 0;
+    }
+
+    // persistent, addition
+    // +2 to fire pieces stats
+    // persistent, add to multiplier
+    // +1 to multiplier if fire piece
+    int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire fire combo
+    {
+        //see if this is first turn with this effect
+        if(findActiveEffect("Fireball").Turns == -1 && affectedStat == AffectedStat.Damage) // cause damage happens first
+        {
+            print("adding fireball multiplier effect");
+            NumberEffect fireballAddToMultiplier = FireballAddToMultiplier;
+            addToMultiplierList.Add((fireballAddToMultiplier.Method,-1));
+        }
+        if (pieces.Any(piece => piece.cardType == cardType.fire))
+        {  
+            return pieces.Count(piece => piece.cardType == cardType.fire) * 2;
+        }
+        else
+        {
+            print("removing fireball effects");
+            removeEffect("FireballAddToMultiplier");
+            removeEffect("Fireball");
+        }
+        return 0;
+    }
+    float FireballAddToMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return 1;
+    }
 
     /// <summary>
     /// next turn, add to multiplier
@@ -226,16 +367,60 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     int Flame(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire combo
     {
-        return pieces.Count(piece => piece.cardType == cardType.fire) >= 2 ? 1 : 0;
+        return pieces.Count(p => p.cardType == cardType.fire) >= 2 ? 1 : 0;
     }
 
-    void FlashFlood(){}
+    /// <summary>
+    /// instant
+    /// set card type condition
+    /// </summary>
+    void FlashFlood()
+    {
+        
+    }
+    cardType FlashFloodType;
 
-    void Fog(){}
+    /// <summary>
+    /// instant
+    /// 50% chance to stun enemy
+    /// </summary>
+    void Fog() // water air combo
+    {
+        if (UnityEngine.Random.Range(0,0.5f) < 0.5f)
+        {
+            // stun effect
+            GameManager.instance.enemyStunned = true;
+        }
+    }
 
     void ForgingSteel(){}
 
-    void Frostbite(){}
+/* remove this effect no more frostbite
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// deal 3-5 damage per turn
+    /// stun
+    /// if fire card played remove effect
+    /// </summary>
+    void Frostbite() // water water water air combo
+    {
+        GameManager.instance.enemyStunned = true;
+        UniqueEffect frostbiteDamage = FrostbiteDamage;
+        uniqueList.Add((frostbiteDamage.Method,5));
+    }
+    void FrostbiteDamage()
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        if (pieces.Any(p => p.cardType == cardType.fire))
+        {
+            removeEffect("FrostbiteDamage");
+            return;
+        }
+        GameManager.instance.enemyStunned = true;
+        GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
+    }
+*/
 
     /// <summary>
     /// next turn, addition
@@ -250,11 +435,46 @@ public class SpecialComboManager : MonoBehaviour
 
     void Mist(){}
 
+    /// <summary>
+    /// instant
+    /// </summary>
     void MoltenGold(){}
 
-    void Mudslide(){}
+    /// <summary>
+    /// next turn, addition
+    /// +3 combat stat per card
+    /// </summary>
+    int Mudslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) //water earth earth combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        {
+            return pieces.Count * 3;
+        }
+        return 0;
+    }
 
-    void OceanVents(){}
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// for three turns burn enemy doing
+    /// 1x earth piece damage
+    /// 1.5x earth piece damage
+    /// 2.25x earth piece damage
+    /// </summary>
+    void OceanVents()
+    {
+        UniqueEffect oceanVentsBurn = OceanVentsBurn;
+        uniqueList.Add((oceanVentsBurn.Method,3));
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        OceanVentsInitDamage = pieces.Find(p => p.cardType == cardType.earth).combatValue;
+    }
+    void OceanVentsBurn()
+    {
+        float damage = OceanVentsInitDamage * Mathf.Pow(1.5f, 3 - findActiveEffect("OceanVentsBurn").Turns);
+        GameManager.instance.currentEnemy.TakeDamage((int)MathF.Round(damage));
+    } 
+    int OceanVentsInitDamage = 0;
+
 
     /// <summary>
     /// next turn, addition
@@ -267,11 +487,44 @@ public class SpecialComboManager : MonoBehaviour
 
     void PetrichorMudslide(){}
 
-    void Plasma(){}
+    /// <summary>
+    /// instant
+    /// do 3-5 burst of damage with each burst doing 3-7 damage
+    /// </summary>
+    void Plasma() // fire water earth combo
+    {
+        for(int i = 0; i < UnityEngine.Random.Range(3, 6); i++)
+        {
+            GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 8));
+        }
+    }
 
-    void Quicksand(){}
+    /// <summary>
+    /// instant
+    /// stun the enemy
+    /// </summary>
+    void Quicksand() // water earth combo
+    {
+        // stun effect
+        GameManager.instance.enemyStunned = true;
+    }
 
-    void Rockslide(){}
+    /// <summary>
+    /// persistent, addition
+    /// +1 to stats of earth card for each turn played with an earth card in a row
+    /// </summary>
+    /// <returns></returns>
+    int Rockslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth earth earth combo
+    {
+        int earthcount = pieces.Count(p => p.cardType == cardType.earth);
+        int consecutiveturns = findActiveEffect("Rockslide").Turns * -1;
+
+        if (earthcount * consecutiveturns == 0)
+        {
+            removeEffect("Rockslide");
+        }
+        return earthcount * consecutiveturns;
+    }
 
     void Sandbar(){}
 
@@ -283,7 +536,29 @@ public class SpecialComboManager : MonoBehaviour
 
     void Sinkhole(){}
 
-    void Smog(){}
+    /// <summary>
+    /// instant
+    /// 50% chance to stun enemy
+    /// next turn, raw multiplier
+    /// 50% chance for double damage
+    /// </summary>
+    void Smog() // fire fire fire air combo
+    {
+        if(UnityEngine.Random.Range(0, 0.5f) < 0.5f)
+        {
+            GameManager.instance.enemyStunned = true;
+        }
+        NumberEffect smogDamage = SmogDamage;
+        rawMultiplierListBuffer.Add((smogDamage.Method,1));
+    }
+    float SmogDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat == AffectedStat.Damage && UnityEngine.Random.Range(0, 0.5f) < 0.5f)
+        {
+            return 2;
+        }
+        return 1;
+    }
 
     /// <summary>
     /// next turn, addition
@@ -291,7 +566,6 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     int Spark(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire combo
     {
-        Debug.Log(affectedStat);
         return pieces.Count(piece => piece.cardType == cardType.fire);
     }
 
@@ -315,9 +589,45 @@ public class SpecialComboManager : MonoBehaviour
 
     void SteamRoom(){}
 
-    void Swamp(){}
-
-    void Tornado(){}
+    /// <summary>
+    /// instant
+    /// next turn, addition
+    /// earth or water card +2 stats
+    /// next turn, add to multiplier
+    /// if earth or water card +2 to multiplier
+    /// </summary>
+    void Swamp() // water water earth earth combo
+    {
+        NumberEffect swampAddition = SwampAddition;
+        additionListBuffer.Add((swampAddition.Method, 1));
+        NumberEffect swampMultiplier = SwampMultiplier;
+        addToMultiplierListBuffer.Add((swampMultiplier.Method, 1));
+    }
+    float SwampAddition(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return pieces.Count(p => p.cardType == cardType.water || p.cardType == cardType.earth) * 2;
+    }
+    float SwampMultiplier(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        return pieces.Any(p => p.cardType == cardType.water || p.cardType == cardType.earth) ? 2 : 0;
+    }
+    
+    /// <summary>
+    /// next # turns, addition
+    /// air cards have their stats doubled
+    /// </summary>
+    /// <returns></returns>
+    int Tornado(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air air combo
+    {
+        if(affectedStat == AffectedStat.Damage)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue);
+        else if(affectedStat == AffectedStat.Gold)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.goldValue);
+        else if(affectedStat == AffectedStat.Health)
+        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.healingValue);
+        else
+        return 0;
+    }
 
     void Tsunami(){}
 
@@ -328,7 +638,7 @@ public class SpecialComboManager : MonoBehaviour
     /// next # turns, unique
     /// deal 5-10 damage
     /// </summary>
-    void VolcanicRock()
+    void VolcanicRock() // fire earth combo
     {
         // NumberEffect VolcanicRockMultiplierEffect = delegate (List<PieceScriptable> pieces, AffectedStat affectedStat)
         // {  
@@ -345,7 +655,7 @@ public class SpecialComboManager : MonoBehaviour
         UniqueEffect volcanicRockBurnEffect = VolcanicRockBurnEffect;
         uniqueListBuffer.Add((volcanicRockBurnEffect.Method, 3));
     }
-    int VolcanicRockMultiplierEffect(List<PieceScriptable> pieces, AffectedStat affectedStat)
+    float VolcanicRockMultiplierEffect(List<PieceScriptable> pieces, AffectedStat affectedStat)
     {  
         return affectedStat.HasFlag(AffectedStat.Damage) ? 2 : 1;
     }
