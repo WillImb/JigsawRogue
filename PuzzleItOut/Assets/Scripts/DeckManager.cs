@@ -112,9 +112,16 @@ public class DeckManager : MonoBehaviour
 
             //GameObject prefab = deck[deck.Count - 1];
             //GameObject spawnedPiece = Instantiate(prefab);
+            
+            //get random piece
             int randomIndex = UnityEngine.Random.Range(0, physicalDeck.Count);
 
+            
+           
+
             hand.Add(physicalDeck[randomIndex]);
+
+
             physicalDeck.RemoveAt(randomIndex);
 
             // invoke UI refresh

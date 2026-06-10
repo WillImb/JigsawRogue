@@ -47,7 +47,7 @@ public class Piece : MonoBehaviour
 
     void Start()
     {
-
+        
         InputManager.Instance.Gameplay.Click.started += PieceDrag;
         //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
@@ -59,6 +59,14 @@ public class Piece : MonoBehaviour
         sides[1] = pieceData.east;
         sides[2] = pieceData.south;
         sides[3] = pieceData.west;
+
+
+        //randomly rotate
+        int rotCount = Random.Range(0, 4);
+        for (int i = 0; i < rotCount; i++)
+        {
+            RotatePieceClockwise();
+        }
     }
 
     void OnDestroy()
@@ -124,6 +132,7 @@ public class Piece : MonoBehaviour
 
     public void RotatePieceClockwise()
     {
+        
         sideType temp = sides[0]; // N side
 
         sides[0] = sides[3]; // W becomes old N
