@@ -338,6 +338,16 @@ public class DeckPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates text for all deck panel buttons
+    /// </summary>
+    public void UpdateAllButtonText()
+    {
+        UpdateModeButtonText();
+        UpdateOrderButtonText();
+        UpdateFilterButtonText();
+    }
+
     private int GetCombatValue(GameObject pieceObject)
     {
         Piece piece = pieceObject.GetComponent<Piece>();
