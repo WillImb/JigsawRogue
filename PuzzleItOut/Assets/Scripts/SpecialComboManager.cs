@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -369,7 +370,15 @@ public class SpecialComboManager : MonoBehaviour
         return pieces.Count(p => p.cardType == cardType.fire) >= 2 ? 1 : 0;
     }
 
-    void FlashFlood(){}
+    /// <summary>
+    /// instant
+    /// set card type condition
+    /// </summary>
+    void FlashFlood()
+    {
+        
+    }
+    cardType FlashFloodType;
 
     /// <summary>
     /// instant
@@ -386,7 +395,7 @@ public class SpecialComboManager : MonoBehaviour
 
     void ForgingSteel(){}
 
-/* remove this effect
+/* remove this effect no more frostbite
     /// <summary>
     /// instant
     /// next # turns, unique
@@ -444,7 +453,28 @@ public class SpecialComboManager : MonoBehaviour
         return 0;
     }
 
-    void OceanVents(){}
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// for three turns burn enemy doing
+    /// 1x earth piece damage
+    /// 1.5x earth piece damage
+    /// 2.25x earth piece damage
+    /// </summary>
+    void OceanVents()
+    {
+        UniqueEffect oceanVentsBurn = OceanVentsBurn;
+        uniqueList.Add((oceanVentsBurn.Method,3));
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        OceanVentsInitDamage = pieces.Find(p => p.cardType == cardType.earth).combatValue;
+    }
+    void OceanVentsBurn()
+    {
+        float damage = OceanVentsInitDamage * Mathf.Pow(1.5f, 3 - findActiveEffect("OceanVentsBurn").Turns);
+        GameManager.instance.currentEnemy.TakeDamage((int)MathF.Round(damage));
+    } 
+    int OceanVentsInitDamage = 0;
+
 
     /// <summary>
     /// next turn, addition
