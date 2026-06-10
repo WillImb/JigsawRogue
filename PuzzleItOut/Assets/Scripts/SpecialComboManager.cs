@@ -373,12 +373,41 @@ public class SpecialComboManager : MonoBehaviour
     /// <summary>
     /// instant
     /// set card type condition
+    /// next turn, addition
+    /// if two __ cardtypes are played add 5-7 combat stat to combo
     /// </summary>
-    void FlashFlood()
+    void FlashFlood() // water earth air combo
     {
-        
+        nextFlashFloodType();
+        NumberEffect flashFloodDamage = FlashFloodDamage;
+        additionListBuffer.Add((flashFloodDamage.Method, 1));
     }
-    cardType FlashFloodType;
+    float FlashFloodDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat != AffectedStat.Damage)
+        {
+            return 0;
+        }
+        if(pieces.Count(p => p.cardType == getFlashFloodType()) >= 2)
+        {
+            return UnityEngine.Random.Range(5, 8);
+        }
+        return 0;
+    }
+    cardType getFlashFloodType()
+    {
+        if(FlashFloodType == null)
+        {
+            nextFlashFloodType();
+        }
+        return (cardType)FlashFloodType;
+    }
+    void nextFlashFloodType()
+    {
+        FlashFloodType = (cardType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(cardType)).Length);
+        print("Next Flash Flood is " + FlashFloodType.ToString());
+    }
+    cardType? FlashFloodType;
 
     /// <summary>
     /// instant
