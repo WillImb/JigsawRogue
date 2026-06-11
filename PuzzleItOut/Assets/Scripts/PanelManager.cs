@@ -59,7 +59,7 @@ public class PanelManager : MonoBehaviour
     public void EnableButtons(string nums)
     {
         int[] b = StringToArray(nums);
-
+        
         for (int i = 0; i < b.Length; i++)
         {
             if (b[i] == 4)

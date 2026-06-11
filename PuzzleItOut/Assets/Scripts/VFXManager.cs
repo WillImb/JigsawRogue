@@ -18,6 +18,7 @@ public class VFXManager : MonoBehaviour
 
 
     public Collider2D moneyBag;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -40,14 +41,18 @@ public class VFXManager : MonoBehaviour
 
     public IEnumerator goldCoroutine(float amt)
     {
-        
+        float delay = 1 / amt;
         for(int i = 0; i < amt; i++)
         {
             ParticleSystem gold = Instantiate(particles[7], new Vector3(0,-2.56f,0) , Quaternion.identity);
             gold.trigger.AddCollider(moneyBag);
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(delay);
         }
 
+        if(GameManager.instance.currentEnemy.health <= 0)
+        {
+            GameManager.instance.WinRound();
+        }
        
     }
 

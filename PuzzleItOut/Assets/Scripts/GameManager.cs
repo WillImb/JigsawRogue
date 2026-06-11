@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
 
     public bool isSpecial;
 
-    
 
+    
 
     public enum TurnState
     {
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     void StartGame()
@@ -182,11 +182,19 @@ public class GameManager : MonoBehaviour
 
         if (currentEnemy.health <= 0)
         {
-            
+
             //win
             //SceneManager.LoadScene(4)
-            TransitionManager.instance.ActivateTransition("ShopTransition");
+
+            DeckManager.instance.DiscardBoard();
+            DeckManager.instance.DrawPiecesTillMax();
+
+            BoardManager.instance.ValidateBoard();
+            BoardManager.instance.UpdateCostImage();
+
             currentEnemy.gameObject.SetActive(false);
+
+
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
@@ -236,6 +244,11 @@ public class GameManager : MonoBehaviour
             currentEnemy.Invoke("DealDamage",.35f);
             Invoke("EndTurn",1);
         }
+    }
+
+    public void WinRound()
+    {
+        TransitionManager.instance.ActivateTransition("ShopTransition");
     }
 
     public void SetSpecial()

@@ -9,7 +9,6 @@ public class TooltipManager : MonoBehaviour
     public GameObject tooltipPanel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI typeText;
-    public TextMeshProUGUI damageText;
     public TextMeshProUGUI healingText;
     public TextMeshProUGUI combatText;
     public TextMeshProUGUI goldText;
