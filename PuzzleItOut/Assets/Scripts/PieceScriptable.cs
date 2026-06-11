@@ -5,7 +5,6 @@ public class PieceScriptable : ScriptableObject
 {
     public string pieceName;
     public int id;
-    public int baseDamage;
     public cardType cardType;
     public sideType north;
     public sideType east;
