@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour
 {
@@ -7,6 +9,13 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] public Transform[] slots;
     public Piece[] occupied;
+
+    public ComboScriptable activeCombo;
+
+    public Image costImage;
+    public Sprite bloodSprite;
+    public Sprite manaSprite;
+    public Sprite nullSprite;
 
     void Awake()
     {
@@ -16,6 +25,8 @@ public class BoardManager : MonoBehaviour
             Destroy(gameObject);
 
         occupied = new Piece[slots.Length];
+        UpdateCostImage();
+
     }
 
     public bool TryPlacePiece(Piece piece)
@@ -169,7 +180,8 @@ public class BoardManager : MonoBehaviour
         if (!CheckOccupiedCount())
         {
             PanelManager.instance.DisableButtons("2,4");
-
+            activeCombo = null;
+            UpdateCostImage();
             return;
         }
 
@@ -179,21 +191,48 @@ public class BoardManager : MonoBehaviour
             {
                 if(IsValidPlacement(occupied[i], i, false))
                 {
-                    PanelManager.instance.EnableButtons("2,4");
+                    int foundSpellIndex = CombatManager.Instance.FindCombo(GetBoardPieces());
+                    if (foundSpellIndex != -1) {
+                        activeCombo = Spellbook.instance.combosUnlocked[foundSpellIndex];
+                        PanelManager.instance.EnableButtons("2,4");
+                    }
+                    else
+                    {
+                        activeCombo = null;
+                        PanelManager.instance.DisableButtons("2,4");
+                    }
 
                 }
                 else
                 {
-                    PanelManager.instance.DisableButtons("2,4");
+                    List<PieceScriptable> pieces = GetBoardPieces();
+                   
+
+                    if (CombatManager.Instance.FindForbidden(pieces) != -1)
+                    {
+                        activeCombo = Spellbook.instance.combosUnlocked[CombatManager.Instance.FindForbidden(pieces)];
+                        PanelManager.instance.EnableButtons("2,4");
+
+                    }
+                    else
+                    {
+                        PanelManager.instance.DisableButtons("2,4");
+                        activeCombo = null;
+
+                    }
+                    UpdateCostImage();
+
                     return;
 
                 }
             }
         }
+        UpdateCostImage();
+
     }
 
 
-   
+
 
     private bool CheckElementNeighbor(Piece piece, int neighborIndex, sideType side)
     {
@@ -318,10 +357,63 @@ public class BoardManager : MonoBehaviour
         }
         if (count >= 2)
         {
+            
             return true;
         }
-
+        
         return false;
     }
 
+    public void UpdateCostImage()
+    {
+        if (activeCombo)
+        {
+
+            if (activeCombo.isForbidden)
+            {
+                costImage.sprite = bloodSprite;
+
+                //these numbers are hard coded and universal
+                if (GameManager.instance.isSpecial)
+                {
+                    costImage.GetComponentInChildren<TextMeshProUGUI>().text = "25";
+                }
+                else
+                {
+
+                    costImage.GetComponentInChildren<TextMeshProUGUI>().text = "10";
+
+                }
+            }
+            //if non forbidden combo is on board
+            else
+            {
+                costImage.sprite = manaSprite;
+
+                costImage.GetComponentInChildren<TextMeshProUGUI>().text = activeCombo.GetManaCost().ToString();
+
+            }
+        }
+        //if active combo is null
+        else
+        {
+            costImage.sprite = nullSprite;
+            costImage.GetComponentInChildren<TextMeshProUGUI>().text = "-";
+
+        }
+
+        UpdateCastButton();
+    }
+    public void UpdateCastButton()
+    {
+        if (activeCombo)
+        {
+            GameManager.instance.attackButton.GetComponentInChildren<TextMeshProUGUI>().text = activeCombo.comboName;
+
+        }
+        else
+        {
+            GameManager.instance.attackButton.GetComponentInChildren<TextMeshProUGUI>().text = "?";
+        }
+    }
 }
