@@ -13,6 +13,9 @@ public class ComboScriptable : ScriptableObject
     [Header("Required Card Types")]
     public List<cardType> requiredTypes;
 
+    [Header("Is this combo A Forbidden Combo?")]
+    public bool isForbidden;
+
     // [Header("Active Ingredients")]
     // public List<IngredientType> activeIngredients;
 
