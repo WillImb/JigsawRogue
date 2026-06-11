@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
         StartGame();
         PanelManager.instance.DisableButtons("2,4");
-        GameManager.instance.specialToggle.interactable = false;
+        specialToggle.interactable = false;
 
         DeckManager.instance.gameObject.SetActive(true);
 
@@ -88,12 +88,13 @@ public class GameManager : MonoBehaviour
             EndTurn();
             return;
         }
+        
 
         //for non forbidden combos
         if (!combo.isForbidden)
         {
             // check mana
-            if (Player.instance.GetMana() < combo.ManaCost)
+            if (Player.instance.GetMana() < combo.GetManaCost())
             {
                 attackButton.interactable = true;
                 specialToggle.interactable = false;
@@ -102,7 +103,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Player.instance.SpendMana(combo.ManaCost);
+                Player.instance.SpendMana(combo.GetManaCost());
             }
         }
         //forbidden combos
@@ -170,11 +171,14 @@ public class GameManager : MonoBehaviour
         // {
         //     currentEnemy.TakeDamage(0);
         // }
+        
+
         EndTurn();
     }
     void EndTurn()
     {
-        BoardManager.instance.UpdateCostImage();
+        
+        
 
         if (currentEnemy.health <= 0)
         {
@@ -201,6 +205,10 @@ public class GameManager : MonoBehaviour
             DeckManager.instance.DrawPiecesTillMax();
             //switch to enemy's turn
             turnState = TurnState.enemyTurn;
+
+            BoardManager.instance.ValidateBoard();
+            BoardManager.instance.UpdateCostImage();
+
             Invoke("DoEnemyTurn",1);
 
         }
@@ -236,5 +244,7 @@ public class GameManager : MonoBehaviour
         isSpecial = specialToggle.isOn;
         BoardManager.instance.UpdateCostImage();
     }
+
+   
 
 }

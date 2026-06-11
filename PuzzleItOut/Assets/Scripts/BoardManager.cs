@@ -390,7 +390,7 @@ public class BoardManager : MonoBehaviour
             {
                 costImage.sprite = manaSprite;
 
-                costImage.GetComponentInChildren<TextMeshProUGUI>().text = activeCombo.ManaCost.ToString();
+                costImage.GetComponentInChildren<TextMeshProUGUI>().text = activeCombo.GetManaCost().ToString();
 
             }
         }
@@ -401,6 +401,19 @@ public class BoardManager : MonoBehaviour
             costImage.GetComponentInChildren<TextMeshProUGUI>().text = "-";
 
         }
-    }
 
+        UpdateCastButton();
+    }
+    public void UpdateCastButton()
+    {
+        if (activeCombo)
+        {
+            GameManager.instance.attackButton.GetComponentInChildren<TextMeshProUGUI>().text = activeCombo.comboName;
+
+        }
+        else
+        {
+            GameManager.instance.attackButton.GetComponentInChildren<TextMeshProUGUI>().text = "?";
+        }
+    }
 }
