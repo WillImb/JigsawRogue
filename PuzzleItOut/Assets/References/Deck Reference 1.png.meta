@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 89facfd519a295e4dbfc962e94fc15d7
+guid: ce2b2ce85623e2f4c98021eba94b7a9d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3852392756019367581
-    second: Shop Layout Reference_0
+      213: 4367153686112990333
+    second: Deck Reference 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shop Layout Reference_0
+      name: Deck Reference 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 646
-        height: 459
+        width: 761
+        height: 537
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3617d22033d898ac0800000000000000
-      internalID: -3852392756019367581
+      spriteID: d747d4ca32f3b9c30800000000000000
+      internalID: 4367153686112990333
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Shop Layout Reference_0: -3852392756019367581
+      Deck Reference 1_0: 4367153686112990333
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

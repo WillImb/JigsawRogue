@@ -9,7 +9,6 @@ public class TooltipManager : MonoBehaviour
     public GameObject tooltipPanel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI typeText;
-    public TextMeshProUGUI damageText;
     public TextMeshProUGUI healingText;
     public TextMeshProUGUI combatText;
     public TextMeshProUGUI goldText;
@@ -55,7 +54,6 @@ public class TooltipManager : MonoBehaviour
     {
         nameText.text    = data.pieceName.ToUpper();
         typeText.text    = data.cardType.ToString().ToUpper();
-        damageText.text  = $"DMG :{data.baseDamange}";
         healingText.text = $"HEAL :{data.healingValue:F0}";
         combatText.text  = $"CMB :{data.combatValue:F0}";
         goldText.text    = $"GOLD :{data.goldValue:F0}";

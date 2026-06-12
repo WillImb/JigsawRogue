@@ -300,17 +300,6 @@ public class ShopManager : MonoBehaviour
     public void SetDeckPanelActive(bool active)
     {
         deckPanel.SetActive(active);
-
-        if (active && isUpgrading)
-        {
-            foreach (GameObject piece in DeckManager.instance.deck)
-            {
-                if (piece != null)
-                {
-
-                }
-            }
-        }
     }
 
     /// <summary>

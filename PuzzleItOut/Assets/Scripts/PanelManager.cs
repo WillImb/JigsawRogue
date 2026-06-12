@@ -45,6 +45,11 @@ public class PanelManager : MonoBehaviour
 
         for(int i = 0; i < b.Length; i ++)
         {
+            if(b[i] == 4)
+            {
+                GameManager.instance.specialToggle.interactable = false;
+                return;
+            }
             buttons[b[i]].interactable = false;
         }
     }
@@ -54,9 +59,14 @@ public class PanelManager : MonoBehaviour
     public void EnableButtons(string nums)
     {
         int[] b = StringToArray(nums);
-
+        
         for (int i = 0; i < b.Length; i++)
         {
+            if (b[i] == 4)
+            {
+                GameManager.instance.specialToggle.interactable = true;
+                return;
+            }
             buttons[b[i]].interactable = true;
         }
     }

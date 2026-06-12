@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272e180541c90204c86e98bfe9d42056, type: 3}
-  m_Name: AirBL_Piece
+  m_Script: {fileID: 11500000, guid: 752f888cdddbe134a9403ddd8f802237, type: 3}
+  m_Name: Artic Blast
   m_EditorClassIdentifier: 
-  pieceName: Air
-  id: 0
-  cardType: 2
-  north: 2
-  east: 1
-  south: 0
-  west: 0
-  healingValue: 1
-  combatValue: 1
-  goldValue: 1
+  comboName: Artic Blast
+  requiredTypes: 01000000010000000100000002000000
+  isForbidden: 1
+  multiplier: 5
+  specialUnlocked: 1
+  priority: 0
+  turns: 1

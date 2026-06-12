@@ -13,6 +13,9 @@ public class ComboScriptable : ScriptableObject
     [Header("Required Card Types")]
     public List<cardType> requiredTypes;
 
+    [Header("Is this combo A Forbidden Combo?")]
+    public bool isForbidden;
+
     // [Header("Active Ingredients")]
     // public List<IngredientType> activeIngredients;
 
@@ -24,9 +27,21 @@ public class ComboScriptable : ScriptableObject
     public SpecialComboManager.priority priority;
     public int turns = 1;
 
-    [Header("Mana")]
-    public int ManaCost
+  
+    //New mana Calculator
+    public int GetManaCost()
     {
-        get { return requiredTypes != null ? requiredTypes.Count : 0; }
+        if(requiredTypes == null)
+        {
+            return 0;
+        }
+        else if (GameManager.instance.isSpecial)
+        {
+            return requiredTypes.Count * 5;
+        }
+        else
+        {
+            return requiredTypes.Count * 2 - 3;
+        }
     }
 }

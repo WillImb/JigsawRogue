@@ -57,6 +57,44 @@ public class CombatManager : MonoBehaviour
         return -1;
     }
 
+    //Checks if there is a forbidden combo with matching pieces
+    public int FindForbidden(List<PieceScriptable> currentCombo)
+    {
+        if(currentCombo.Count < 4)
+        {
+            return -1;
+        }
+
+        List<cardType> submittedTypes = currentCombo
+           .Select(p => p.cardType)
+           .OrderBy(t => (int)t)
+           .ToList();
+
+        //Debug.Log($"Submitted types: {string.Join(", ", submittedTypes)}");
+        
+        for (int i = 0; i < Spellbook.instance.combosUnlocked.Count; i++)
+        {
+           
+            if (!Spellbook.instance.combosUnlocked[i].isForbidden)
+            {
+                continue;
+            }
+
+            List<cardType> comboTypes = Spellbook.instance.combosUnlocked[i].requiredTypes
+                .OrderBy(t => (int)t)
+                .ToList();
+
+            if (submittedTypes.SequenceEqual(comboTypes))
+            {
+                //Debug.Log($"Match found — '{Spellbook.instance.combosUnlocked[i].comboName}'");
+                return i;
+            }
+        }
+
+        Debug.Log("No forbidden match found");
+        return -1;
+    }
+
     public int CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
     {
         float result = 0;

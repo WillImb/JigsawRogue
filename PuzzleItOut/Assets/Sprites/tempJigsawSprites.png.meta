@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 742cc171245c5124cbacf71976164b8d
+guid: 9e37fa73417239349b429d535d761883
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3981120383790001521
-    second: Deck Reference_0
+      213: -3926161747049476362
+    second: tempJigsawSprites_0
+  - first:
+      213: 2056205285815422727
+    second: tempJigsawSprites_1
+  - first:
+      213: 1355100029071629867
+    second: tempJigsawSprites_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +81,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -96,17 +102,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Deck Reference_0
+      name: tempJigsawSprites_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 761
-        height: 537
+        x: 8
+        y: 10
+        width: 39
+        height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 17daedb65e7cf3730800000000000000
-      internalID: 3981120383790001521
+      spriteID: 6fe836851b87389c0800000000000000
+      internalID: -3926161747049476362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tempJigsawSprites_1
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 9
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70f0f4e20db198c10800000000000000
+      internalID: 2056205285815422727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tempJigsawSprites_2
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 10
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2e9febfb484ec210800000000000000
+      internalID: 1355100029071629867
       vertices: []
       indices: 
       edges: []
@@ -135,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Deck Reference_0: 3981120383790001521
+      tempJigsawSprites_0: -3926161747049476362
+      tempJigsawSprites_1: 2056205285815422727
+      tempJigsawSprites_2: 1355100029071629867
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
