@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceName: Air
   id: 0
-  baseDamange: 10
   cardType: 2
   north: 2
   east: 1

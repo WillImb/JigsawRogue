@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,12 @@ public class GameManager : MonoBehaviour
     public float money;
 
     public Button attackButton;
-    public Button specialAttackButton;
+    public Toggle specialToggle;
+
+    public bool isSpecial;
+
+
+    
 
     public enum TurnState
     {
@@ -40,6 +46,8 @@ public class GameManager : MonoBehaviour
 
         StartGame();
         PanelManager.instance.DisableButtons("2,4");
+        specialToggle.interactable = false;
+
         DeckManager.instance.gameObject.SetActive(true);
 
     }
@@ -47,7 +55,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     void StartGame()
@@ -64,7 +72,7 @@ public class GameManager : MonoBehaviour
     {
         //disable cast buttons
         attackButton.interactable = false;
-        specialAttackButton.interactable = false;
+        specialToggle.interactable = false;
 
         //camera shake
         Camera.main.GetComponent<CameraShake>().StartShake();
@@ -72,27 +80,72 @@ public class GameManager : MonoBehaviour
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
 
-        int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
-        ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;
+         
+        ComboScriptable combo = BoardManager.instance.activeCombo;
 
         if (combo == null)
         {
             EndTurn();
             return;
         }
+        
 
-        // check mana
-        if (Player.instance.GetMana() < combo.ManaCost)
+        //for non forbidden combos
+        if (!combo.isForbidden)
         {
-            attackButton.interactable = true;
-            specialAttackButton.interactable = true;
-            return;
+            // check mana
+            if (Player.instance.GetMana() < combo.GetManaCost())
+            {
+                attackButton.interactable = true;
+                specialToggle.interactable = false;
+
+                return;
+            }
+            else
+            {
+                Player.instance.SpendMana(combo.GetManaCost());
+            }
+        }
+        //forbidden combos
+        else
+        {
+            if (isSpecial)
+            {
+
+                if (Player.instance.GetHealth() <= 25)
+                {
+                    attackButton.interactable = true;
+                    specialToggle.interactable = false;
+                    return;
+                }
+                else
+                {
+
+                    Player.instance.TakeDamage(25);
+
+                }
+            }
+            else
+            {
+                if (Player.instance.GetHealth() <= 10)
+                {
+                    attackButton.interactable = true;
+                    specialToggle.interactable = false;
+                    return;
+                }
+                else
+                {
+
+                    Player.instance.TakeDamage(10);
+
+                }
+            }
         }
 
-        Player.instance.SpendMana(combo.ManaCost);
 
         //Cast type can be normal or special cast
-        if (castType == 0)
+        //normal spell
+        if (!isSpecial)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
@@ -100,8 +153,10 @@ public class GameManager : MonoBehaviour
 
             Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));
         }  
-        else if(castType == 1)
+        //if a special combo
+        else if(isSpecial)
         {
+            
             SpecialComboManager.Instance.addEffect(combo);
         }
         // if (combo != null)
@@ -116,17 +171,30 @@ public class GameManager : MonoBehaviour
         // {
         //     currentEnemy.TakeDamage(0);
         // }
+        
+
         EndTurn();
     }
     void EndTurn()
     {
+        
+        
+
         if (currentEnemy.health <= 0)
         {
-            
+
             //win
             //SceneManager.LoadScene(4)
-            TransitionManager.instance.ActivateTransition("ShopTransition");
+
+            DeckManager.instance.DiscardBoard();
+            DeckManager.instance.DrawPiecesTillMax();
+
+            BoardManager.instance.ValidateBoard();
+            BoardManager.instance.UpdateCostImage();
+
             currentEnemy.gameObject.SetActive(false);
+
+
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
@@ -145,6 +213,10 @@ public class GameManager : MonoBehaviour
             DeckManager.instance.DrawPiecesTillMax();
             //switch to enemy's turn
             turnState = TurnState.enemyTurn;
+
+            BoardManager.instance.ValidateBoard();
+            BoardManager.instance.UpdateCostImage();
+
             Invoke("DoEnemyTurn",1);
 
         }
@@ -173,4 +245,19 @@ public class GameManager : MonoBehaviour
             Invoke("EndTurn",1);
         }
     }
+
+    public void WinRound()
+    {
+        TransitionManager.instance.ActivateTransition("ShopTransition");
+    }
+
+    public void SetSpecial()
+    {
+       
+        isSpecial = specialToggle.isOn;
+        BoardManager.instance.UpdateCostImage();
+    }
+
+   
+
 }

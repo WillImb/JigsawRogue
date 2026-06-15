@@ -35,7 +35,7 @@ public class DeckPiece : MonoBehaviour
 
     void OnClick()
     {
-        if (ShopManager.instance.isUpgrading)
+        if (ShopManager.instance && ShopManager.instance.isUpgrading)
         {
             bool upgraded = ShopManager.instance.BuyUpgrade(index);
 

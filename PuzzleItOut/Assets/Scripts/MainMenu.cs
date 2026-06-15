@@ -49,6 +49,7 @@ public class MainMenu : MonoBehaviour
     /// </summary>
     private IEnumerator LoadSceneRoutine(int sceneIndex)
     {
+
         if (loadingScreen == null || loadingSlider == null || loadingCanvasGroup == null)
         {
             Debug.LogError("Loading screen, slider, or canvas group is missing");
