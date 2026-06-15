@@ -22,6 +22,14 @@ public class Piece : MonoBehaviour
     {
         cam = Camera.main;
         pieceHalo = DeckManager.instance.pieceHalo;
+
+        // this fixes the bug where upgrading one piece upgrades all others of the same type
+        // this work because it makes each piece a unique instance instead of referencing - 
+        // - what is basically the same piece
+        if (pieceData != null)
+        {
+            pieceData = Instantiate(pieceData);
+        }
     }
 
     // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes

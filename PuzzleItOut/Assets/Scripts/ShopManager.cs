@@ -26,7 +26,8 @@ public class ShopManager : MonoBehaviour
     // pools
     public List<GameObject> piecePool;
     public List<ComboScriptable> comboPool;
-    public List<Sprite> sprites;
+    // sprite order: f, w, e, a
+    [SerializeField] private List<Sprite> sprites;
     // public List<UpgradeData> upgradePool;
 
     // reference variables

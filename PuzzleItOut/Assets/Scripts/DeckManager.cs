@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 /*
  * Author(s): Anthony L
- * Date: 5.15.26
+ * Date: 6.15.26
  * Notes:
  *  - Currently, there's a bug where your pieces from the discard pile aren't returned to you
  */
@@ -18,18 +18,16 @@ public class DeckManager : MonoBehaviour
     public List<GameObject> hand;
     public List<GameObject> discard;
     [SerializeField] private Transform[] handSlots;
-    [SerializeField]
-    private Piece[] occupied;
+    [SerializeField] private Piece[] occupied;
 
     public Transform deckSpawn;
     public Transform discardSpawn;
 
-
-    
-
-    // piece halo needs to be reassigned when coming back into game scene
-    // that or piece halo can be turned into a prefab and assigned on start
     public GameObject pieceHalo;
+
+    // prefabs for each of the pieces
+    // sprite order: f, w, e, a
+    [SerializeField] private List<GameObject> piecePrefabs;
 
     // event for updating deck
     public static event Action OnDeckUpdated;
@@ -57,12 +55,21 @@ public class DeckManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    /// <summary>
+    /// Will be used for instantiating new pieces
+    /// </summary>
     private void Start()
     {
-       
+        deck.Clear();
+
+        // create x instances of each piece depending on the max capacity of the deck
+
     }
 
-   public void SpawnPieces()
+    /// <summary>
+    /// Spawns deck pieces into the scene if they have not already been created
+    /// </summary>
+    public void SpawnPieces()
     {
         if (physicalDeck.Count + hand.Count < deck.Count)
         {
@@ -70,12 +77,13 @@ public class DeckManager : MonoBehaviour
             foreach (GameObject g in deck)
             {
                 physicalDeck.Add(Instantiate(g, deckSpawn.position, Quaternion.identity));
-
             }
         }
     }
 
-
+    /// <summary>
+    /// Handles scene transitions and updates deck visibility and references
+    /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Shop" || scene.name == "LoseScene" || scene.name == "Main Menu")
@@ -93,7 +101,9 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    //shuffles deck using Fisher-Yates algo
+    /// <summary>
+    /// Randomizes the order of pieces in the physical deck
+    /// </summary>
     public void ShuffleDeck()
     {
         for (int i = physicalDeck.Count - 1; i > 0; i--)
@@ -104,64 +114,68 @@ public class DeckManager : MonoBehaviour
             physicalDeck[randomIndex] = temp;
         }
     }
-    //draws piece from top of the deck to hand 
+
+    /// <summary>
+    /// Draws a random piece from the deck and places it into the hand
+    /// </summary>
     public void DrawPiece()
     {
         if (physicalDeck.Count != 0)
         {
-
             //GameObject prefab = deck[deck.Count - 1];
             //GameObject spawnedPiece = Instantiate(prefab);
-            
+
             //get random piece
             int randomIndex = UnityEngine.Random.Range(0, physicalDeck.Count);
 
-            
-           
-
             hand.Add(physicalDeck[randomIndex]);
-
 
             physicalDeck.RemoveAt(randomIndex);
 
             // invoke UI refresh
             OnDeckUpdated?.Invoke();
 
-            ReturnToHand(hand[hand.Count-1].GetComponent<Piece>());
+            ReturnToHand(hand[hand.Count - 1].GetComponent<Piece>());
         }
     }
 
+    /// <summary>
+    /// Fills all available hand slots with pieces from the deck.
+    /// </summary>
     public void DrawPiecesTillMax()
     {
         for (int i = 0; i < occupied.Length; i++)
         {
             if (occupied[i] == null && physicalDeck.Count > 0)
             {
-             
+
                 DrawPiece();
             }
         }
-        if(hand.Count <= 5)
+        if (hand.Count <= 5)
         {
             DiscardToDeck();
             DrawPiecesTillMax();
         }
-
     }
 
-    //discards a specified piece form hand to discard
+    /// <summary>
+    /// Moves a hand piece into the discard pile
+    /// </summary>
     public void DiscardPieceFromHand(int index)
     {
         GameObject piece = hand[index];
         discard.Add(piece);
         hand.RemoveAt(index);
-        
+
         RemoveFromHand(piece.GetComponent<Piece>());
         piece.transform.position = discardSpawn.position;
         //Destroy(piece);
     }
 
-    //removes a piece to hand
+    /// <summary>
+    /// Removes a piece from the hand collection
+    /// </summary>
     public void RemoveFromHand(Piece piece)
     {
         hand.Remove(piece.gameObject);
@@ -170,12 +184,15 @@ public class DeckManager : MonoBehaviour
         //occupied[index] = null;
     }
 
-    //Discards all pieces on board
+    /// <summary>
+    /// Discards all pieces currently placed on the board
+    /// </summary>
     public List<Piece> DiscardBoard()
     {
         BoardManager bm = BoardManager.instance;
         List<Piece> piecesPlayed = new List<Piece>();
-        for (int i = 0; i < bm.occupied.Length; i++) {
+        for (int i = 0; i < bm.occupied.Length; i++)
+        {
             if (bm.occupied[i] != null)
             {
                 piecesPlayed.Add(bm.occupied[i]);
@@ -186,11 +203,10 @@ public class DeckManager : MonoBehaviour
                 //Destroy(piece);
                 RemoveFromHand(piece.GetComponent<Piece>());
                 piece.transform.parent = null;
-               // piece.transform.rotation = Quaternion.identity;
+                // piece.transform.rotation = Quaternion.identity;
                 piece.transform.position = discardSpawn.position;
 
-
-                for(int j = 0; j < occupied.Length; j++)
+                for (int j = 0; j < occupied.Length; j++)
                 {
                     if (occupied[j] != null && occupied[j].gameObject == piece)
                     {
@@ -198,27 +214,30 @@ public class DeckManager : MonoBehaviour
                         break;
                     }
                 }
+
                 bm.occupied[i] = null;
             }
         }
 
-
-
         return piecesPlayed;
     }
 
-    //moves all pieces from discard to deck
+    /// <summary>
+    /// Returns all discarded pieces back into the deck
+    /// </summary>
     public void DiscardToDeck()
     {
         physicalDeck.AddRange(discard);
-        foreach(GameObject g in physicalDeck)
+        foreach (GameObject g in physicalDeck)
         {
             g.transform.position = deckSpawn.position;
         }
         discard.Clear();
     }
 
-    //returns a piece to hand
+    /// <summary>
+    /// Places a piece into an available hand slot
+    /// </summary>
     public void ReturnToHand(Piece piece)
     {
         int index = System.Array.IndexOf(occupied, piece);
@@ -231,7 +250,9 @@ public class DeckManager : MonoBehaviour
         piece.LockToSlot(handSlots[index]);
     }
 
-    // adds a piece to the deck
+    /// <summary>
+    /// Adds a new piece to the deck collection.
+    /// </summary>
     public void AddPiece(GameObject piece)
     {
         if (piece == null)
@@ -248,6 +269,9 @@ public class DeckManager : MonoBehaviour
         Debug.Log($"Added {piece.name} to deck. Deck now has {deck.Count} pieces.");
     }
 
+    /// <summary>
+    /// Toggles visibility of all pieces
+    /// </summary>
     void SetPiecesVisible(bool visible)
     {
         foreach (GameObject piece in hand)
@@ -263,6 +287,9 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies an upgrade to a deck piece if it can be afforded
+    /// </summary>
     public void UpgradePiece(int index)
     {
         // upgrade cost
