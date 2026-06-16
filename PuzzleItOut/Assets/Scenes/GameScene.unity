@@ -1263,6 +1263,7 @@ MonoBehaviour:
   enemyStunned: 0
   enemyDamageReduced: 0
   enemyRebound: 0
+  playerStunned: 0
 --- !u!4 &65853208
 Transform:
   m_ObjectHideFlags: 0
@@ -25683,7 +25684,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e242cc76f4b752940959f482b6abb24a, type: 2}
   - {fileID: 11400000, guid: 371990b680f2d044d8da6ed8653f4910, type: 2}
   - {fileID: 11400000, guid: cf3ff42af4eb6d64ba14c64b7ebe07d1, type: 2}
-  - {fileID: 11400000, guid: b3f44300c21b8f14a97aed95e88abe01, type: 2}
+  - {fileID: 11400000, guid: e8cd62c42b720f1438dade0780594687, type: 2}
   - {fileID: 11400000, guid: c09e7b098a5433240a5426ad499cbd67, type: 2}
   - {fileID: 11400000, guid: 9a392295e77b6624fabcd8b03231037b, type: 2}
   - {fileID: 11400000, guid: 941d8207a9baf4f45b6d298ccd0eb7a6, type: 2}
