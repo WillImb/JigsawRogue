@@ -286,6 +286,7 @@ public class SpecialComboManager : MonoBehaviour
             GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.cardType == cardType.fire).combatValue);
         }
     }
+    
     void Boulder(){}
 
     /// <summary>
@@ -331,10 +332,12 @@ public class SpecialComboManager : MonoBehaviour
         return 0;
     }
 
-    // persistent, addition
-    // +2 to fire pieces stats
-    // persistent, add to multiplier
-    // +1 to multiplier if fire piece
+    /// <summary> 
+    /// persistent, addition
+    /// +2 to fire pieces stats
+    /// persistent, add to multiplier
+    /// +1 to multiplier if fire piece
+    /// </summary>
     int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire fire combo
     {
         //see if this is first turn with this effect
@@ -423,33 +426,6 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     void ForgingSteel(){}
-
-/* remove this effect no more frostbite
-    /// <summary>
-    /// instant
-    /// next # turns, unique
-    /// deal 3-5 damage per turn
-    /// stun
-    /// if fire card played remove effect
-    /// </summary>
-    void Frostbite() // water water water air combo
-    {
-        GameManager.instance.enemyStunned = true;
-        UniqueEffect frostbiteDamage = FrostbiteDamage;
-        uniqueList.Add((frostbiteDamage.Method,5));
-    }
-    void FrostbiteDamage()
-    {
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        if (pieces.Any(p => p.cardType == cardType.fire))
-        {
-            removeEffect("FrostbiteDamage");
-            return;
-        }
-        GameManager.instance.enemyStunned = true;
-        GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
-    }
-*/
 
     /// <summary>
     /// next turn, addition
@@ -563,7 +539,31 @@ public class SpecialComboManager : MonoBehaviour
 
     void Simmer(){}
 
-    void Sinkhole(){}
+    /// <summary>
+    /// next # turns, unique
+    /// + 5-10 total damage on turn if air piece played
+    /// 2 turns without air piece will stun you on third
+    /// </summary>
+    void Sinkhole() // earth air air combo
+    {
+        // air check
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        if(pieces.Any(p => p.cardType == cardType.air))
+        {
+            GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5, 11));
+        }
+        else
+        {
+            SinkholeStuncheck = true;
+        }
+        // second turn check to stun or not
+        if(findActiveEffect("Sinkhole").Turns == 1 && SinkholeStuncheck)
+        {
+            GameManager.instance.playerStunned = true;
+            SinkholeStuncheck = false; 
+        }
+    }
+    bool SinkholeStuncheck = false;
 
     /// <summary>
     /// instant

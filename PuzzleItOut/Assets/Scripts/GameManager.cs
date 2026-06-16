@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public bool enemyStunned = false;
     public bool enemyDamageReduced = false;
     public bool enemyRebound = false;
+    public bool playerStunned = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -177,9 +178,6 @@ public class GameManager : MonoBehaviour
     }
     void EndTurn()
     {
-        
-        
-
         if (currentEnemy.health <= 0)
         {
 
@@ -194,7 +192,6 @@ public class GameManager : MonoBehaviour
 
             currentEnemy.gameObject.SetActive(false);
 
-
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
@@ -203,7 +200,6 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(2);
             return;
         }
-
 
         //The end of the Players turn
         if(turnState == TurnState.playerTurn)
@@ -223,10 +219,14 @@ public class GameManager : MonoBehaviour
         else if (turnState == TurnState.enemyTurn)
         {
             //switch to player's turn
-            
             turnState = TurnState.playerTurn;
             SpecialComboManager.Instance.cleanTurnLists();
             SpecialComboManager.Instance.moveFromBuffer();
+            if (playerStunned)
+            {
+                playerStunned = false;
+                EndTurn(); 
+            }
         }
         
     }
