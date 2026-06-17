@@ -287,7 +287,14 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
     
-    void Boulder(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 earth cards
+    /// </summary>
+    int Boulder(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth earth combo
+    {
+        return pieces.Count(p => p.cardType == cardType.earth) >= 2 ? 1 : 0;
+    }
 
     /// <summary>
     /// next # turns, unique
@@ -694,7 +701,15 @@ public class SpecialComboManager : MonoBehaviour
         GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5,11));
     }
 
-    void Wave(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 wave cards
+    /// </summary>
+    int Wave(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water water water combo
+    {
+        return pieces.Count(p => p.cardType == cardType.water) >= 2 ? 1 : 0;
+    }
+    
 
     /// <summary>
     /// next # turns, add to multiplier
@@ -705,6 +720,13 @@ public class SpecialComboManager : MonoBehaviour
         return UnityEngine.Random.Range(0,4);
     }
 
-    void WindTunnel(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 air cards
+    /// </summary>
+    int WindTunnel(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air combo
+    {
+        return pieces.Count(p => p.cardType == cardType.air) >= 2 ? 1 : 0;
+    }
     #endregion
 }
