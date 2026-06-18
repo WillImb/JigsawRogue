@@ -539,7 +539,15 @@ public class SpecialComboManager : MonoBehaviour
         return earthcount * consecutiveturns;
     }
 
-    void Sandbar(){}
+    /// <summary>
+    /// instant
+    /// you get 50% of missing health back
+    /// </summary>
+    void Sandbar() // water water water earth combo
+    {
+        float healValue = (Player.instance.maxHealth - Player.instance.health) * 0.5f;
+        Player.instance.HealHealth((int)healValue);
+    }
 
     void SandyFlow(){}
 
