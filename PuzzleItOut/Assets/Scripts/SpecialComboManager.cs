@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpecialComboManager : MonoBehaviour
@@ -544,7 +545,36 @@ public class SpecialComboManager : MonoBehaviour
 
     void Scorch(){}
 
-    void Simmer(){}
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// going from the lowest to highest health stat of the pieces in this spell
+    /// heal yourself by the first health stat
+    /// then the combined first and second health stat
+    /// finally all three combined together.
+    /// </summary>
+    void Simmer() // fire water water combo
+    {
+        // get pieces list
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+
+        // assign orded healing values to simmervalue array
+        SimmerValue = pieces.Select(p => p.healingValue).ToArray();
+        Array.Sort(SimmerValue);
+
+        // add simmer heal to unique list
+        UniqueEffect simmerHeal = SimmerHeal;
+        uniqueListBuffer.Add((simmerHeal.Method, 3));
+    }
+    void SimmerHeal()
+    {
+        // 4 - 3 = 1
+        // 4 - 2 = 2
+        // 4 - 1 = 3
+        int healValue = SimmerValue.Take(4 - findActiveEffect("SimmerHeal").Turns).Sum();
+        Player.instance.HealHealth(healValue);
+    }
+    int[] SimmerValue = {0,0,0};
 
     /// <summary>
     /// next # turns, unique
@@ -710,7 +740,6 @@ public class SpecialComboManager : MonoBehaviour
         return pieces.Count(p => p.cardType == cardType.water) >= 2 ? 1 : 0;
     }
     
-
     /// <summary>
     /// next # turns, add to multiplier
     /// +0 to +3 for next 3 turns
