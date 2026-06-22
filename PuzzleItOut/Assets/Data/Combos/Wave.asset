@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Wave
   requiredTypes: 010000000100000001000000
-  activeIngredients: 
+  isForbidden: 0
   multiplier: 3
+  specialUnlocked: 0
+  priority: 2
+  turns: 1

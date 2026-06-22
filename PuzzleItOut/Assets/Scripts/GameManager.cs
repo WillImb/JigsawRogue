@@ -4,13 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/*
- * Author(s): Anthony L, 
- * Date: 6.22.26
- * Notes:
- *  - Fixed an issue where discard pieces werent being returned to physical deck list in 
- *    DeckManager when swapping scenes
- */
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -22,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     public bool isSpecial;
 
+
+    
+
     public enum TurnState
     {
         playerTurn,
@@ -30,15 +26,17 @@ public class GameManager : MonoBehaviour
 
     TurnState turnState = TurnState.playerTurn;
 
-    public Enemy currentEnemy;
-
+    public Enemy currentEnemy; // change to type enemy when rish adds script
     public bool enemyStunned = false;
     public bool enemyDamageReduced = false;
     public bool enemyRebound = false;
+    public bool playerStunned = false;
 
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        if (instance == null)
+        if(instance == null)
         {
             instance = this;
         }
@@ -46,17 +44,19 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartGame();
 
+        StartGame();
         PanelManager.instance.DisableButtons("2,4");
         specialToggle.interactable = false;
 
         DeckManager.instance.gameObject.SetActive(true);
+
     }
 
+    // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     void StartGame()
@@ -65,19 +65,23 @@ public class GameManager : MonoBehaviour
 
         DeckManager.instance.SpawnPieces();
         DeckManager.instance.DrawPiecesTillMax();
+
+
     }
 
     public void DoTurn(int castType)
     {
-        // disable cast buttons
+        //disable cast buttons
         attackButton.interactable = false;
         specialToggle.interactable = false;
 
-        // camera shake
+        //camera shake
         Camera.main.GetComponent<CameraShake>().StartShake();
+
 
         List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
 
+         
         ComboScriptable combo = BoardManager.instance.activeCombo;
 
         if (combo == null)
@@ -85,8 +89,9 @@ public class GameManager : MonoBehaviour
             EndTurn();
             return;
         }
+        
 
-        // for non-forbidden combos
+        //for non forbidden combos
         if (!combo.isForbidden)
         {
             // check mana
@@ -102,22 +107,23 @@ public class GameManager : MonoBehaviour
                 Player.instance.SpendMana(combo.GetManaCost());
             }
         }
-
-        // forbidden combos
+        //forbidden combos
         else
         {
             if (isSpecial)
             {
+
                 if (Player.instance.GetHealth() <= 25)
                 {
                     attackButton.interactable = true;
                     specialToggle.interactable = false;
-
                     return;
                 }
                 else
                 {
+
                     Player.instance.TakeDamage(25);
+
                 }
             }
             else
@@ -126,48 +132,59 @@ public class GameManager : MonoBehaviour
                 {
                     attackButton.interactable = true;
                     specialToggle.interactable = false;
-
                     return;
                 }
                 else
                 {
+
                     Player.instance.TakeDamage(10);
+
                 }
             }
         }
 
-        // cast type can be normal or special cast
-        // normal spell
+
+        //Cast type can be normal or special cast
+        //normal spell
         if (!isSpecial)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
-
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
-
             StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
             Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));
-        }
-
-        // special combo
-        else if (isSpecial)
+        }  
+        //if a special combo
+        else if(isSpecial)
         {
+            
             SpecialComboManager.Instance.addEffect(combo);
         }
+        // if (combo != null)
+        // {
+        //     currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
+        //     float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
+        //     StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
+
+        //     Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));           
+        // }
+        // else
+        // {
+        //     currentEnemy.TakeDamage(0);
+        // }
+        
 
         EndTurn();
     }
-
     void EndTurn()
     {
         if (currentEnemy.health <= 0)
         {
-            // win
+
+            //win
+            //SceneManager.LoadScene(4)
+
             DeckManager.instance.DiscardBoard();
-
-            // return discard pieces to deck
-            DeckManager.instance.DiscardToDeck();
-
             DeckManager.instance.DrawPiecesTillMax();
 
             BoardManager.instance.ValidateBoard();
@@ -179,56 +196,53 @@ public class GameManager : MonoBehaviour
         }
         else if (Player.instance.GetHealth() <= 0)
         {
-            // lose
+            //lose
             SceneManager.LoadScene(2);
-
             return;
         }
 
-        // end of player's turn
-        if (turnState == TurnState.playerTurn)
+        //The end of the Players turn
+        if(turnState == TurnState.playerTurn)
         {
             SpecialComboManager.Instance.uniqueList.ForEach(e => e.Effect.Invoke(SpecialComboManager.Instance, null));
-
             DeckManager.instance.DiscardBoard();
             DeckManager.instance.DrawPiecesTillMax();
-
+            //switch to enemy's turn
             turnState = TurnState.enemyTurn;
 
             BoardManager.instance.ValidateBoard();
             BoardManager.instance.UpdateCostImage();
 
-            Invoke("DoEnemyTurn", 1);
-        }
+            Invoke("DoEnemyTurn",1);
 
-        // end of enemy's turn
+        }
         else if (turnState == TurnState.enemyTurn)
         {
+            //switch to player's turn
             turnState = TurnState.playerTurn;
-
             SpecialComboManager.Instance.cleanTurnLists();
             SpecialComboManager.Instance.moveFromBuffer();
+            if (playerStunned)
+            {
+                playerStunned = false;
+                EndTurn(); 
+            }
         }
+        
     }
-
     void DoEnemyTurn()
     {
-        // stunned
+        //stunned
         if (enemyStunned)
         {
             enemyStunned = false;
-
-            Invoke("EndTurn", 1);
+            Invoke("EndTurn",1);
         }
-
-        // not stunned
-        else
-        {
+        else // not stunned
+        {   
             VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
-
-            currentEnemy.Invoke("DealDamage", .35f);
-
-            Invoke("EndTurn", 1);
+            currentEnemy.Invoke("DealDamage",.35f);
+            Invoke("EndTurn",1);
         }
     }
 
@@ -239,8 +253,11 @@ public class GameManager : MonoBehaviour
 
     public void SetSpecial()
     {
+       
         isSpecial = specialToggle.isOn;
-
         BoardManager.instance.UpdateCostImage();
     }
+
+   
+
 }

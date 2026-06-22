@@ -104,7 +104,7 @@ public class CombatManager : MonoBehaviour
         // addition value from effects
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
+            result += (int)Convert.ToSingle(SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage}));
         }
 
         // value from multiplier
@@ -112,7 +112,7 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage});
+            multiplier += (int)Convert.ToSingle(SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Damage}));
         }
         // add to multiplier value from effects
         result *= multiplier;
@@ -134,14 +134,14 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold});
+            result += (int)Convert.ToSingle(SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold}));
         }
 
         float multiplier = combo.multiplier;
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold});
+            multiplier += (int)Convert.ToSingle(SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Gold}));
         }
 
         result *= multiplier;
@@ -161,14 +161,14 @@ public class CombatManager : MonoBehaviour
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
-            result += (int)SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health});
+            result += (int)Convert.ToSingle(SpecialComboManager.Instance.additionList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health}));
         }
 
         float multiplier = combo.multiplier;
 
         for (int index = 0 ; index < SpecialComboManager.Instance.addToMultiplierList.Count; index++)
         {
-            multiplier += (int)SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health});
+            multiplier += (int)Convert.ToSingle(SpecialComboManager.Instance.addToMultiplierList[index].Effect.Invoke(SpecialComboManager.Instance, new object[] {pieces,SpecialComboManager.AffectedStat.Health}));
         }
         
         result *= multiplier;

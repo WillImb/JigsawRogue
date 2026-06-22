@@ -15,5 +15,6 @@ MonoBehaviour:
   comboName: FlashFlood
   requiredTypes: 010000000300000002000000
   multiplier: 3
-  priority: 4
+  specialUnlocked: 0
+  priority: 0
   turns: 1

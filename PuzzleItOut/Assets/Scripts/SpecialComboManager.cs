@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpecialComboManager : MonoBehaviour
@@ -286,7 +287,15 @@ public class SpecialComboManager : MonoBehaviour
             GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.cardType == cardType.fire).combatValue);
         }
     }
-    void Boulder(){}
+    
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 earth cards
+    /// </summary>
+    int Boulder(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // earth earth earth combo
+    {
+        return pieces.Count(p => p.cardType == cardType.earth) >= 2 ? 1 : 0;
+    }
 
     /// <summary>
     /// next # turns, unique
@@ -331,10 +340,12 @@ public class SpecialComboManager : MonoBehaviour
         return 0;
     }
 
-    // persistent, addition
-    // +2 to fire pieces stats
-    // persistent, add to multiplier
-    // +1 to multiplier if fire piece
+    /// <summary> 
+    /// persistent, addition
+    /// +2 to fire pieces stats
+    /// persistent, add to multiplier
+    /// +1 to multiplier if fire piece
+    /// </summary>
     int Fireball(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // fire fire fire fire combo
     {
         //see if this is first turn with this effect
@@ -373,12 +384,41 @@ public class SpecialComboManager : MonoBehaviour
     /// <summary>
     /// instant
     /// set card type condition
+    /// next turn, addition
+    /// if two __ cardtypes are played add 5-7 combat stat to combo
     /// </summary>
-    void FlashFlood()
+    void FlashFlood() // water earth air combo
     {
-        
+        nextFlashFloodType();
+        NumberEffect flashFloodDamage = FlashFloodDamage;
+        additionListBuffer.Add((flashFloodDamage.Method, 1));
     }
-    cardType FlashFloodType;
+    float FlashFloodDamage(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        if(affectedStat != AffectedStat.Damage)
+        {
+            return 0;
+        }
+        if(pieces.Count(p => p.cardType == getFlashFloodType()) >= 2)
+        {
+            return UnityEngine.Random.Range(5, 8);
+        }
+        return 0;
+    }
+    cardType getFlashFloodType()
+    {
+        if(FlashFloodType == null)
+        {
+            nextFlashFloodType();
+        }
+        return (cardType)FlashFloodType;
+    }
+    void nextFlashFloodType()
+    {
+        FlashFloodType = (cardType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(cardType)).Length);
+        print("Next Flash Flood is " + FlashFloodType.ToString());
+    }
+    cardType? FlashFloodType;
 
     /// <summary>
     /// instant
@@ -394,33 +434,6 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     void ForgingSteel(){}
-
-/* remove this effect no more frostbite
-    /// <summary>
-    /// instant
-    /// next # turns, unique
-    /// deal 3-5 damage per turn
-    /// stun
-    /// if fire card played remove effect
-    /// </summary>
-    void Frostbite() // water water water air combo
-    {
-        GameManager.instance.enemyStunned = true;
-        UniqueEffect frostbiteDamage = FrostbiteDamage;
-        uniqueList.Add((frostbiteDamage.Method,5));
-    }
-    void FrostbiteDamage()
-    {
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        if (pieces.Any(p => p.cardType == cardType.fire))
-        {
-            removeEffect("FrostbiteDamage");
-            return;
-        }
-        GameManager.instance.enemyStunned = true;
-        GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(3, 6));
-    }
-*/
 
     /// <summary>
     /// next turn, addition
@@ -526,15 +539,76 @@ public class SpecialComboManager : MonoBehaviour
         return earthcount * consecutiveturns;
     }
 
-    void Sandbar(){}
+    /// <summary>
+    /// instant
+    /// you get 50% of missing health back
+    /// </summary>
+    void Sandbar() // water water water earth combo
+    {
+        float healValue = (Player.instance.maxHealth - Player.instance.health) * 0.5f;
+        Player.instance.HealHealth((int)healValue);
+    }
 
     void SandyFlow(){}
 
     void Scorch(){}
 
-    void Simmer(){}
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// going from the lowest to highest health stat of the pieces in this spell
+    /// heal yourself by the first health stat
+    /// then the combined first and second health stat
+    /// finally all three combined together.
+    /// </summary>
+    void Simmer() // fire water water combo
+    {
+        // get pieces list
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
 
-    void Sinkhole(){}
+        // assign orded healing values to simmervalue array
+        SimmerValue = pieces.Select(p => p.healingValue).ToArray();
+        Array.Sort(SimmerValue);
+
+        // add simmer heal to unique list
+        UniqueEffect simmerHeal = SimmerHeal;
+        uniqueListBuffer.Add((simmerHeal.Method, 3));
+    }
+    void SimmerHeal()
+    {
+        // 4 - 3 = 1
+        // 4 - 2 = 2
+        // 4 - 1 = 3
+        int healValue = SimmerValue.Take(4 - findActiveEffect("SimmerHeal").Turns).Sum();
+        Player.instance.HealHealth(healValue);
+    }
+    int[] SimmerValue = {0,0,0};
+
+    /// <summary>
+    /// next # turns, unique
+    /// + 5-10 total damage on turn if air piece played
+    /// 2 turns without air piece will stun you on third
+    /// </summary>
+    void Sinkhole() // earth air air combo
+    {
+        // air check
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        if(pieces.Any(p => p.cardType == cardType.air))
+        {
+            GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5, 11));
+        }
+        else
+        {
+            SinkholeStuncheck = true;
+        }
+        // second turn check to stun or not
+        if(findActiveEffect("Sinkhole").Turns == 1 && SinkholeStuncheck)
+        {
+            GameManager.instance.playerStunned = true;
+            SinkholeStuncheck = false; 
+        }
+    }
+    bool SinkholeStuncheck = false;
 
     /// <summary>
     /// instant
@@ -665,8 +739,15 @@ public class SpecialComboManager : MonoBehaviour
         GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5,11));
     }
 
-    void Wave(){}
-
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 wave cards
+    /// </summary>
+    int Wave(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water water water combo
+    {
+        return pieces.Count(p => p.cardType == cardType.water) >= 2 ? 1 : 0;
+    }
+    
     /// <summary>
     /// next # turns, add to multiplier
     /// +0 to +3 for next 3 turns
@@ -676,6 +757,13 @@ public class SpecialComboManager : MonoBehaviour
         return UnityEngine.Random.Range(0,4);
     }
 
-    void WindTunnel(){}
+    /// <summary>
+    /// next turn, add to multiplier
+    /// +1 multiplier if >= 2 air cards
+    /// </summary>
+    int WindTunnel(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air combo
+    {
+        return pieces.Count(p => p.cardType == cardType.air) >= 2 ? 1 : 0;
+    }
     #endregion
 }
