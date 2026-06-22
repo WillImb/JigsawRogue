@@ -8,28 +8,34 @@ using UnityEngine.SceneManagement;
  * Author(s): Anthony L
  * Date: 6.15.26
  * Notes:
- *  - Currently, there's a bug where your pieces from the discard pile aren't returned to you
+ *  - 
  */
 public class DeckManager : MonoBehaviour
 {
-    public static DeckManager instance;
+    [SerializeField] public static DeckManager instance;
+
+    // deck data
     public List<GameObject> deck;
     public List<GameObject> physicalDeck;
     public List<GameObject> hand;
     public List<GameObject> discard;
+    private const int MAX_DECK_SIZE = 20;
+
+    // hand data
     [SerializeField] private Transform[] handSlots;
     [SerializeField] private Piece[] occupied;
 
+    // deck object References
     public Transform deckSpawn;
     public Transform discardSpawn;
+    [SerializeField] private Transform physicalDeckParent;
 
+    // scene references
     public GameObject pieceHalo;
-
-    // prefabs for each of the pieces
-    // sprite order: f, w, e, a
+    // Sprite order: f, w, e, a
     [SerializeField] private List<GameObject> piecePrefabs;
 
-    // event for updating deck
+    // update for whenever deck is modified
     public static event Action OnDeckUpdated;
 
     void Awake()
@@ -60,10 +66,7 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        deck.Clear();
-
-        // create x instances of each piece depending on the max capacity of the deck
-
+        // deck.Clear();
     }
 
     /// <summary>
@@ -71,12 +74,15 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     public void SpawnPieces()
     {
-        if (physicalDeck.Count + hand.Count < deck.Count)
+        if (physicalDeck.Count < deck.Count)
         {
-            int difference = deck.Count - physicalDeck.Count + hand.Count;
+            physicalDeck.Clear();
+
             foreach (GameObject g in deck)
             {
-                physicalDeck.Add(Instantiate(g, deckSpawn.position, Quaternion.identity));
+                GameObject piece = Instantiate(g, deckSpawn.position, Quaternion.identity, physicalDeckParent);
+
+                physicalDeck.Add(piece);
             }
         }
     }
@@ -86,6 +92,11 @@ public class DeckManager : MonoBehaviour
     /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        ReturnAllPiecesToDeck();
+
+        // clears the discard so it doesnt constantly grow
+        discard.Clear();
+
         if (scene.name == "Shop" || scene.name == "LoseScene" || scene.name == "Main Menu")
         {
             SetPiecesVisible(false);
@@ -122,20 +133,20 @@ public class DeckManager : MonoBehaviour
     {
         if (physicalDeck.Count != 0)
         {
-            //GameObject prefab = deck[deck.Count - 1];
-            //GameObject spawnedPiece = Instantiate(prefab);
-
-            //get random piece
+            // pick random piece from physical deck
             int randomIndex = UnityEngine.Random.Range(0, physicalDeck.Count);
 
-            hand.Add(physicalDeck[randomIndex]);
+            GameObject drawnPiece = physicalDeck[randomIndex];
 
             physicalDeck.RemoveAt(randomIndex);
 
-            // invoke UI refresh
+            drawnPiece.transform.SetParent(null);
+
+            hand.Add(drawnPiece);
+
             OnDeckUpdated?.Invoke();
 
-            ReturnToHand(hand[hand.Count - 1].GetComponent<Piece>());
+            ReturnToHand(drawnPiece.GetComponent<Piece>());
         }
     }
 
@@ -152,10 +163,9 @@ public class DeckManager : MonoBehaviour
                 DrawPiece();
             }
         }
-        if (hand.Count <= 5)
+        if (physicalDeck.Count == 0 && discard.Count > 0)
         {
             DiscardToDeck();
-            DrawPiecesTillMax();
         }
     }
 
@@ -228,10 +238,13 @@ public class DeckManager : MonoBehaviour
     public void DiscardToDeck()
     {
         physicalDeck.AddRange(discard);
+
         foreach (GameObject g in physicalDeck)
         {
             g.transform.position = deckSpawn.position;
+            g.transform.SetParent(physicalDeckParent);
         }
+
         discard.Clear();
     }
 
@@ -258,6 +271,12 @@ public class DeckManager : MonoBehaviour
         if (piece == null)
         {
             Debug.LogWarning("Can't add null piece to deck");
+            return;
+        }
+
+        if (deck.Count >= MAX_DECK_SIZE)
+        {
+            Debug.Log("Deck is already at max size: " + MAX_DECK_SIZE);
             return;
         }
 
@@ -288,7 +307,7 @@ public class DeckManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies an upgrade to a deck piece if it can be afforded
+    /// Applies an upgrade to a physical deck piece if it can be afforded
     /// </summary>
     public void UpgradePiece(int index)
     {
@@ -302,13 +321,14 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
-        if (index < 0 || index >= deck.Count)
+        if (index < 0 || index >= physicalDeck.Count)
         {
-            Debug.LogWarning("Invalid deck index");
+            Debug.LogWarning("Invalid physical deck index");
             return;
         }
 
-        GameObject pieceObj = deck[index];
+        GameObject pieceObj = physicalDeck[index];
+
         Piece piece = pieceObj.GetComponent<Piece>();
 
         if (piece == null || piece.pieceData == null)
@@ -320,12 +340,12 @@ public class DeckManager : MonoBehaviour
         // spend gold
         GoldManager.Instance.SpendGold(upgradeCost);
 
-        // temp upgrade
+        // upgrade physical piece stats
         piece.pieceData.combatValue += 1;
         piece.pieceData.healingValue += 1;
         piece.pieceData.goldValue += 1;
 
-        Debug.Log($"Upgraded {piece.pieceData.pieceName}" + " #" + index);
+        Debug.Log($"Upgraded {piece.pieceData.pieceName} #" + index);
     }
 
     /// <summary>
@@ -350,6 +370,51 @@ public class DeckManager : MonoBehaviour
                         piece.pieceHalo = pieceHalo;
                     }
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns all pieces from discard and hand to the physical deck
+    /// </summary>
+    void ReturnAllPiecesToDeck()
+    {
+        // clear occupied hand slots
+        for (int i = 0; i < occupied.Length; i++)
+        {
+            occupied[i] = null;
+        }
+
+        // return hand pieces
+        foreach (GameObject piece in hand)
+        {
+            if (piece != null && !physicalDeck.Contains(piece))
+            {
+                physicalDeck.Add(piece);
+            }
+        }
+
+        hand.Clear();
+
+        // return discard pieces
+        foreach (GameObject piece in discard)
+        {
+            if (piece != null && !physicalDeck.Contains(piece))
+            {
+                physicalDeck.Add(piece);
+            }
+        }
+
+        discard.Clear();
+
+        // move every physical piece back into deck position
+        foreach (GameObject piece in physicalDeck)
+        {
+            if (piece != null)
+            {
+                piece.transform.SetParent(physicalDeckParent);
+                piece.transform.position = deckSpawn.position;
+                piece.SetActive(true);
             }
         }
     }

@@ -15,14 +15,10 @@ using TMPro;
 public class DeckPanel : MonoBehaviour
 {
     private DeckManager deckManager;
-    private List<GameObject> deck;
+    private List<GameObject> physicalDeck;
 
     [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject pieceUIPrefab;
-
-    // piece sprties with no graphic in the middle
-    // sprite order: f, w, e, a
-    [SerializeField] private List<Sprite> pieceSprites;
 
     public enum SortMode
     {
@@ -60,11 +56,11 @@ public class DeckPanel : MonoBehaviour
     {
         DeckManager.OnDeckUpdated += PopulateDeckPanel;
 
-        deckManager = DeckManager.instance;
+        // physicalDeck = deckManager.physicalDeck;
 
         if (deckManager != null)
         {
-            deck = deckManager.deck;
+            physicalDeck = deckManager.physicalDeck;
 
             UpdateModeButtonText();
             UpdateOrderButtonText();
@@ -90,9 +86,9 @@ public class DeckPanel : MonoBehaviour
             deckManager = DeckManager.instance;
         }
 
-        if (deckManager == null || deckManager.deck == null)
+        if (deckManager == null || deckManager.physicalDeck == null)
         {
-            Debug.LogWarning("DeckManager or deck is missing");
+            Debug.LogWarning("DeckManager or physical deck is missing");
             return;
         }
 
@@ -102,7 +98,7 @@ public class DeckPanel : MonoBehaviour
             return;
         }
 
-        deck = deckManager.deck;
+        physicalDeck = deckManager.physicalDeck;
 
         // reset deck panel
         foreach (Transform child in contentParent)
@@ -115,37 +111,35 @@ public class DeckPanel : MonoBehaviour
         // create deck panel pieces
         for (int i = 0; i < arrangedDeck.Count; i++)
         {
-            GameObject piecePrefab = arrangedDeck[i];
+            GameObject physicalPiece = arrangedDeck[i];
 
             GameObject uiPiece = Instantiate(pieceUIPrefab, contentParent);
 
             DeckPiece deckPieceUI = uiPiece.GetComponent<DeckPiece>();
+
             if (deckPieceUI != null)
             {
-                deckPieceUI.index = deck.IndexOf(piecePrefab);
+                deckPieceUI.index = physicalDeck.IndexOf(physicalPiece);
             }
 
-            Image image = uiPiece.GetComponent<Image>();
-            Piece piece = piecePrefab.GetComponent<Piece>();
+            Image image = uiPiece.GetComponentInChildren<Image>();
+
+            Piece piece = physicalPiece.GetComponent<Piece>();
 
             if (piece == null || piece.pieceData == null)
             {
-                Debug.LogWarning($"Missing Piece or PieceData on {piecePrefab.name}");
+                Debug.LogWarning($"Missing Piece or PieceData on {physicalPiece.name}");
                 continue;
             }
 
             var data = piece.pieceData;
 
             cardType type = data.cardType;
-            int spriteIndex = (int)type;
 
-            if (image != null && spriteIndex >= 0 && spriteIndex < pieceSprites.Count)
+            // set piece color
+            if (image != null)
             {
-                image.sprite = pieceSprites[spriteIndex];
-            }
-            else
-            {
-                Debug.LogWarning($"No sprite found for {type}");
+                image.color = GetElementColor(data.cardType);
             }
 
             Transform textChild = uiPiece.transform.Find("Text");
@@ -175,7 +169,7 @@ public class DeckPanel : MonoBehaviour
     /// </summary>
     private List<GameObject> GetArrangedDeck()
     {
-        IEnumerable<GameObject> arrangedDeck = deck;
+        IEnumerable<GameObject> arrangedDeck = physicalDeck;
 
         switch (filterMode)
         {
@@ -370,5 +364,17 @@ public class DeckPanel : MonoBehaviour
     {
         Piece piece = pieceObject.GetComponent<Piece>();
         return piece != null && piece.pieceData != null ? piece.pieceData.pieceName : "";
+    }
+
+    private Color GetElementColor(cardType type)
+    {
+        return type switch
+        {
+            cardType.fire => new Color(1f, 0.35f, 0.2f),
+            cardType.water => new Color(0.2f, 0.6f, 1f),
+            cardType.earth => new Color(0.4f, 0.8f, 0.3f),
+            cardType.air => new Color(0.85f, 0.85f, 0.85f),
+            _ => Color.white
+        };
     }
 }
