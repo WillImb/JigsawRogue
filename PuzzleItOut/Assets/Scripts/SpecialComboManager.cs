@@ -450,14 +450,33 @@ public class SpecialComboManager : MonoBehaviour
 
     /// <summary>
     /// instant
+    /// next # turns, addition
+    /// if > 5 to 7 gold in possesion, sacrifice 5 to 7 gold to add +1 gold per card in next two spells
     /// </summary>
-    void MoltenGold(){}
+    void MoltenGold() // fire fire earth combo
+    {
+        if(GoldManager.Instance.Gold < 5)
+        {
+            return;
+        }
+        int sacrificeMax = (int)MathF.Min(GoldManager.Instance.Gold, 7.0f);
+        GoldManager.Instance.SpendGold(UnityEngine.Random.Range(5, sacrificeMax));
+        //put some animation here to show your money going away
+
+        NumberEffect moltenGoldBonus = MoltenGoldBonus;
+        additionListBuffer.Add((moltenGoldBonus.Method, 2));
+    }
+    float MoltenGoldBonus(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements)
+    {
+        print("adding bonus gold");
+        return affectedStat == AffectedStat.Gold ? pieces.Count : 0;
+    }
 
     /// <summary>
     /// next turn, addition
     /// +3 combat stat per card
     /// </summary>
-    int Mudslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) //water earth earth combo
+    int Mudslide(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // water earth earth combo
     {
         if(affectedStat == AffectedStat.Damage)
         {
