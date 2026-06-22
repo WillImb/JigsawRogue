@@ -1,146 +1,258 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
+/*
+ * Author(s): Anthony L, 
+ * Date: 6.22.26
+ * Notes:
+ * - Made it so camera reference is reassigned when entering game scene
+ */
 public class Piece : MonoBehaviour
 {
-    private Camera cam;
+    [SerializeField] public Camera cam;
     private Vector3 offset;
+
     public Sprite baseSprite;
+
     private bool dragging;
+
     public bool isHovered;
+
     private bool isPlaced;
+
     public PieceScriptable pieceData;
+
     private sideType[] sides;
-    private int pieceLevel;
 
     Vector3 velo = Vector3.zero;
+
     public float smoothTime = 0f;
 
     public GameObject pieceHalo;
 
+
     void Awake()
     {
         cam = Camera.main;
-        pieceHalo = DeckManager.instance.pieceHalo;
+
+        if (cam == null)
+        {
+            Debug.LogWarning("Piece: No camera found. Piece controls disabled until camera is available.");
+        }
+
+        if (DeckManager.instance != null)
+        {
+            pieceHalo = DeckManager.instance.pieceHalo;
+        }
+
+        // this actually doesnt fix the upgrade issue, but does get us one step closer because 
+        // pieces are now showing unique ids
+        if (pieceData != null)
+        {
+            pieceData = Instantiate(pieceData);
+            // Debug.Log($"{name} | GameObject: {gameObject.GetInstanceID()} | Data: {pieceData.GetInstanceID()}");
+        }
     }
+
 
     // this combo of onEnable and onDisable fix the issue where piece dragging would stop working after changing scenes
     void OnEnable()
     {
         cam = Camera.main;
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        if (InputManager.Instance == null)
+        {
+            return;
+        }
+
         InputManager.Instance.Gameplay.Click.started += PieceDrag;
         //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
     }
 
+
     void OnDisable()
     {
-        if (InputManager.Instance == null) return;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        if (InputManager.Instance == null)
+        {
+            return;
+        }
 
         InputManager.Instance.Gameplay.Click.started -= PieceDrag;
         //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
+
+    // reassign camera after changing scenes
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+        {
+            cam = Camera.main;
+
+            if (cam == null)
+            {
+                Debug.LogWarning("Camera couldn't be found on entering GameScene.");
+            }
+
+            if (DeckManager.instance != null)
+            {
+                pieceHalo = DeckManager.instance.pieceHalo;
+            }
+        }
+    }
+
+
     void Start()
     {
-        
+        if (InputManager.Instance == null)
+        {
+            return;
+        }
+
         InputManager.Instance.Gameplay.Click.started += PieceDrag;
         //InputManager.Instance.Gameplay.Click.canceled += EndDrag;
+
         InputManager.Instance.Gameplay.RotateClockwise.performed += HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed += HandleRotateCounterClockwise;
 
-        //Side Data
+
+        // Side Data
         sides = new sideType[4];
+
         sides[0] = pieceData.north;
         sides[1] = pieceData.east;
         sides[2] = pieceData.south;
         sides[3] = pieceData.west;
 
 
-        //randomly rotate
+        // randomly rotate
         int rotCount = Random.Range(0, 4);
+
         for (int i = 0; i < rotCount; i++)
         {
             RotatePieceClockwise();
         }
     }
 
+
     void OnDestroy()
     {
-        if (InputManager.Instance == null) return;
+        if (InputManager.Instance == null)
+        {
+            return;
+        }
 
         InputManager.Instance.Gameplay.Click.started -= PieceDrag;
         //InputManager.Instance.Gameplay.Click.canceled -= EndDrag;
+
         InputManager.Instance.Gameplay.RotateClockwise.performed -= HandleRotateClockwise;
         //InputManager.Instance.Gameplay.RotateCounterClockwise.performed -= HandleRotateCounterClockwise;
     }
 
+
     void Update()
     {
-       
+        if (cam == null)
+        {
+            cam = Camera.main;
+
+            if (cam == null)
+            {
+                return;
+            }
+        }
+
 
         if (dragging)
         {
-          
             isHovered = false;
 
 
             Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+
             Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+
             worldPos.z = 0f;
 
-            transform.position = Vector3.SmoothDamp(transform.position, worldPos + offset, ref velo, smoothTime);
 
-            pieceHalo.transform.position = transform.position;
-            pieceHalo.transform.rotation = transform.rotation;
+            transform.position = Vector3.SmoothDamp(
+                transform.position,
+                worldPos + offset,
+                ref velo,
+                smoothTime
+            );
+
+
+            if (pieceHalo != null)
+            {
+                pieceHalo.transform.position = transform.position;
+                pieceHalo.transform.rotation = transform.rotation;
+            }
+
             return;
         }
-        
+
 
         // hover detection
         Vector2 hoverScreenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+
         Vector2 hoverWorldPos = cam.ScreenToWorldPoint(hoverScreenPos);
+
         RaycastHit2D hit = Physics2D.Raycast(hoverWorldPos, Vector2.zero);
+
         bool nowHovered = hit && hit.transform == transform;
+
 
         if (nowHovered && !isHovered)
         {
             isHovered = true;
+
             TooltipManager.instance.ShowTooltip(pieceData);
         }
         else if (!nowHovered && isHovered)
         {
             isHovered = false;
+
             TooltipManager.instance.HideTooltip();
         }
-      
     }
+
 
     public sideType[] GetAllSides()
     {
         return sides;
     }
 
+
     public sideType GetSide(Direction direction)
     {
         return sides[(int)direction];
     }
 
+
     public void RotatePieceClockwise()
     {
-        
         sideType temp = sides[0]; // N side
 
         sides[0] = sides[3]; // W becomes old N
         sides[3] = sides[2]; // S becomes old W
         sides[2] = sides[1]; // E becomes old S
         sides[1] = temp;     // N becomes old E
+
         transform.Rotate(Vector3.forward * -90f);
     }
+
 
     public void RotatePieceCounterClockwise()
     {
@@ -150,105 +262,161 @@ public class Piece : MonoBehaviour
         sides[1] = sides[2]; // S becomes old E
         sides[2] = sides[3]; // W becomes old S
         sides[3] = temp;     // N becomes old W
+
         transform.Rotate(Vector3.forward * 90f);
     }
+
 
     void StartDrag(InputAction.CallbackContext ctx)
     {
         Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+
         Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
 
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-        if (!hit || hit.transform != transform) return;
 
-        //offset = transform.position - (Vector3)worldPos;
+        if (!hit || hit.transform != transform)
+        {
+            return;
+        }
+
+
         TooltipManager.instance.HideTooltip();
+
         dragging = true;
-        if (isPlaced == true)
+
+
+        if (isPlaced)
         {
             isPlaced = false;
+
             BoardManager.instance.RemovePiece(this);
         }
     }
 
+
     void EndDrag(InputAction.CallbackContext ctx)
     {
-        if (!dragging) return;
+        if (!dragging)
+        {
+            return;
+        }
+
 
         dragging = false;
+
+
         if (BoardManager.instance.TryPlacePiece(this))
         {
             isPlaced = true;
+
             DeckManager.instance.RemoveFromHand(this);
+
             return;
         }
+
+
         DeckManager.instance.ReturnToHand(this);
     }
 
+
     void PieceDrag(InputAction.CallbackContext ctx)
     {
-        //startDrag
+        // startDrag
         if (!dragging)
         {
-            
-
             velo = Vector3.zero;
+
+
             Vector2 screenPos = InputManager.Instance.Gameplay.Point.ReadValue<Vector2>();
+
             Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
 
+
             RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-            if (!hit || hit.transform != transform) return;
+
+            if (!hit || hit.transform != transform)
+            {
+                return;
+            }
+
 
             foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>())
             {
                 s.sortingOrder += 2;
             }
 
-            // offset = transform.position - (Vector3)worldPos;
+
             dragging = true;
-            if (isPlaced == true)
+
+
+            if (isPlaced)
             {
                 isPlaced = false;
+
                 BoardManager.instance.RemovePiece(this);
             }
-
         }
+
+        // endDrag
         else
         {
-            //endDrag
-
             foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>())
             {
                 s.sortingOrder -= 2;
             }
+
+
             dragging = false;
-            pieceHalo.transform.position = new Vector3(-1000, -1000, 0);
+
+
+            if (pieceHalo != null)
+            {
+                pieceHalo.transform.position = new Vector3(-1000, -1000, 0);
+            }
+
+
             if (BoardManager.instance.TryPlacePiece(this))
             {
                 isPlaced = true;
+
                 DeckManager.instance.RemoveFromHand(this);
+
                 return;
             }
+
+
             DeckManager.instance.ReturnToHand(this);
         }
     }
+
+
     void HandleRotateClockwise(InputAction.CallbackContext ctx)
     {
-        if (!dragging) return;
+        if (!dragging)
+        {
+            return;
+        }
+
         RotatePieceClockwise();
     }
 
+
     void HandleRotateCounterClockwise(InputAction.CallbackContext ctx)
     {
-        if (!dragging) return;
+        if (!dragging)
+        {
+            return;
+        }
+
         RotatePieceCounterClockwise();
     }
+
 
     public void LockToSlot(Transform slot)
     {
         transform.SetParent(slot);
+
         transform.localPosition = Vector3.zero;
-
-
     }
 }

@@ -5,13 +5,31 @@ using UnityEngine.UI;
 
 /*
  * Author(s): Anthony L
- * Date: 5.26.26
+ * Date: 6.22.26
  * Notes:
- *  - SetAllCombosSoldOut() is currently deprecated since upgrade buttons just disappear
- *    when they're bought
- *  - I plan on separating upgrade panel and deck panel into two different things. This
- *    will be added as a task or subtask on the Trello - AL
- *  - 
+ *  - Card Upgrades:
+ *   - Single: Upgrades one stat by one
+ *   - Double: Upgrades two stats by one
+ *   - Triple: Upgrades all three stats by one
+ *   
+ *  - Each card upgrade will have an element and stat type
+ *   - Card upgrades can only have one element type - with the exception
+ *     of wildcard upgrades, which can be applied to any card - and is 
+ *     rarer than standard mono-element upgrades. 
+ *   - Card upgrades can only have one stat type - with the exception of 
+ *     wildvalue upgrades, which can be applied to any type - and the player
+ *     is able to choose what stat is upgraded.
+ *   
+ *  - Shop item rarities:
+ *   - Common -> 60%
+ *   - Uncommon -> 30%
+ *   - Rare -> 10%
+ *    
+ *  - Some items in the sohp cost gold based on rarity
+ *  - Card upgrades:
+ *   - Common: 5 gold
+ *   - Rare: 10 gold
+ *   - Rarest: 15 gold
  */
 public class ShopManager : MonoBehaviour
 {
@@ -26,15 +44,13 @@ public class ShopManager : MonoBehaviour
     // pools
     public List<GameObject> piecePool;
     public List<ComboScriptable> comboPool;
-    public List<Sprite> sprites;
+    // sprite order: f, w, e, a
+    [SerializeField] private List<Sprite> sprites;
     // public List<UpgradeData> upgradePool;
 
     // reference variables
     public GameObject deckPanel;   // reference to deck panel 
     public GameObject upgradedPanel;
-
-    // temp upgrade cost var for testing
-    [SerializeField] private int upgradeCost = 1;
 
     // is the deck panel open because of upgrading
     [SerializeField] public bool isUpgrading;
@@ -86,6 +102,24 @@ public class ShopManager : MonoBehaviour
 
             // link the corresponding upgrade button
             pieceData.linkedUpgradeButton = upgrades[i];
+
+            // display upgrades rarity
+            TMP_Text upgradeText = upgrades[i].GetComponentInChildren<TMP_Text>();
+            if (upgradeText != null)
+            {
+                int roll = Random.Range(0, 100);
+
+                string rarity;
+
+                if (roll < 60)
+                    rarity = "COMMON";
+                else if (roll < 90)
+                    rarity = "UNCOMMON";
+                else
+                    rarity = "RARE";
+
+                upgradeText.text = rarity;
+            }
         }
     }
 
@@ -269,15 +303,31 @@ public class ShopManager : MonoBehaviour
     /// </summary>
     public bool BuyUpgrade(int deckIndex)
     {
-        if (!GoldManager.Instance.CanAfford(upgradeCost))
+        if (currentUpgradeButton == null)
+        {
+            Debug.LogWarning("No upgrade button selected");
+            return false;
+        }
+
+        ShopData data = currentUpgradeButton.GetComponent<ShopData>();
+
+        if (data == null)
+        {
+            Debug.LogWarning("ShopData missing on upgrade button");
+            return false;
+        }
+
+        int cost = data.cost;
+
+        if (!GoldManager.Instance.CanAfford(cost))
         {
             Debug.Log("Not enough gold to upgrade");
             return false;
         }
 
-        GoldManager.Instance.SpendGold(upgradeCost);
+        GoldManager.Instance.SpendGold(cost);
 
-        DeckManager.instance.UpgradePiece(deckIndex);
+        DeckManager.instance.UpgradePiece(deckIndex, cost);
 
         SetUpgradedPanelActive(true);
         DisableCurrentUpgradeButton();
