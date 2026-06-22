@@ -309,12 +309,8 @@ public class DeckManager : MonoBehaviour
     /// <summary>
     /// Applies an upgrade to a physical deck piece if it can be afforded
     /// </summary>
-    public void UpgradePiece(int index)
+    public void UpgradePiece(int index, int upgradeCost)
     {
-        // upgrade cost
-        int upgradeCost = 1;
-
-        // make sure player can afford upgrade
         if (!GoldManager.Instance.CanAfford(upgradeCost))
         {
             Debug.Log("Not enough gold to upgrade");
@@ -337,10 +333,8 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
-        // spend gold
         GoldManager.Instance.SpendGold(upgradeCost);
 
-        // upgrade physical piece stats
         piece.pieceData.combatValue += 1;
         piece.pieceData.healingValue += 1;
         piece.pieceData.goldValue += 1;
