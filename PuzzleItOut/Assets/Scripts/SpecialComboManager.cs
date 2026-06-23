@@ -433,6 +433,9 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// overhealth/shield
+    /// </summary>
     void ForgingSteel(){}
 
     /// <summary>
@@ -444,8 +447,21 @@ public class SpecialComboManager : MonoBehaviour
         return pieces.Count(piece => piece.cardType == cardType.air);
     }
 
-    void HotCoal(){}
+    /// <summary>
+    /// instant
+    /// deal damage and gain gold equal to gold value of spells
+    /// </summary>
+    void HotCoal() // fire earth earth combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        int totalvalue = pieces.Sum(p => p.goldValue);
+        GoldManager.Instance.AddGold(totalvalue);
+        GameManager.instance.currentEnemy.TakeDamage(totalvalue);
+    }
 
+    /// <summary>
+    /// overhealth/shield
+    /// </summary>
     void Mist(){}
 
     /// <summary>
