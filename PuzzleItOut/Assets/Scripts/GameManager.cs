@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
 
     public Enemy currentEnemy; // change to type enemy when rish adds script
     public bool enemyStunned = false;
-    public bool enemyDamageReduced = false;
+    public bool acidRainDamageReduced = false;
+    public bool ashfallDamageReduction = false;
+    public bool petrichorMudwallDamageReduction = false;
     public bool enemyRebound = false;
     public bool playerStunned = false;
 

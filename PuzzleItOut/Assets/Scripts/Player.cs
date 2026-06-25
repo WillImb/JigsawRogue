@@ -51,14 +51,19 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        
+        if (GameManager.instance.petrichorMudwallDamageReduction)
+        {
+            damage = (int)(damage * 0.75);
+            GameManager.instance.petrichorMudwallDamageReduction = false;
+        }
 
         health -= damage;
-
         if (health < 0)
             health = 0;
 
         OnHealthChanged?.Invoke(health, maxHealth);
+        
+        VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
     }
 
     public void HealHealth(int healing)

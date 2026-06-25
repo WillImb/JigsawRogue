@@ -54,19 +54,25 @@ public class Enemy : MonoBehaviour
         if (GameManager.instance.enemyRebound)
         {
             TakeDamage(damage);
-            VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
+            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
             GameManager.instance.enemyRebound = false;
         }
-        else if(GameManager.instance.enemyDamageReduced)
+        else if(GameManager.instance.acidRainDamageReduced)
         {
             Player.instance.TakeDamage((int)(damage*0.5f));
-            VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), (int)(damage*0.5f));
-            GameManager.instance.enemyDamageReduced = false;
+            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), (int)(damage*0.5f));
+            GameManager.instance.acidRainDamageReduced = false;
+        }
+        else if(GameManager.instance.ashfallDamageReduction)
+        {
+            Player.instance.TakeDamage((int)(damage*0.5f));
+            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), (int)(damage*0.5f));
+            GameManager.instance.ashfallDamageReduction = false;
         }
         else
         {
             Player.instance.TakeDamage(damage);
-            VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
+            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
         }
         VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
     }

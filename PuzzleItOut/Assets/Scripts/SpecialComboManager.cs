@@ -237,7 +237,7 @@ public class SpecialComboManager : MonoBehaviour
     {
         if(UnityEngine.Random.Range(0,0.6f) < 0.6f)
         {
-            GameManager.instance.enemyDamageReduced = true;
+            GameManager.instance.acidRainDamageReduced = true;
         }
         if(UnityEngine.Random.Range(0,0.3f) < 0.3f)
         {    
@@ -269,7 +269,7 @@ public class SpecialComboManager : MonoBehaviour
         }
         else if (randomFloat < 0.6f)
         {
-            GameManager.instance.enemyDamageReduced = true;
+            GameManager.instance.ashfallDamageReduction = true;
         }
     }
 
@@ -371,6 +371,8 @@ public class SpecialComboManager : MonoBehaviour
     {
         return 1;
     }
+
+    void FireWhirl(){}
 
     /// <summary>
     /// next turn, add to multiplier
@@ -533,7 +535,14 @@ public class SpecialComboManager : MonoBehaviour
         return pieces.Count(piece => piece.cardType == cardType.earth);
     }
 
-    void PetrichorMudslide(){}
+    /// <summary>
+    /// next # turns, unique
+    /// reduce damage taken by 25%
+    /// </summary>
+    void PetrichorMudwall()
+    {
+        GameManager.instance.petrichorMudwallDamageReduction = true;
+    }
 
     /// <summary>
     /// instant
@@ -584,7 +593,20 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth((int)healValue);
     }
 
-    void SandyFlow(){}
+    /// <summary>
+    /// next turn, unique
+    /// if the spell contains water then steal 15% health (deal and heal an equal amount of damage)
+    /// </summary>
+    void SandyFlow()
+    {
+        if(BoardManager.instance.GetBoardPieces().Any(p => p.cardType == cardType.water))
+        {
+            int stealvalue = (int)(GameManager.instance.currentEnemy.health * 0.15);
+            GameManager.instance.currentEnemy.TakeDamage(stealvalue);
+            Player.instance.HealHealth(stealvalue);
+        }
+
+    }
 
     void Scorch(){}
 
