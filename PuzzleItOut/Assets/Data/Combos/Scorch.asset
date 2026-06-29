@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: Scorch
   requiredTypes: 000000000000000002000000
+  isForbidden: 0
   multiplier: 3
-  priority: 3
-  turns: 3
+  specialUnlocked: 0
+  priority: 0
+  turns: 1

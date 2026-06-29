@@ -607,8 +607,39 @@ public class SpecialComboManager : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// for the next three turns 
+    /// 75% chance for 1.5x base damage
+    /// 10% chance for 2x base damage
+    /// 5% chance for 3x base damage
+    /// of combined combat values of Scorch
+    /// </summary>
+    void Scorch() // fire fire air combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        ScorchBaseDamage = pieces.Sum(p => p.combatValue);
 
-    void Scorch(){}
+        UniqueEffect scorchBonusDamage = ScorchBonusDamage;
+        uniqueListBuffer.Add((scorchBonusDamage.Method, 3));
+    }
+    void ScorchBonusDamage()
+    {
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.75f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*1.5f));
+        }
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.1f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*2f));
+        }
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.05f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*3f));
+        }
+    }
+    int ScorchBaseDamage = 0;
 
     /// <summary>
     /// instant
