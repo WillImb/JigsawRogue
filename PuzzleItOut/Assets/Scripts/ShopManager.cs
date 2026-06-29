@@ -30,6 +30,9 @@ using UnityEngine.UI;
  *   - Common: 5 gold
  *   - Rare: 10 gold
  *   - Rarest: 15 gold
+ *  
+ *  - Shop reroll
+ *   - Currently, you can infinitely reroll
  */
 public class ShopManager : MonoBehaviour
 {
@@ -46,16 +49,22 @@ public class ShopManager : MonoBehaviour
     public List<ComboScriptable> comboPool;
     // sprite order: f, w, e, a
     [SerializeField] private List<Sprite> sprites;
+    [SerializeField] private Sprite pieceSprite;
     // public List<UpgradeData> upgradePool;
 
     // reference variables
-    public GameObject deckPanel;   // reference to deck panel 
+    public GameObject deckPanel;
     public GameObject upgradedPanel;
+    public GameObject rerollButton;
 
     // is the deck panel open because of upgrading
     [SerializeField] public bool isUpgrading;
 
     private GameObject currentUpgradeButton;
+
+    // reroll variables
+    [SerializeField] private int rerollCost = 1;
+    [SerializeField] private int rerollsRemaining = 2;
 
     void Awake()
     {
@@ -74,6 +83,9 @@ public class ShopManager : MonoBehaviour
     {
         // assign a random piece/combo from the pools to Shop UI game objects
         AssignShopItems();
+
+        // initialize and update reroll button text
+        UpdateRerollButtonText();
     }
 
     /// <summary>
@@ -382,5 +394,117 @@ public class ShopManager : MonoBehaviour
     {
         upgradedPanel.SetActive(active);
         // also set text of upgradedPanel to reflect the type of piece that got upgraded
+    }
+
+    /// <summary>
+    /// Rerolls all unpurchased shop items for a gold cost.
+    /// </summary>
+    public void RerollShop()
+    {
+        if (rerollsRemaining <= 0)
+        {
+            Debug.Log("No rerolls remaining.");
+            return;
+        }
+
+        if (!GoldManager.Instance.CanAfford(rerollCost))
+        {
+            Debug.Log("Not enough gold to reroll.");
+            return;
+        }
+
+        GoldManager.Instance.SpendGold(rerollCost);
+        rerollsRemaining--;
+
+        UpdateRerollButtonText();
+
+        RerollPieces();
+        RerollCombos();
+    }
+
+    private void RerollPieces()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            // dont reroll already purchased pieces
+            if (!pieces[i].activeSelf)
+                continue;
+
+            ShopData pieceData = pieces[i].GetComponent<ShopData>();
+
+            int index = Random.Range(0, piecePool.Count);
+            AssignPieceToSlot(pieces[i], pieceData, index);
+
+            // reroll
+            if (upgrades[i].activeSelf)
+            {
+                TMP_Text upgradeText = upgrades[i].GetComponentInChildren<TMP_Text>();
+
+                if (upgradeText != null)
+                {
+                    int roll = Random.Range(0, 100);
+
+                    if (roll < 60)
+                        upgradeText.text = "COMMON";
+                    else if (roll < 90)
+                        upgradeText.text = "UNCOMMON";
+                    else
+                        upgradeText.text = "RARE";
+                }
+            }
+        }
+    }
+
+    private void RerollCombos()
+    {
+        List<ComboScriptable> lockedCombos = GetLockedCombos();
+        List<ComboScriptable> assigned = new();
+
+        for (int i = 0; i < combos.Count; i++)
+        {
+            // dont reroll already purchased combos
+            if (!combos[i].activeSelf)
+                continue;
+
+            ShopData data = combos[i].GetComponent<ShopData>();
+
+            List<ComboScriptable> available = GetAvailableCombos(lockedCombos, assigned);
+
+            if (available.Count > 0)
+            {
+                ComboScriptable combo = GetRandomCombo(available);
+                AssignComboToSlot(combos[i], data, combo);
+                assigned.Add(combo);
+            }
+            else
+            {
+                SetComboSoldOut(combos[i]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates the reroll button text to display its gold cost and
+    /// remaining rerolls.
+    /// </summary>
+    private void UpdateRerollButtonText()
+    {
+        if (rerollButton == null)
+            return;
+
+        TMP_Text text = rerollButton.GetComponentInChildren<TMP_Text>();
+
+        if (text == null)
+            return;
+
+        if (rerollsRemaining > 0)
+        {
+            text.text = $"REROLL\n{rerollCost} Gold\n({rerollsRemaining} Left)";
+        }
+        else
+        {
+            text.text = "NO REROLLS";
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
     }
 }
