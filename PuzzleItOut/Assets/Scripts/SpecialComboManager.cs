@@ -607,6 +607,7 @@ public class SpecialComboManager : MonoBehaviour
         }
 
     }
+
     /// <summary>
     /// instant
     /// next # turns, unique
@@ -749,7 +750,16 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth(20);
     }
 
-    void SteamRoom(){}
+    /// <summary>
+    /// next # turns, unique
+    /// for the next 3 turns
+    /// heal 10% of your missing health at the start (end) of your turn
+    /// </summary>
+    void SteamRoom() // fire fire water combo
+    {
+        int missingHealth = Player.instance.maxHealth - Player.instance.health;
+        Player.instance.HealHealth((int)Mathf.Ceil(missingHealth*0.1f));
+    }
 
     /// <summary>
     /// instant
