@@ -51,6 +51,12 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (SpecialComboManager.Instance.ConvergentBoundaryDamageAbsorption)
+        {
+            SpecialComboManager.Instance.ConvergentBoundaryDamage = damage * 0.5f;
+            damage = (int)(damage * 0.5f);
+            SpecialComboManager.Instance.ConvergentBoundaryDamageAbsorption = false;
+        }
         if (GameManager.instance.petrichorMudwallDamageReduction)
         {
             damage = (int)(damage * 0.75);
