@@ -308,7 +308,22 @@ public class SpecialComboManager : MonoBehaviour
 
     void Clay(){}
 
-    void ConvergentBoundary(){}
+    /// <summary>
+    /// instant, unique
+    /// store half the damage you take and add it to your next attack, after calculation
+    /// </summary>
+    void ConvergentBoundary() // water earth earth earth combo
+    {
+        ConvergentBoundaryDamageAbsorption = true;
+        UniqueEffect convergentBoundaryBonusDamage = ConvergentBoundaryBonusDamage;
+        uniqueListBuffer.Add((convergentBoundaryBonusDamage.Method, 1));
+    }
+    void ConvergentBoundaryBonusDamage()
+    {
+        GameManager.instance.currentEnemy.TakeDamage((int)ConvergentBoundaryDamage);
+    }
+    public bool ConvergentBoundaryDamageAbsorption = false;
+    public float ConvergentBoundaryDamage = 0;
 
     void Cyclone(){}
 
@@ -608,7 +623,39 @@ public class SpecialComboManager : MonoBehaviour
 
     }
 
-    void Scorch(){}
+    /// <summary>
+    /// instant
+    /// next # turns, unique
+    /// for the next three turns 
+    /// 75% chance for 1.5x base damage
+    /// 10% chance for 2x base damage
+    /// 5% chance for 3x base damage
+    /// of combined combat values of Scorch
+    /// </summary>
+    void Scorch() // fire fire air combo
+    {
+        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        ScorchBaseDamage = pieces.Sum(p => p.combatValue);
+
+        UniqueEffect scorchBonusDamage = ScorchBonusDamage;
+        uniqueListBuffer.Add((scorchBonusDamage.Method, 3));
+    }
+    void ScorchBonusDamage()
+    {
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.75f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*1.5f));
+        }
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.1f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*2f));
+        }
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.05f)
+        {
+            GameManager.instance.currentEnemy.TakeDamage((int)(ScorchBaseDamage*3f));
+        }
+    }
+    int ScorchBaseDamage = 0;
 
     /// <summary>
     /// instant
@@ -718,7 +765,16 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth(20);
     }
 
-    void SteamRoom(){}
+    /// <summary>
+    /// next # turns, unique
+    /// for the next 3 turns
+    /// heal 10% of your missing health at the start (end) of your turn
+    /// </summary>
+    void SteamRoom() // fire fire water combo
+    {
+        int missingHealth = Player.instance.maxHealth - Player.instance.health;
+        Player.instance.HealHealth((int)Mathf.Ceil(missingHealth*0.1f));
+    }
 
     /// <summary>
     /// instant
@@ -760,7 +816,22 @@ public class SpecialComboManager : MonoBehaviour
         return 0;
     }
 
-    void Tsunami(){}
+    /// <summary>
+    /// instant
+    /// heal half missing hp
+    /// In the next shop phase, all spells in the shop will include a water piece, and will be either x3 or x4
+    /// </summary>
+    void Tsunami() // water water water water combo
+    {
+        //half missing hp heal
+        //float healValue = (Player.instance.maxHealth - Player.instance.health) * 0.5f;
+        //Player.instance.HealHealth((int)healValue);
+        Sandbar();
+
+        //Tsunami shop check
+        TsunamiShopFlag = true;
+    }
+    bool TsunamiShopFlag = false;
 
     /// <summary>
     /// multiple effects, instant
