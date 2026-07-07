@@ -30,12 +30,16 @@ using UnityEngine.UI;
  *   - Common: 5 gold
  *   - Rare: 10 gold
  *   - Rarest: 15 gold
- *  
- *  - Shop reroll
- *   - Currently, you can infinitely reroll
+ *   
+ *  - New Combos
+ *   - Common: x2 - 10 gold
+ *   - Rare: x3 - 15 gold
+ *   - Rarest: x4 - 20 gold 
+ *   - Forbidden - 25 gold
  */
 public class ShopManager : MonoBehaviour
 {
+    #region Declarations
     // instance for this class
     public static ShopManager instance;
 
@@ -63,8 +67,9 @@ public class ShopManager : MonoBehaviour
     private GameObject currentUpgradeButton;
 
     // reroll variables
-    [SerializeField] private int rerollCost = 1;
-    [SerializeField] private int rerollsRemaining = 2;
+    [SerializeField] private int rerollCost = 5;
+    [SerializeField] private int rerollsRemaining = 3;
+    #endregion
 
     void Awake()
     {
@@ -396,6 +401,7 @@ public class ShopManager : MonoBehaviour
         // also set text of upgradedPanel to reflect the type of piece that got upgraded
     }
 
+    #region Reroll
     /// <summary>
     /// Rerolls all unpurchased shop items for a gold cost.
     /// </summary>
@@ -426,31 +432,32 @@ public class ShopManager : MonoBehaviour
     {
         for (int i = 0; i < pieces.Count; i++)
         {
-            // dont reroll already purchased pieces
+            // refill empty slots
             if (!pieces[i].activeSelf)
-                continue;
+            {
+                pieces[i].SetActive(true);
+
+                if (upgrades[i] != null)
+                    upgrades[i].SetActive(true);
+            }
 
             ShopData pieceData = pieces[i].GetComponent<ShopData>();
 
             int index = Random.Range(0, piecePool.Count);
             AssignPieceToSlot(pieces[i], pieceData, index);
 
-            // reroll
-            if (upgrades[i].activeSelf)
+            TMP_Text upgradeText = upgrades[i].GetComponentInChildren<TMP_Text>();
+
+            if (upgradeText != null)
             {
-                TMP_Text upgradeText = upgrades[i].GetComponentInChildren<TMP_Text>();
+                int roll = Random.Range(0, 100);
 
-                if (upgradeText != null)
-                {
-                    int roll = Random.Range(0, 100);
-
-                    if (roll < 60)
-                        upgradeText.text = "COMMON";
-                    else if (roll < 90)
-                        upgradeText.text = "UNCOMMON";
-                    else
-                        upgradeText.text = "RARE";
-                }
+                if (roll < 60)
+                    upgradeText.text = "COMMON";
+                else if (roll < 90)
+                    upgradeText.text = "UNCOMMON";
+                else
+                    upgradeText.text = "RARE";
             }
         }
     }
@@ -462,9 +469,9 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < combos.Count; i++)
         {
-            // dont reroll already purchased combos
+            // refill empty slots
             if (!combos[i].activeSelf)
-                continue;
+                combos[i].SetActive(true);
 
             ShopData data = combos[i].GetComponent<ShopData>();
 
@@ -507,4 +514,5 @@ public class ShopManager : MonoBehaviour
             rerollButton.GetComponent<Button>().interactable = false;
         }
     }
+    #endregion
 }
