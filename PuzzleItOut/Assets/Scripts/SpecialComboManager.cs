@@ -451,9 +451,17 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     /// <summary>
-    /// overhealth/shield
+    /// instant
+    /// gain a 10-20 health shield
     /// </summary>
-    void ForgingSteel(){}
+    void ForgingSteel() // fire water earth earth
+    {
+       int shieldvalue = UnityEngine.Random.Range(10, 21);
+       if(shieldvalue > Player.instance.shield)
+        {
+            Player.instance.shield = shieldvalue;
+        } 
+    }
 
     /// <summary>
     /// next turn, addition
@@ -477,9 +485,13 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     /// <summary>
-    /// overhealth/shield
+    /// instant
+    /// +20 overhealth (can't be healed)
     /// </summary>
-    void Mist(){}
+    void Mist() // water air air combo
+    {
+        Player.instance.overhealth = 20;
+    }
 
     /// <summary>
     /// instant
@@ -539,7 +551,6 @@ public class SpecialComboManager : MonoBehaviour
         GameManager.instance.currentEnemy.TakeDamage((int)MathF.Round(damage));
     } 
     int OceanVentsInitDamage = 0;
-
 
     /// <summary>
     /// next turn, addition
