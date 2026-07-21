@@ -13,8 +13,6 @@ public class Piece : MonoBehaviour
     [SerializeField] public Camera cam;
     private Vector3 offset;
 
-    public Sprite baseSprite;
-
     private bool dragging;
 
     public bool isHovered;

@@ -342,6 +342,24 @@ public class DeckPanel : MonoBehaviour
         UpdateFilterButtonText();
     }
 
+    private Color GetElementColor(cardType type)
+    {
+        return type switch
+        {
+            cardType.fire => HexToColor("#FF7B69"),
+            cardType.water => HexToColor("#0BF9FF"),
+            cardType.earth => HexToColor("#6DFF8B"),
+            cardType.air => HexToColor("#FFFFFF"),
+            _ => Color.white
+        };
+    }
+
+    private static Color HexToColor(string hex)
+    {
+        ColorUtility.TryParseHtmlString(hex, out Color color);
+        return color;
+    }
+
     private int GetCombatValue(GameObject pieceObject)
     {
         Piece piece = pieceObject.GetComponent<Piece>();
@@ -364,17 +382,5 @@ public class DeckPanel : MonoBehaviour
     {
         Piece piece = pieceObject.GetComponent<Piece>();
         return piece != null && piece.pieceData != null ? piece.pieceData.pieceName : "";
-    }
-
-    private Color GetElementColor(cardType type)
-    {
-        return type switch
-        {
-            cardType.fire => new Color(1f, 0.35f, 0.2f),
-            cardType.water => new Color(0.2f, 0.6f, 1f),
-            cardType.earth => new Color(0.4f, 0.8f, 0.3f),
-            cardType.air => new Color(0.85f, 0.85f, 0.85f),
-            _ => Color.white
-        };
     }
 }
