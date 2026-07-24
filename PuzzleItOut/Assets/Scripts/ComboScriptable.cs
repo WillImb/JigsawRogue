@@ -9,6 +9,7 @@ public class ComboScriptable : ScriptableObject
 {
     [Header("Identity")]
     public string comboName;
+    public string rarity;
 
     [Header("Required Card Types")]
     public List<cardType> requiredTypes;

@@ -135,7 +135,7 @@ public class ShopManager : MonoBehaviour
                 else
                     rarity = "RARE";
 
-                upgradeText.text = rarity;
+                upgradeData.SetRarity(rarity);
             }
         }
     }
@@ -250,7 +250,11 @@ public class ShopManager : MonoBehaviour
         TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
         if (text != null)
         {
-            text.text = combo.name;
+            string rarity = combo.rarity;   // assuming ComboScriptable already stores rarity
+
+            data.SetRarity(rarity);
+
+            text.text = $"{combo.name}\n{rarity}";
         }
     }
 
@@ -284,10 +288,10 @@ public class ShopManager : MonoBehaviour
             return;
 
         // check gold first
-        if (!GoldManager.Instance.CanAfford(1))
+        if (!GoldManager.Instance.CanAfford(5))
             return;
 
-        DeckManager.instance.AddPiece(data.piecePrefab);
+        GoldManager.Instance.SpendGold(5);
 
         GoldManager.Instance.SpendGold(1);
 
@@ -305,12 +309,12 @@ public class ShopManager : MonoBehaviour
             return;
 
         // check gold first
-        if (!GoldManager.Instance.CanAfford(1))
+        if (!GoldManager.Instance.CanAfford(data.cost))
             return;
 
         Spellbook.instance.UnlockCombo(data.combo);
 
-        GoldManager.Instance.SpendGold(1);
+        GoldManager.Instance.SpendGold(data.cost);
 
         combo.SetActive(false);
     }
@@ -452,12 +456,14 @@ public class ShopManager : MonoBehaviour
             {
                 int roll = Random.Range(0, 100);
 
+                ShopData upgradeData = upgrades[i].GetComponent<ShopData>();
+
                 if (roll < 60)
-                    upgradeText.text = "COMMON";
+                    upgradeData.SetRarity("COMMON");
                 else if (roll < 90)
-                    upgradeText.text = "UNCOMMON";
+                    upgradeData.SetRarity("UNCOMMON");
                 else
-                    upgradeText.text = "RARE";
+                    upgradeData.SetRarity("RARE");
             }
         }
     }
