@@ -17,10 +17,15 @@ public class Player : MonoBehaviour
     public int health;
     public int mana;
 
+    public int shield;
+    public int overhealth;
+
     public bool completedTutorial;
 
     public event Action<int, int> OnHealthChanged;
     public event Action<int, int> OnManaChanged;
+    public event Action<int> OnShieldChanged;
+    public event Action<int> OnOverhealthChanged;
 
     void Awake()
     {
@@ -34,9 +39,13 @@ public class Player : MonoBehaviour
     {
         health = maxHealth;
         mana = maxMana;
+        shield = 0;
+        overhealth = 0;
 
         OnHealthChanged?.Invoke(health, maxHealth);
         OnManaChanged?.Invoke(mana, maxMana);
+        OnShieldChanged?.Invoke(shield);
+        OnOverhealthChanged?.Invoke(overhealth);
     }
 
     public int GetHealth()
@@ -47,6 +56,25 @@ public class Player : MonoBehaviour
     public int GetMana()
     {
         return mana;
+    }
+
+    public int GetShield()
+    {
+        return shield;
+    }
+
+    public int GetOverhealth()
+    {
+        return overhealth;
+    }
+
+    public void PrintStatus()
+    {   
+        print("Status");
+        print("Shield(s): " + GetShield());
+        print("Overhealth: " + GetOverhealth());
+        print("Health: " + GetHealth());
+        print("Mana: "+ GetMana());
     }
 
     public void TakeDamage(int damage)
@@ -62,6 +90,34 @@ public class Player : MonoBehaviour
             damage = (int)(damage * 0.75);
             GameManager.instance.petrichorMudwallDamageReduction = false;
         }
+
+        if(shield > damage)
+        {
+            shield -= damage;
+            damage = 0;
+            OnShieldChanged?.Invoke(shield);
+        }
+        else if (damage > shield)
+        {
+            damage -= shield;
+            shield = 0;
+            OnShieldChanged?.Invoke(shield);
+        }
+
+        if (overhealth > damage)
+        {
+            overhealth -= damage;
+            damage = 0;
+            OnOverhealthChanged?.Invoke(overhealth);
+        }
+        else if (damage > overhealth)
+        {
+            damage -= overhealth;
+            overhealth = 0;
+            OnOverhealthChanged?.Invoke(overhealth);
+        }
+
+        
 
         health -= damage;
         if (health < 0)

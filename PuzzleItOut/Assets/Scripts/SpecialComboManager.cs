@@ -273,7 +273,18 @@ public class SpecialComboManager : MonoBehaviour
         }
     }
 
-    void BeachBonfire(){}
+    /// <summary>
+    /// next turn
+    /// boost a random stat by +2 on each card played in next spell
+    /// after the spell has been played, each card has a chance for their upgraded stat to 
+    /// return to normal 50% chance
+    /// keep bonus 25% chance
+    /// or lose 1 point 25% chance
+    /// </summary>
+    void BeachBonfire() // fire fire water earth combo
+    {
+        
+    }
 
     /// <summary>
     /// instant
@@ -306,7 +317,14 @@ public class SpecialComboManager : MonoBehaviour
         Player.instance.HealHealth(5);
     }
 
-    void Clay(){}
+    /// <summary>
+    /// instant
+    /// remove status effects from player
+    /// </summary>
+    void Clay()
+    {
+        
+    }
 
     /// <summary>
     /// instant, unique
@@ -325,9 +343,23 @@ public class SpecialComboManager : MonoBehaviour
     public bool ConvergentBoundaryDamageAbsorption = false;
     public float ConvergentBoundaryDamage = 0;
 
-    void Cyclone(){}
+    /// <summary>
+    /// instant
+    /// replace current pieces in hand with random pieces from deck
+    /// </summary>
+    void Cyclone() // water water air combo
+    {
+        
+    }
 
-    void ElementalRainbow(){}
+    /// <summary>
+    /// instant
+    /// look into discard pile and pick 2 pieces to go into hand
+    /// </summary>
+    void ElementalRainbow() // fire water earth air combo
+    {
+        
+    }
 
     /// <summary>
     /// next turn, add to multiplier
@@ -387,7 +419,19 @@ public class SpecialComboManager : MonoBehaviour
         return 1;
     }
 
-    void FireWhirl(){}
+    /// <summary>
+    /// next # turns
+    /// for the next three turns 
+    /// each spell you play has a 
+    /// 25% chance to cost full price
+    /// 50% chance to cost half price
+    /// 25% chance to cost no price
+    /// doesn't stack with itself 
+    /// </summary>
+    void FireWhirl() // fire fire air air combo
+    {
+        
+    }
 
     /// <summary>
     /// next turn, add to multiplier
@@ -451,9 +495,17 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     /// <summary>
-    /// overhealth/shield
+    /// instant
+    /// gain a 10-20 health shield
     /// </summary>
-    void ForgingSteel(){}
+    void ForgingSteel() // fire water earth earth
+    {
+       int shieldvalue = UnityEngine.Random.Range(10, 21);
+       if(shieldvalue > Player.instance.shield)
+        {
+            Player.instance.shield = shieldvalue;
+        } 
+    }
 
     /// <summary>
     /// next turn, addition
@@ -477,9 +529,13 @@ public class SpecialComboManager : MonoBehaviour
     }
 
     /// <summary>
-    /// overhealth/shield
+    /// instant
+    /// +20 overhealth (can't be healed)
     /// </summary>
-    void Mist(){}
+    void Mist() // water air air combo
+    {
+        Player.instance.overhealth = 20;
+    }
 
     /// <summary>
     /// instant
@@ -539,7 +595,6 @@ public class SpecialComboManager : MonoBehaviour
         GameManager.instance.currentEnemy.TakeDamage((int)MathF.Round(damage));
     } 
     int OceanVentsInitDamage = 0;
-
 
     /// <summary>
     /// next turn, addition

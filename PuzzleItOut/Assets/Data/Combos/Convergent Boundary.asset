@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboName: ConvergentBoundary
   requiredTypes: 01000000030000000300000003000000
+  isForbidden: 0
   multiplier: 4
-  priority: 1
+  specialUnlocked: 0
+  priority: 0
   turns: 1
