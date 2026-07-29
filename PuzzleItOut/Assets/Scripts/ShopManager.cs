@@ -117,6 +117,16 @@ public class ShopManager : MonoBehaviour
             // assign piece
             AssignPieceToSlot(pieces[i], pieceData, index);
 
+            // assign rarity to pieces
+            int pieceRoll = Random.Range(0, 100);
+
+            if (pieceRoll < 60)
+                pieceData.SetRarity("COMMON");
+            else if (pieceRoll < 90)
+                pieceData.SetRarity("RARE");
+            else
+                pieceData.SetRarity("RAREST");
+
             // link the corresponding upgrade button
             pieceData.linkedUpgradeButton = upgrades[i];
 
@@ -449,6 +459,16 @@ public class ShopManager : MonoBehaviour
 
             int index = Random.Range(0, piecePool.Count);
             AssignPieceToSlot(pieces[i], pieceData, index);
+
+            // assign rarity to pieces
+            int pieceRoll = Random.Range(0, 100);
+
+            if (pieceRoll < 60)
+                pieceData.SetRarity("COMMON");
+            else if (pieceRoll < 90)
+                pieceData.SetRarity("RARE");
+            else
+                pieceData.SetRarity("RAREST");
 
             TMP_Text upgradeText = upgrades[i].GetComponentInChildren<TMP_Text>();
 

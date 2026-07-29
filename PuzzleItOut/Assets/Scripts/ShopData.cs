@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 /*
  * Author(s): Anthony L
@@ -7,7 +8,7 @@ using TMPro;
  * Notes:
  *  - Added rarity stuff
  */
-public class ShopData : MonoBehaviour
+public class ShopData : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject piecePrefab;
     public UpgradeData upgrade;
@@ -16,8 +17,17 @@ public class ShopData : MonoBehaviour
     public string rarity;
     public int cost;
 
+    // info for tooltip manager
+    [SerializeField] private bool isHovered;
+
     // after an upgrade is purchased, disable corresponding upgrade button
     public GameObject linkedUpgradeButton;
+
+    void Update()
+    {
+        if (piecePrefab == null)
+            return;
+    }
 
     public void SetRarity(string newRarity)
     {
@@ -58,5 +68,17 @@ public class ShopData : MonoBehaviour
         TMP_Text text = GetComponentInChildren<TMP_Text>();
         if (text != null)
             text.text = rarity;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovered = true;
+        TooltipManager.instance.ShowShopTooltip(this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovered = false;
+        TooltipManager.instance.HideTooltip();
     }
 }

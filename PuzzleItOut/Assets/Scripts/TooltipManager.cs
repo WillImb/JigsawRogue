@@ -62,6 +62,33 @@ public class TooltipManager : MonoBehaviour
         hoverTimer  = 0f;
     }
 
+    public void ShowPieceTooltip(PieceScriptable data)
+    {
+        nameText.text = data.pieceName.ToUpper();
+        typeText.text = data.cardType.ToString().ToUpper();
+        healingText.text = $"HEAL :{data.healingValue:F0}";
+        combatText.text = $"CMB :{data.combatValue:F0}";
+        goldText.text = $"GOLD :{data.goldValue:F0}";
+
+        pendingShow = true;
+        hoverTimer = 0f;
+    }
+
+    public void ShowShopTooltip(ShopData data)
+    {
+        nameText.text = data.piecePrefab != null
+            ? data.piecePrefab.GetComponent<Piece>().pieceData.pieceName.ToUpper()
+            : "";
+
+        typeText.text = data.rarity.ToUpper();
+        healingText.text = "";
+        combatText.text = "";
+        goldText.text = $"COST : {data.cost}";
+
+        pendingShow = true;
+        hoverTimer = 0f;
+    }
+
     public void HideTooltip()
     {
         pendingShow = false;
