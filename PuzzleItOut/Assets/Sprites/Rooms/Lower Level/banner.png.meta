@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cf4e4e400f6cc7b47aba8b32d892f351
+guid: 5a48983c7b0d4e740952e44e83e6d5e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1935985929446074354
-    second: carpet_0
+      213: 4763415714078566847
+    second: banner_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: carpet_0
+      name: banner_0
       rect:
         serializedVersion: 2
-        x: 77
-        y: 115
-        width: 150
-        height: 14
+        x: 196
+        y: 158
+        width: 46
+        height: 69
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f7a9ce02f00eda10800000000000000
-      internalID: 1935985929446074354
+      spriteID: fb9aa23ba5d0b1240800000000000000
+      internalID: 4763415714078566847
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      carpet_0: 1935985929446074354
+      banner_0: 4763415714078566847
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

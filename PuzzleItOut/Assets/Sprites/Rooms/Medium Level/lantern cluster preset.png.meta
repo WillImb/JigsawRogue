@@ -1,19 +1,28 @@
 fileFormatVersion: 2
-guid: 41f111fcaa5ee05409aa5c3482e2f044
+guid: 47c018313086a3f4c95ccb5d672f5509
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -672746962968468354
-    second: full background_0
+      213: -1535030035244030424
+    second: lantern cluster preset_0
   - first:
-      213: 3920328731513292324
-    second: full background_1
+      213: -9073498319371115074
+    second: lantern cluster preset_1
   - first:
-      213: 4024192947094784333
-    second: full background_2
+      213: 3000641942271355044
+    second: lantern cluster preset_2
   - first:
-      213: 3886849977723313947
-    second: full background_3
+      213: 6274926420481709887
+    second: lantern cluster preset_3
+  - first:
+      213: -3408304655712703650
+    second: lantern cluster preset_4
+  - first:
+      213: -513647055375074948
+    second: lantern cluster preset_5
+  - first:
+      213: 8362226366171085083
+    second: lantern cluster preset_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -122,13 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: full background_0
+      name: lantern cluster preset_0
       rect:
         serializedVersion: 2
-        x: 135
-        y: 251
-        width: 19
-        height: 5
+        x: 18
+        y: 189
+        width: 23
+        height: 54
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e74aa88933ce9a6f0800000000000000
-      internalID: -672746962968468354
+      spriteID: 82669bdd05a72bae0800000000000000
+      internalID: -1535030035244030424
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full background_1
+      name: lantern cluster preset_1
       rect:
         serializedVersion: 2
-        x: 164
-        y: 250
-        width: 19
-        height: 6
+        x: 33
+        y: 212
+        width: 15
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4268b94e53ec76630800000000000000
-      internalID: 3920328731513292324
+      spriteID: eb5e7cb1a55741280800000000000000
+      internalID: -9073498319371115074
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full background_2
+      name: lantern cluster preset_2
       rect:
         serializedVersion: 2
-        x: 182
-        y: 243
-        width: 34
-        height: 11
+        x: 87
+        y: 204
+        width: 23
+        height: 39
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +190,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d49873f0a2ec8d730800000000000000
-      internalID: 4024192947094784333
+      spriteID: 4a8e83bc2fb64a920800000000000000
+      internalID: 3000641942271355044
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full background_3
+      name: lantern cluster preset_3
       rect:
         serializedVersion: 2
-        x: 17
-        y: 111
-        width: 258
-        height: 132
+        x: 150
+        y: 200
+        width: 15
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +212,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b1fde69167dd0f530800000000000000
-      internalID: 3886849977723313947
+      spriteID: f37968c5554051750800000000000000
+      internalID: 6274926420481709887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lantern cluster preset_4
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 209
+        width: 23
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b2fed39f443b0d0800000000000000
+      internalID: -3408304655712703650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lantern cluster preset_5
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 212
+        width: 15
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c79717c79b82fd8f0800000000000000
+      internalID: -513647055375074948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lantern cluster preset_6
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 192
+        width: 23
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19780733989c0470800000000000000
+      internalID: 8362226366171085083
       vertices: []
       indices: 
       edges: []
@@ -223,10 +298,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      full background_0: -672746962968468354
-      full background_1: 3920328731513292324
-      full background_2: 4024192947094784333
-      full background_3: 3886849977723313947
+      lantern cluster preset_0: -1535030035244030424
+      lantern cluster preset_1: -9073498319371115074
+      lantern cluster preset_2: 3000641942271355044
+      lantern cluster preset_3: 6274926420481709887
+      lantern cluster preset_4: -3408304655712703650
+      lantern cluster preset_5: -513647055375074948
+      lantern cluster preset_6: 8362226366171085083
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
