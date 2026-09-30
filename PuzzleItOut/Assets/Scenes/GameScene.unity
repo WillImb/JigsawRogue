@@ -3980,6 +3980,16 @@ MonoBehaviour:
   animator: {fileID: 317854670}
   sprites:
   - {fileID: -2236565505123217261, guid: 71e57737f57ffda4e99c83968191c18f, type: 3}
+  bossSprites:
+  - {fileID: -812496942576113172, guid: 520d6af4c93219740abe8198fd87c2c1, type: 3}
+  - {fileID: -4171430770861074119, guid: 7c105d1a44bb5dc46b0411042a7ea2bb, type: 3}
+  backgroundImage: {fileID: 270597673}
+  normalBackgrounds:
+  - {fileID: 2263100468371009280, guid: 608b6aee804fa164fab4abba50eaedde, type: 3}
+  bossBackgrounds:
+  - {fileID: -7443756053782179069, guid: 1980a470ca11f45468a370cdb68bac3e, type: 3}
+  - {fileID: 7276625064227721212, guid: 8a9d4bca450ff62408069c99741d4f75, type: 3}
+  isBoss: 0
 --- !u!114 &317854672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12470,6 +12480,8 @@ MonoBehaviour:
   maxMana: 1000
   health: 0
   mana: 0
+  shield: 0
+  overhealth: 0
   completedTutorial: 0
 --- !u!4 &918126234
 Transform:

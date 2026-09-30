@@ -12,7 +12,17 @@ public class Enemy : MonoBehaviour
 
     public Animator animator;
 
-    public Sprite[] sprites;
+    [Header("Enemy Sprites")]
+    public Sprite[] sprites;          // standard enemy sprites
+    public Sprite[] bossSprites;      // boss enemy sprites
+
+    [Header("Background Settings")]
+    public Image backgroundImage;      // reference to the UI Image displaying the background
+    public Sprite[] normalBackgrounds; // normal background sprites
+    public Sprite[] bossBackgrounds;   // boss background sprites
+
+    [Header("State")]
+    public bool isBoss;               // identifies if the current enemy is a boss
 
     public event Action<int, int> OnHealthChanged;
 
@@ -26,21 +36,78 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        SetupEnemy();
+    }
+
+    /// <summary>
+    /// Configures health, enemy sprite, and background sprite based on whether the current round is a Boss round
+    /// </summary>
+    public void SetupEnemy()
+    {
         health = maxHealth;
         OnHealthChanged?.Invoke(health, maxHealth);
 
-        GetComponentInChildren<Image>().sprite = sprites[0];
+        // check with GameManager if the current round is a boss round
+        if (GameManager.instance != null && GameManager.instance.IsBossRound())
+        {
+            isBoss = true;
+            ApplyBossSprite();
+            ApplyBossBackground();
+        }
+        else
+        {
+            isBoss = false;
+            ApplyNormalSprite();
+            ApplyNormalBackground();
+        }
+    }
+
+    private void ApplyBossSprite()
+    {
+        Image enemyImage = GetComponentInChildren<Image>();
+        if (enemyImage != null && bossSprites != null && bossSprites.Length > 0)
+        {
+            enemyImage.sprite = bossSprites[UnityEngine.Random.Range(0, bossSprites.Length)];
+        }
+        else
+        {
+            ApplyNormalSprite();
+        }
+    }
+
+    private void ApplyNormalSprite()
+    {
+        Image enemyImage = GetComponentInChildren<Image>();
+        if (enemyImage != null && sprites != null && sprites.Length > 0)
+        {
+            enemyImage.sprite = sprites[UnityEngine.Random.Range(0, sprites.Length)];
+        }
+    }
+
+    private void ApplyBossBackground()
+    {
+        if (backgroundImage != null && bossBackgrounds != null && bossBackgrounds.Length > 0)
+        {
+            backgroundImage.sprite = bossBackgrounds[UnityEngine.Random.Range(0, bossBackgrounds.Length)];
+        }
+    }
+
+    private void ApplyNormalBackground()
+    {
+        if (backgroundImage != null && normalBackgrounds != null && normalBackgrounds.Length > 0)
+        {
+            backgroundImage.sprite = normalBackgrounds[UnityEngine.Random.Range(0, normalBackgrounds.Length)];
+        }
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        // prevents value from going below 0
         health = Mathf.Clamp(health, 0, maxHealth);
 
         OnHealthChanged?.Invoke(health, maxHealth);
 
-        //NumberVFX
+        // numberVFX
         if (damage > 0)
         {
             VFXManager.instance.SpawnNumber(VFXManager.instance.numberSpawnPos.position, damage);
@@ -54,25 +121,21 @@ public class Enemy : MonoBehaviour
         if (GameManager.instance.enemyRebound)
         {
             TakeDamage(damage);
-            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
             GameManager.instance.enemyRebound = false;
         }
-        else if(GameManager.instance.acidRainDamageReduced)
+        else if (GameManager.instance.acidRainDamageReduced)
         {
-            Player.instance.TakeDamage((int)(damage*0.5f));
-            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), (int)(damage*0.5f));
+            Player.instance.TakeDamage((int)(damage * 0.5f));
             GameManager.instance.acidRainDamageReduced = false;
         }
-        else if(GameManager.instance.ashfallDamageReduction)
+        else if (GameManager.instance.ashfallDamageReduction)
         {
-            Player.instance.TakeDamage((int)(damage*0.5f));
-            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), (int)(damage*0.5f));
+            Player.instance.TakeDamage((int)(damage * 0.5f));
             GameManager.instance.ashfallDamageReduction = false;
         }
         else
         {
             Player.instance.TakeDamage(damage);
-            //VFXManager.instance.SpawnNumber(new Vector3(5.5f, 0, 0), damage);
         }
         VFXManager.instance.SpawnParticle(new Vector3(5.5f, 0, 0), 3);
     }
