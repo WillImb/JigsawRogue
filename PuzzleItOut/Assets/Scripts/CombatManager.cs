@@ -95,11 +95,11 @@ public class CombatManager : MonoBehaviour
         return -1;
     }
 
-    public int CalculateDamage(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateDamage(ComboScriptable combo, List<Piece> pieces)
     {
         float result = 0;
         // base value from pieces
-        result += pieces.Sum(p => p.combatValue);
+        result += pieces.Sum(p => p.combat);
 
         // addition value from effects
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
@@ -126,11 +126,11 @@ public class CombatManager : MonoBehaviour
         return (int)result;
     }
 
-    public int CalculateGold(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateGold(ComboScriptable combo, List<Piece> pieces)
     {
         float result = 0;
 
-        result += pieces.Sum(p => p.goldValue);
+        result += pieces.Sum(p => p.gold);
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {
@@ -153,11 +153,11 @@ public class CombatManager : MonoBehaviour
         return (int)result;
     }
 
-    public int CalculateHealth(ComboScriptable combo, List<PieceScriptable> pieces)
+    public int CalculateHealth(ComboScriptable combo, List<Piece> pieces)
     {
         float result = 0;
 
-        result += pieces.Sum(p => p.healingValue);
+        result += pieces.Sum(p => p.health);
 
         for (int index = 0 ; index < SpecialComboManager.Instance.additionList.Count; index++)
         {

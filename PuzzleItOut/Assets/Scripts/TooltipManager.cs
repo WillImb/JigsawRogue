@@ -50,25 +50,25 @@ public class TooltipManager : MonoBehaviour
         }
     }
 
-    public void ShowTooltip(PieceScriptable data)
+    public void ShowTooltip(Piece data)
     {
-        nameText.text    = data.pieceName.ToUpper();
-        typeText.text    = data.cardType.ToString().ToUpper();
-        healingText.text = $"HEAL :{data.healingValue:F0}";
-        combatText.text  = $"CMB :{data.combatValue:F0}";
-        goldText.text    = $"GOLD :{data.goldValue:F0}";
+        nameText.text    = data.pieceData.pieceName.ToUpper();
+        typeText.text    = data.pieceData.cardType.ToString().ToUpper();
+        healingText.text = $"HEAL :{data.health:F0}";
+        combatText.text  = $"CMB :{data.combat:F0}";
+        goldText.text    = $"GOLD :{data.gold:F0}";
 
         pendingShow = true;
         hoverTimer  = 0f;
     }
 
-    public void ShowPieceTooltip(PieceScriptable data)
+    public void ShowPieceTooltip(Piece data)
     {
-        nameText.text = data.pieceName.ToUpper();
-        typeText.text = data.cardType.ToString().ToUpper();
-        healingText.text = $"HEAL :{data.healingValue:F0}";
-        combatText.text = $"CMB :{data.combatValue:F0}";
-        goldText.text = $"GOLD :{data.goldValue:F0}";
+        nameText.text = data.pieceData.pieceName.ToUpper();
+        typeText.text = data.pieceData.cardType.ToString().ToUpper();
+        healingText.text = $"HEAL :{data.health:F0}";
+        combatText.text = $"CMB :{data.combat:F0}";
+        goldText.text = $"GOLD :{data.gold:F0}";
 
         pendingShow = true;
         hoverTimer = 0f;

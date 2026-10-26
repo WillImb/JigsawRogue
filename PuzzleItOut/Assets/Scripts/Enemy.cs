@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public static Enemy instance;
+    
 
     public int health;
     public int maxHealth;
@@ -18,10 +18,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
+       
     }
 
     void Start()

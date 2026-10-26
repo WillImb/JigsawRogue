@@ -24,7 +24,9 @@ public class ComboScriptable : ScriptableObject
     public float multiplier = 2f;
 
     [Header("Combo Effects")]
-    public bool specialUnlocked = false;
+    
+    //Moving this logic to Spellbook.cs; Should not mutate scriptable object varibles
+    //public bool specialUnlocked = false;
     public SpecialComboManager.priority priority;
     public int turns = 1;
 

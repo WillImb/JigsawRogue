@@ -1,0 +1,27 @@
+{
+    "levels": [
+        {
+            "index": 0,
+            "dialogSequences": [
+                {
+                    "characterIndex": 0,
+                    "speech": "hello there young wizard"
+                },
+
+		{
+                    "characterIndex": 0,
+                    "speech": "welcome to the tower"
+                }
+            ]
+        },
+        {
+            "index": 1,
+            "dialogSequences": [
+                {
+                    "characterIndex": 1,
+                    "speech": "bye"
+                }
+            ]
+        }
+    ]
+}

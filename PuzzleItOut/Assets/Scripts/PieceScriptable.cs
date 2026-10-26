@@ -11,9 +11,9 @@ public class PieceScriptable : ScriptableObject
     public sideType south;
     public sideType west;
 
-    public int healingValue;
-    public int combatValue;
-    public int goldValue;
+    //public int healingValue;
+    //public int combatValue;
+    //public int goldValue;
     //public float probabilityValue;
 }
 

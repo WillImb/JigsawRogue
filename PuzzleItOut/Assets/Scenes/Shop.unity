@@ -3583,7 +3583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5755196886649822738, guid: 36da0abaa09df3c41abbe2af224b335f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BuyCombo
+      value: NewBuyCombo
       objectReference: {fileID: 0}
     - target: {fileID: 5755196886649822738, guid: 36da0abaa09df3c41abbe2af224b335f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -8318,7 +8318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5755196886649822738, guid: 36da0abaa09df3c41abbe2af224b335f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BuyCombo
+      value: NewBuyCombo
       objectReference: {fileID: 0}
     - target: {fileID: 5755196886649822738, guid: 36da0abaa09df3c41abbe2af224b335f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

@@ -152,9 +152,9 @@ public class DeckPanel : MonoBehaviour
                 {
                     tmp.text =
                         $"{data.pieceName}\n\n" +
-                        $"Combat - {data.combatValue}\n" +
-                        $"Healing - {data.healingValue}\n" +
-                        $"Gold - {data.goldValue}";
+                        $"Combat - {piece.combat}\n" +
+                        $"Healing - {piece.health}\n" +
+                        $"Gold - {piece.gold}";
                 }
             }
             else
@@ -363,19 +363,19 @@ public class DeckPanel : MonoBehaviour
     private int GetCombatValue(GameObject pieceObject)
     {
         Piece piece = pieceObject.GetComponent<Piece>();
-        return piece != null && piece.pieceData != null ? piece.pieceData.combatValue : 0;
+        return piece != null && piece.pieceData != null ? piece.combat : 0;
     }
 
     private int GetHealingValue(GameObject pieceObject)
     {
         Piece piece = pieceObject.GetComponent<Piece>();
-        return piece != null && piece.pieceData != null ? piece.pieceData.healingValue : 0;
+        return piece != null && piece.pieceData != null ? piece.health : 0;
     }
 
     private int GetGoldValue(GameObject pieceObject)
     {
         Piece piece = pieceObject.GetComponent<Piece>();
-        return piece != null && piece.pieceData != null ? piece.pieceData.goldValue : 0;
+        return piece != null && piece.pieceData != null ? piece.gold : 0;
     }
 
     private string GetPieceName(GameObject pieceObject)

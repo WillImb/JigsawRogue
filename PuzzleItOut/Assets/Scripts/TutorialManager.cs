@@ -71,7 +71,7 @@ public class TutorialManager : MonoBehaviour
     {
         //game manager do turn        
 
-        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
+        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardScriptables();
 
         int comboIndex = CombatManager.Instance.FindCombo(currentPieces);
         ComboScriptable combo = comboIndex >= 0 ? Spellbook.instance.combosUnlocked[comboIndex] : null;

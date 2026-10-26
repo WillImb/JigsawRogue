@@ -292,10 +292,10 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     void BlazingWinds() // fire air air air combo
     {
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        for(int i = 0; i < pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue); i++)
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
+        for(int i = 0; i < pieces.Where(p => p.pieceData.cardType == cardType.air).Sum(p => p.combat); i++)
         {
-            GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.cardType == cardType.fire).combatValue);
+            GameManager.instance.currentEnemy.TakeDamage(pieces.Find(p => p.pieceData.cardType == cardType.fire).combat);
         }
     }
     
@@ -522,8 +522,8 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     void HotCoal() // fire earth earth combo
     {
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        int totalvalue = pieces.Sum(p => p.goldValue);
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
+        int totalvalue = pieces.Sum(p => p.gold);
         GoldManager.Instance.AddGold(totalvalue);
         GameManager.instance.currentEnemy.TakeDamage(totalvalue);
     }
@@ -586,8 +586,8 @@ public class SpecialComboManager : MonoBehaviour
     {
         UniqueEffect oceanVentsBurn = OceanVentsBurn;
         uniqueList.Add((oceanVentsBurn.Method,3));
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        OceanVentsInitDamage = pieces.Find(p => p.cardType == cardType.earth).combatValue;
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
+        OceanVentsInitDamage = pieces.Find(p => p.pieceData.cardType == cardType.earth).combat;
     }
     void OceanVentsBurn()
     {
@@ -669,7 +669,7 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     void SandyFlow()
     {
-        if(BoardManager.instance.GetBoardPieces().Any(p => p.cardType == cardType.water))
+        if(BoardManager.instance.GetBoardPieces().Any(p => p.pieceData.cardType == cardType.water))
         {
             int stealvalue = (int)(GameManager.instance.currentEnemy.health * 0.15);
             GameManager.instance.currentEnemy.TakeDamage(stealvalue);
@@ -689,8 +689,8 @@ public class SpecialComboManager : MonoBehaviour
     /// </summary>
     void Scorch() // fire fire air combo
     {
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        ScorchBaseDamage = pieces.Sum(p => p.combatValue);
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
+        ScorchBaseDamage = pieces.Sum(p => p.combat);
 
         UniqueEffect scorchBonusDamage = ScorchBonusDamage;
         uniqueListBuffer.Add((scorchBonusDamage.Method, 3));
@@ -723,10 +723,10 @@ public class SpecialComboManager : MonoBehaviour
     void Simmer() // fire water water combo
     {
         // get pieces list
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
 
         // assign orded healing values to simmervalue array
-        SimmerValue = pieces.Select(p => p.healingValue).ToArray();
+        SimmerValue = pieces.Select(p => p.health).ToArray();
         Array.Sort(SimmerValue);
 
         // add simmer heal to unique list
@@ -751,8 +751,8 @@ public class SpecialComboManager : MonoBehaviour
     void Sinkhole() // earth air air combo
     {
         // air check
-        List<PieceScriptable> pieces = BoardManager.instance.GetBoardPieces();
-        if(pieces.Any(p => p.cardType == cardType.air))
+        List<Piece> pieces = BoardManager.instance.GetBoardPieces();
+        if(pieces.Any(p => p.pieceData.cardType == cardType.air))
         {
             GameManager.instance.currentEnemy.TakeDamage(UnityEngine.Random.Range(5, 11));
         }
@@ -859,14 +859,14 @@ public class SpecialComboManager : MonoBehaviour
     /// air cards have their stats doubled
     /// </summary>
     /// <returns></returns>
-    int Tornado(List<PieceScriptable> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air air combo
+    int Tornado(List<Piece> pieces, AffectedStat affectedStat = AffectedStat.NoRequirements) // air air air air combo
     {
         if(affectedStat == AffectedStat.Damage)
-        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.combatValue);
+        return pieces.Where(p => p.pieceData.cardType == cardType.air).Sum(p => p.combat);
         else if(affectedStat == AffectedStat.Gold)
-        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.goldValue);
+        return pieces.Where(p => p.pieceData.cardType == cardType.air).Sum(p => p.gold);
         else if(affectedStat == AffectedStat.Health)
-        return pieces.Where(p => p.cardType == cardType.air).Sum(p => p.healingValue);
+        return pieces.Where(p => p.pieceData.cardType == cardType.air).Sum(p => p.health);
         else
         return 0;
     }

@@ -15,11 +15,14 @@ public class InputManager : MonoBehaviour
 
     void Awake()
     {
+
         if (Instance != null && Instance != this)
         {
+            
             Destroy(gameObject);
             return;
         }
+        
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -30,11 +33,15 @@ public class InputManager : MonoBehaviour
 
     void OnEnable()
     {
+        
         Gameplay.Enable();
     }
 
     void OnDisable()
     {
-        Gameplay.Disable();
+        if (Instance == this)
+        {
+            Gameplay.Disable();
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 /*
  * Author(s): Anthony L
@@ -99,7 +100,8 @@ public class ShopManager : MonoBehaviour
     void AssignShopItems()
     {
         AssignPieces();
-        AssignCombos();
+        //AssignCombos();
+        NewAssignCombos();
     }
 
     /// <summary>
@@ -206,6 +208,38 @@ public class ShopManager : MonoBehaviour
     }
 
     /// <summary>
+    /// This is updated with the change that the player buys the special combos rather than the combos
+    /// </summary>
+    void NewAssignCombos()
+    {
+        List<ComboScriptable> lockedCombos = GetLockedSpecial();
+
+        if (lockedCombos.Count == 0)
+        {
+            SetAllCombosSoldOut();
+            return;
+        }
+
+        for (int i = 0; i < combos.Count; i++)
+        {
+            ShopData data = combos[i].GetComponent<ShopData>();
+
+            if (lockedCombos.Count > 0)
+            {
+                ComboScriptable selected = GetRandomCombo(lockedCombos);
+                lockedCombos.Remove(selected);
+                AssignComboToSlot(combos[i], data, selected);               
+            }
+            //no more special Combos to unlock
+            else
+            {
+                SetComboSoldOut(combos[i]);
+            }
+        }
+
+    }
+
+    /// <summary>
     /// Marks all combo slots as sold out when no locked combos remain
     /// </summary>
     void SetAllCombosSoldOut()
@@ -231,6 +265,25 @@ public class ShopManager : MonoBehaviour
             }
         }
 
+        return locked;
+    }
+    /// <summary>
+    /// returns a list of all locked and avaiable special combos
+    /// </summary>
+    /// <returns></returns>
+    List<ComboScriptable> GetLockedSpecial()
+    {
+        List<ComboScriptable> locked = new List<ComboScriptable>();
+
+        foreach (ComboScriptable c in Spellbook.instance.unlockedSpecialCombos.Keys)
+        {
+            if (Spellbook.instance.unlockedSpecialCombos[c] == false)
+            {
+                locked.Add(c);
+                
+            }
+        }
+        
         return locked;
     }
 
@@ -323,6 +376,27 @@ public class ShopManager : MonoBehaviour
             return;
 
         Spellbook.instance.UnlockCombo(data.combo);
+
+        GoldManager.Instance.SpendGold(data.cost);
+
+        combo.SetActive(false);
+    }
+
+    /// <summary>
+    /// Unlocks the special combo of the purchased combo
+    /// </summary>   
+    public void NewBuyCombo(GameObject combo)
+    {
+        ShopData data = combo.GetComponent<ShopData>();
+
+        if (data == null || data.combo == null)
+            return;
+
+        // check gold first
+        if (!GoldManager.Instance.CanAfford(data.cost))
+            return;
+
+        Spellbook.instance.UnlockSpecialCombo(data.combo);
 
         GoldManager.Instance.SpendGold(data.cost);
 
@@ -439,7 +513,8 @@ public class ShopManager : MonoBehaviour
         UpdateRerollButtonText();
 
         RerollPieces();
-        RerollCombos();
+        NewAssignCombos();
+        //RerollCombos();
     }
 
     private void RerollPieces()

@@ -30,6 +30,13 @@ public class Piece : MonoBehaviour
     public GameObject pieceHalo;
 
 
+    //Modify these values for each instance
+
+    public int combat = 2;
+    public int health = 3;
+    public int gold = 6;
+
+
     void Awake()
     {
         cam = Camera.main;
@@ -216,7 +223,7 @@ public class Piece : MonoBehaviour
         {
             isHovered = true;
 
-            TooltipManager.instance.ShowTooltip(pieceData);
+            TooltipManager.instance.ShowTooltip(this);
         }
         else if (!nowHovered && isHovered)
         {

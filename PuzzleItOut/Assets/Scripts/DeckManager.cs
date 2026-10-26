@@ -335,9 +335,9 @@ public class DeckManager : MonoBehaviour
 
         GoldManager.Instance.SpendGold(upgradeCost);
 
-        piece.pieceData.combatValue += 1;
-        piece.pieceData.healingValue += 1;
-        piece.pieceData.goldValue += 1;
+        piece.combat += 1;
+        piece.health += 1;
+        piece.gold += 1;
 
         Debug.Log($"Upgraded {piece.pieceData.pieceName} #" + index);
     }

@@ -45,14 +45,12 @@ public class VFXManager : MonoBehaviour
         for(int i = 0; i < amt; i++)
         {
             ParticleSystem gold = Instantiate(particles[7], new Vector3(0,-2.56f,0) , Quaternion.identity);
+
             gold.trigger.AddCollider(moneyBag);
             yield return new WaitForSeconds(delay);
         }
 
-        if(GameManager.instance.currentEnemy.health <= 0)
-        {
-            GameManager.instance.WinRound();
-        }
+        
        
     }
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +7,15 @@ public class Spellbook : MonoBehaviour
     public static Spellbook instance;
 
     public List<ComboScriptable> combosUnlocked;
-    
+
+    //used to track which combos the player has not unlocked; Only unlocked when player discovers;
+    public List<ComboScriptable> combosLocked;
+
+    //Special Combos
+    //a alist of all the combos that are discovered and whether the player has the special combo unlocked
+    public Dictionary<ComboScriptable, bool> unlockedSpecialCombos;
+
+
     void Awake()
     {
         
@@ -21,7 +28,12 @@ public class Spellbook : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+        //Temporary unlock all special Combos
+        InitializedSpecialUnlocked();
     }
+
 
     void OnEnable()
     {
@@ -65,8 +77,35 @@ public class Spellbook : MonoBehaviour
         return false;
     }
 
-    public void AddToSpellbook(GameObject clickedObject)
+    //When the player cast an undiscovered spell call this method
+    //adds to the unlocked combos and adds to the special combos dictionary as locked
+    public void DiscoverSpellbook(ComboScriptable newCombo)
     {
-        
+        combosUnlocked.Add(newCombo);
+        combosLocked.Remove(newCombo);
+
+        unlockedSpecialCombos.Add(newCombo, false);
+
+    }
+
+    public bool CheckSpecialUnlockedStatus(ComboScriptable combo)
+    {
+        return unlockedSpecialCombos[combo];
+    }
+
+    public void UnlockSpecialCombo(ComboScriptable combo)
+    {
+        unlockedSpecialCombos[combo] = true;
+    }
+    void InitializedSpecialUnlocked()
+    {
+        unlockedSpecialCombos = new Dictionary<ComboScriptable, bool>();
+        if (combosUnlocked != null)
+        {
+            foreach (ComboScriptable c in combosUnlocked)
+            {                
+                unlockedSpecialCombos.Add(c, false);
+            }
+        }        
     }
 }

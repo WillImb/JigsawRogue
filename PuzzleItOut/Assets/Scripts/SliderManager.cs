@@ -12,7 +12,7 @@ using TMPro;
 public class SliderManager : MonoBehaviour
 {
     Player player;
-    Enemy enemy;
+    public Enemy enemy;
 
     public Slider playerHealthSlider;
     public Slider playerManaSlider;
@@ -27,7 +27,7 @@ public class SliderManager : MonoBehaviour
     {
         // assign local refernces
         player = Player.instance;
-        enemy = Enemy.instance;
+        
 
         // subscribe to events
         player.OnHealthChanged += UpdatePlayerHealthSlider;

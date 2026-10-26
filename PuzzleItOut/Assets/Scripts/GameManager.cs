@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,8 +14,12 @@ public class GameManager : MonoBehaviour
 
     public bool isSpecial;
 
+    public bool isStorymode;
+    public int level;
+    public GameObject storyManagerPrefab;
+    public SliderManager sliderManager;
 
-    
+    public Transform enemySpawner;
 
     public enum TurnState
     {
@@ -26,7 +29,9 @@ public class GameManager : MonoBehaviour
 
     TurnState turnState = TurnState.playerTurn;
 
-    public Enemy currentEnemy; // change to type enemy when rish adds script
+    public Enemy currentEnemy;
+
+
     public bool enemyStunned = false;
     public bool acidRainDamageReduced = false;
     public bool ashfallDamageReduction = false;
@@ -48,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
 
         StartGame();
-        PanelManager.instance.DisableButtons("2,4");
+        PanelManager.instance.DisableButtons(new int[]{2, 4});
         specialToggle.interactable = false;
 
         DeckManager.instance.gameObject.SetActive(true);
@@ -63,6 +68,24 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
+        if (isStorymode)
+        {
+            Instantiate(storyManagerPrefab);
+            //For the future - In story manager load saved data from files
+
+            currentEnemy = Instantiate(StoryManager.instance.enemiesPrefab[level].gameObject,enemySpawner).GetComponent<Enemy>();
+            sliderManager.enemy = currentEnemy;
+
+            if (StoryManager.instance.HasDialog(level))
+            {
+                StartCoroutine(StoryManager.instance.ExchangeDialog(level));
+            }
+
+
+            
+
+        }
+
         DeckManager.instance.ShuffleDeck();
 
         DeckManager.instance.SpawnPieces();
@@ -81,7 +104,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<CameraShake>().StartShake();
 
 
-        List<PieceScriptable> currentPieces = BoardManager.instance.GetBoardPieces();
+        List<Piece> currentPieces = BoardManager.instance.GetBoardPieces();
 
          
         ComboScriptable combo = BoardManager.instance.activeCombo;
@@ -151,7 +174,11 @@ public class GameManager : MonoBehaviour
         if (!isSpecial)
         {
             currentEnemy.TakeDamage(CombatManager.Instance.CalculateDamage(combo, currentPieces));
+
+            //gold is added when gold particle collideds with money bag [In VFXManager -> MoneyBag script]... should change this later. Currently just ive the player all the gold at once
             float goldAmt = CombatManager.Instance.CalculateGold(combo, currentPieces);
+            GoldManager.Instance.AddGold((int)goldAmt);
+
             StartCoroutine(VFXManager.instance.goldCoroutine(goldAmt));
 
             Player.instance.HealHealth(CombatManager.Instance.CalculateHealth(combo, currentPieces));
@@ -180,6 +207,7 @@ public class GameManager : MonoBehaviour
     }
     void EndTurn()
     {
+        
         if (currentEnemy.health <= 0)
         {
 
@@ -194,6 +222,7 @@ public class GameManager : MonoBehaviour
 
             currentEnemy.gameObject.SetActive(false);
 
+            WinRound();
             return;
         }
         else if (Player.instance.GetHealth() <= 0)
@@ -251,6 +280,7 @@ public class GameManager : MonoBehaviour
     public void WinRound()
     {
         TransitionManager.instance.ActivateTransition("ShopTransition");
+        level++;
     }
 
     public void SetSpecial()
@@ -258,8 +288,30 @@ public class GameManager : MonoBehaviour
        
         isSpecial = specialToggle.isOn;
         BoardManager.instance.UpdateCostImage();
-    }
 
+        //Check if player does not have special combo unlocked
+        if (specialToggle.isOn)
+        {
+            if (!Spellbook.instance.CheckSpecialUnlockedStatus(BoardManager.instance.activeCombo))
+            {
+                PanelManager.instance.DisableButtons(new int[] { 2 });
+            }
+        }
+        else
+        {
+            if (BoardManager.instance.activeCombo)
+            {
+                PanelManager.instance.EnableButtons(new int[] { 2 });
+            }
+
+        }
+
+    }
+    public void ResetSpecialCheck()
+    {
+        specialToggle.isOn = false;
+        isSpecial = false;
+    }
    
 
 }

@@ -179,9 +179,9 @@ public class BoardManager : MonoBehaviour
 
         if (!CheckOccupiedCount())
         {
-            PanelManager.instance.DisableButtons("2,4");
+            PanelManager.instance.DisableButtons(new int[] { 2, 4 });
             activeCombo = null;
-            UpdateCostImage();
+            UpdateCostImage();            
             return;
         }
 
@@ -191,32 +191,32 @@ public class BoardManager : MonoBehaviour
             {
                 if(IsValidPlacement(occupied[i], i, false))
                 {
-                    int foundSpellIndex = CombatManager.Instance.FindCombo(GetBoardPieces());
+                    int foundSpellIndex = CombatManager.Instance.FindCombo(GetBoardScriptables());
                     if (foundSpellIndex != -1) {
                         activeCombo = Spellbook.instance.combosUnlocked[foundSpellIndex];
-                        PanelManager.instance.EnableButtons("2,4");
+                        PanelManager.instance.EnableButtons(new int[] { 2, 4 });
                     }
                     else
                     {
                         activeCombo = null;
-                        PanelManager.instance.DisableButtons("2,4");
+                        PanelManager.instance.DisableButtons(new int[] { 2, 4 });
                     }
 
                 }
                 else
                 {
-                    List<PieceScriptable> pieces = GetBoardPieces();
+                    List<PieceScriptable> pieces = GetBoardScriptables();
                    
 
                     if (CombatManager.Instance.FindForbidden(pieces) != -1)
                     {
                         activeCombo = Spellbook.instance.combosUnlocked[CombatManager.Instance.FindForbidden(pieces)];
-                        PanelManager.instance.EnableButtons("2,4");
+                        PanelManager.instance.EnableButtons(new int[] { 2, 4 });
 
                     }
                     else
                     {
-                        PanelManager.instance.DisableButtons("2,4");
+                        PanelManager.instance.DisableButtons(new int[] { 2, 4 });
                         activeCombo = null;
 
                     }
@@ -292,8 +292,10 @@ public class BoardManager : MonoBehaviour
         
         if (CheckOccupiedCount())
         {
-            PanelManager.instance.EnableButtons("2,4");
+            PanelManager.instance.EnableButtons(new int[] { 2, 4 });
         }
+        GameManager.instance.ResetSpecialCheck();
+
     }
 
     int GetClosestSlot(Vector3 piecePos)
@@ -328,13 +330,24 @@ public class BoardManager : MonoBehaviour
                 occupied[i] = null;
 
                 ValidateBoard();
+                GameManager.instance.ResetSpecialCheck();
 
                 return;
             }
         }
     }
 
-    public List<PieceScriptable> GetBoardPieces()
+    public List<Piece> GetBoardPieces()
+    {
+        List<Piece> pieces = new List<Piece>();
+        foreach (Piece piece in occupied)
+        {
+            if (piece != null)
+                pieces.Add(piece);
+        }
+        return pieces;
+    }
+    public List<PieceScriptable> GetBoardScriptables()
     {
         List<PieceScriptable> pieces = new List<PieceScriptable>();
         foreach (Piece piece in occupied)
