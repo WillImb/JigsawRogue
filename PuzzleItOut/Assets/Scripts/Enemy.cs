@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
 
     public Animator animator;
 
-    public Sprite[] sprites;
+    
 
     public event Action<int, int> OnHealthChanged;
 
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         OnHealthChanged?.Invoke(health, maxHealth);
 
-        GetComponentInChildren<Image>().sprite = sprites[0];
+        
     }
 
     public void TakeDamage(int damage)

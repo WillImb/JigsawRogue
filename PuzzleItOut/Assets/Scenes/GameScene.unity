@@ -1185,7 +1185,7 @@ MonoBehaviour:
   specialToggle: {fileID: 494341998}
   isSpecial: 0
   isStorymode: 1
-  level: 1
+  level: 0
   storyManagerPrefab: {fileID: 8375919656273505836, guid: 297dbfe4c72623f46a6b56dc46cba5b6, type: 3}
   sliderManager: {fileID: 1689997534}
   enemySpawner: {fileID: 353539435}

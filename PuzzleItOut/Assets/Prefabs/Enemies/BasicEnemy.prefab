@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7965321864626237959}
   - component: {fileID: 3673895789408823150}
   - component: {fileID: 7432192915762810941}
-  - component: {fileID: 503634043342859416}
+  - component: {fileID: 8087550514709697711}
   - component: {fileID: 4539332792472976005}
   m_Layer: 5
-  m_Name: StandardEnemy
+  m_Name: BasicEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &503634043342859416
+--- !u!114 &8087550514709697711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,15 +86,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8925554884976523802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b047ac878d9bb4def97558d8e4334cf6, type: 3}
+  m_Script: {fileID: 11500000, guid: ad7a1965f05278e41983a5fc3c0bee5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
   maxHealth: 10
-  damage: 12
+  health: 10
+  combatPower: 1
   animator: {fileID: 4539332792472976005}
-  sprites:
-  - {fileID: -2236565505123217261, guid: 71e57737f57ffda4e99c83968191c18f, type: 3}
 --- !u!95 &4539332792472976005
 Animator:
   serializedVersion: 7

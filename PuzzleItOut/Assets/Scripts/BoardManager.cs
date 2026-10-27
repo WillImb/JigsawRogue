@@ -179,7 +179,7 @@ public class BoardManager : MonoBehaviour
 
         if (!CheckOccupiedCount())
         {
-            PanelManager.instance.DisableButtons(new int[] { 2, 4 });
+            PanelManager.instance.DisableButtons("2,4");
             activeCombo = null;
             UpdateCostImage();            
             return;
@@ -194,12 +194,12 @@ public class BoardManager : MonoBehaviour
                     int foundSpellIndex = CombatManager.Instance.FindCombo(GetBoardScriptables());
                     if (foundSpellIndex != -1) {
                         activeCombo = Spellbook.instance.combosUnlocked[foundSpellIndex];
-                        PanelManager.instance.EnableButtons(new int[] { 2, 4 });
+                        PanelManager.instance.EnableButtons("2,4");
                     }
                     else
                     {
                         activeCombo = null;
-                        PanelManager.instance.DisableButtons(new int[] { 2, 4 });
+                        PanelManager.instance.DisableButtons("2,4");
                     }
 
                 }
@@ -211,12 +211,12 @@ public class BoardManager : MonoBehaviour
                     if (CombatManager.Instance.FindForbidden(pieces) != -1)
                     {
                         activeCombo = Spellbook.instance.combosUnlocked[CombatManager.Instance.FindForbidden(pieces)];
-                        PanelManager.instance.EnableButtons(new int[] { 2, 4 });
+                        PanelManager.instance.EnableButtons("2,4");
 
                     }
                     else
                     {
-                        PanelManager.instance.DisableButtons(new int[] { 2, 4 });
+                        PanelManager.instance.DisableButtons("2,4");
                         activeCombo = null;
 
                     }
@@ -292,7 +292,7 @@ public class BoardManager : MonoBehaviour
         
         if (CheckOccupiedCount())
         {
-            PanelManager.instance.EnableButtons(new int[] { 2, 4 });
+            PanelManager.instance.EnableButtons("2,4");
         }
         GameManager.instance.ResetSpecialCheck();
 

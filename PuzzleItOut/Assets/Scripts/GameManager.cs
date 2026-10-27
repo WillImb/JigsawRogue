@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     TurnState turnState = TurnState.playerTurn;
 
-    public Enemy currentEnemy;
+    public EnemyParent currentEnemy;
 
 
     public bool enemyStunned = false;
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
 
         StartGame();
-        PanelManager.instance.DisableButtons(new int[]{2, 4});
+        PanelManager.instance.DisableButtons("2,4");
         specialToggle.interactable = false;
 
         DeckManager.instance.gameObject.SetActive(true);
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             Instantiate(storyManagerPrefab);
             //For the future - In story manager load saved data from files
 
-            currentEnemy = Instantiate(StoryManager.instance.enemiesPrefab[level].gameObject,enemySpawner).GetComponent<Enemy>();
+            currentEnemy = Instantiate(StoryManager.instance.enemiesPrefab[level].gameObject,enemySpawner).GetComponent<EnemyParent>();
             sliderManager.enemy = currentEnemy;
 
             if (StoryManager.instance.HasDialog(level))
@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
         else // not stunned
         {   
             VFXManager.instance.SpawnParticle(new Vector3(0, 1, 0), 4);
-            currentEnemy.Invoke("DealDamage",.35f);
+            currentEnemy.Invoke("Attack",.35f);
             Invoke("EndTurn",1);
         }
     }
@@ -294,14 +294,14 @@ public class GameManager : MonoBehaviour
         {
             if (!Spellbook.instance.CheckSpecialUnlockedStatus(BoardManager.instance.activeCombo))
             {
-                PanelManager.instance.DisableButtons(new int[] { 2 });
+                PanelManager.instance.DisableButtons("2");
             }
         }
         else
         {
             if (BoardManager.instance.activeCombo)
             {
-                PanelManager.instance.EnableButtons(new int[] { 2 });
+                PanelManager.instance.EnableButtons("2");
             }
 
         }

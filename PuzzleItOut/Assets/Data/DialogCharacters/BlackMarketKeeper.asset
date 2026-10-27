@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: BlackMarketKeeper
   m_EditorClassIdentifier: 
   profile: {fileID: 7318307935340301214, guid: dc0827a58ec841944b64c4d06df2cfae, type: 3}
+  talkSpeed: 0.1

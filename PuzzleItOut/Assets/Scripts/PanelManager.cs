@@ -39,36 +39,46 @@ public class PanelManager : MonoBehaviour
     }
 
     //takes in an array of intergers and disables all the buttons in the buttons array
-    public void DisableButtons(int[] nums)
+    public void DisableButtons(string nums)
     {
-        
+        int[] b = StringToArray(nums);
 
-        for(int i = 0; i < nums.Length; i ++)
+        for (int i = 0; i < b.Length; i++)
         {
-            if(nums[i] == 4)
+            if (b[i] == 4)
             {
                 GameManager.instance.specialToggle.interactable = false;
                 return;
             }
-            buttons[nums[i]].interactable = false;
+            buttons[b[i]].interactable = false;
         }
     }
 
     //takes in an array of intergers and enables all the buttons in the buttons array
+    //takes  in a string so it can be called by ui buttons
 
-    public void EnableButtons(int[] nums)
+    public void EnableButtons(string nums)
     {
-        
-        
-        for (int i = 0; i < nums.Length; i++)
+        int[] b = StringToArray(nums);
+
+        for (int i = 0; i < b.Length; i++)            
         {
-            if (nums[i] == 4)
+            if (b[i] == 4)
             {
                 GameManager.instance.specialToggle.interactable = true;
                 return;
             }
-            buttons[nums[i]].interactable = true;
+            buttons[b[i]].interactable = true;
         }
+    }
+    //Converts a string of comma separated numbers into an array
+    // Must be in format "1,2,3"
+    //This is done so it can be called from a buttons press
+    public int[] StringToArray(string nums)
+    {
+        int[] indecies = Array.ConvertAll(nums.Split(","), int.Parse);
+
+        return indecies;
     }
 
     

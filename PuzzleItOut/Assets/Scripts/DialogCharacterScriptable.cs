@@ -10,6 +10,7 @@ using UnityEngine;
 public class DialogCharacterScriptable : ScriptableObject
 {
     public Sprite profile;
+    public float talkSpeed;
 
 
 }

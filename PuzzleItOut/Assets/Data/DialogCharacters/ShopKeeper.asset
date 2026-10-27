@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ShopKeeper
   m_EditorClassIdentifier: 
   profile: {fileID: -6082842943875139710, guid: f64000040aa617441912e77e913c9369, type: 3}
+  talkSpeed: 0.05

@@ -52,7 +52,7 @@ public class StoryManager : MonoBehaviour
 
     string speech;
     string goalSpeech;
-    public float talkSpeed;
+    
     public bool progressSpeech;
     public bool skipSpeech;
 
@@ -163,8 +163,8 @@ public class StoryManager : MonoBehaviour
         for (int k = 0; k < dses.Count; k++) {
             goalSpeech = dses[k].speech;
             profile.sprite = dialogCharacters[dses[k].characterIndex].profile;
-            speech = "";
-            Debug.Log("b"+k);
+            float talkSpeed = dialogCharacters[dses[k].characterIndex].talkSpeed;    
+            speech = "";            
             speechBox.text = speech;
             for (int i = 0; i < dses[k].speech.Length; i++)
             {

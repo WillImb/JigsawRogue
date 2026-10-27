@@ -12,7 +12,7 @@ using TMPro;
 public class SliderManager : MonoBehaviour
 {
     Player player;
-    public Enemy enemy;
+    public EnemyParent enemy;
 
     public Slider playerHealthSlider;
     public Slider playerManaSlider;
@@ -32,7 +32,7 @@ public class SliderManager : MonoBehaviour
         // subscribe to events
         player.OnHealthChanged += UpdatePlayerHealthSlider;
         player.OnManaChanged += UpdatePlayerManaSlider;
-        enemy.OnHealthChanged += UpdateEnemyHealthSlider;
+        
 
         // update GUI for game start
         UpdatePlayerHealthSlider(player.GetHealth(), player.maxHealth);
@@ -44,7 +44,7 @@ public class SliderManager : MonoBehaviour
     {
         player.OnHealthChanged -= UpdatePlayerHealthSlider;
         player.OnManaChanged -= UpdatePlayerManaSlider;
-        enemy.OnHealthChanged -= UpdateEnemyHealthSlider;
+       
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public class SliderManager : MonoBehaviour
         playerManaText.text = player.mana + "/" + player.maxMana;
     }
 
-    void UpdateEnemyHealthSlider(int value, int maxValue)
+    public void UpdateEnemyHealthSlider(int value, int maxValue)
     {
         // refresh slider ui
         UpdateSlider(enemyHealthSlider, value, maxValue);
